@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %} Order Details {% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: block; /* No flex here */
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 100px); /* Takes care of header height */
+            padding: 20px;
+        }
+
+        .order-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            width: 80%;
+            max-width: 1000px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .order-image {
+            width: 40%;
+            padding-right: 20px;
+        }
+
+        .order-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-details {
+            width: 60%;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .order-details h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .order-details p {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .order-items ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+
+        .order-items li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .order-summary {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #ff6f61;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e55b50;
+        }
+
+    </style>
+
+    <!-- Main content area where flexbox is applied to center content -->
+    <main>
+        <div class="order-container">
+            <div class="order-image">
+                <img src="/mnt/data/image.png" alt="Order Image">
+            </div>
+
+            <div class="order-details">
+                <div>
+                    <h3>Order #123456</h3>
+                    <p>Date: 2024-09-07</p>
+                    <p>Status: Shipped</p>
+                    <p>Shipping Address: 1234 Elm Street, Springfield</p>
+                </div>
+
+                <div class="order-items">
+                    <h3>Items Ordered:</h3>
+                    <ul>
+                        <li>Product 1 - $10 x 2</li>
+                        <li>Product 2 - $20 x 1</li>
+                    </ul>
+                </div>
+
+                <div class="order-summary">
+                    <p>Total: $40</p>
+                    <button onclick="checkout()">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function checkout() {
+            alert('Proceeding to checkout...');
+        }
+    </script>
+{% endblock %}

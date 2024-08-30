@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .form-row {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+            position: relative;
+        }
+        .form-row button {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background-color: #d9534f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .form-row button:hover {
+            background-color: #c9302c;
+        }
+        .button {
+            background-color: #5bc0de;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background-color: #31b0d5;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-group input[type="file"] {
+            padding: 3px;
+        }
+    </style>
+    <script>
+        function addForm(type) {
+            const formset = document.getElementById(type + '_formset');
+            const formCount = formset.children.length;
+            const newForm = formset.children[0].cloneNode(true);
+            newForm.classList.remove('hidden');
+            
+            newForm.querySelectorAll('input, select').forEach(function(input) {
+                let name = input.name.replace(/\d+/, formCount);
+                input.name = name;
+                input.id = name;
+                input.value = '';
+            });
+
+            formset.appendChild(newForm);
+            document.querySelector('input[name="' + type + '_count"]').value = formCount + 1;
+        }
+
+        function removeForm(type, button) {
+            const formset = document.getElementById(type + '_formset');
+            if (formset.children.length > 1) {
+                formset.removeChild(button.closest('.form-row'));
+                document.querySelector('input[name="' + type + '_count"]').value--;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Product</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ product_form.as_p }}
+            
+            <h2>Images</h2>
+            <div id="images_formset">
+                {% for form in image_forms %}
+                    <div class="form-row {% if forloop.first %}hidden{% endif %}">
+                        {{ form.as_p }}
+                        <button type="button" onclick="removeForm('images', this)">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="image_count" value="{{ image_forms|length }}">
+
+            <button type="button" class="button" onclick="addForm('images')">Add Image</button>
+
+            <h2>Prices</h2>
+            <div id="prices_formset">
+                {% for form in price_forms %}
+                    <div class="form-row {% if forloop.first %}hidden{% endif %}">
+                        {{ form.as_p }}
+                        <button type="button" onclick="removeForm('prices', this)">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="price_count" value="{{ price_forms|length }}">
+
+            <button type="button" class="button" onclick="addForm('prices')">Add Price</button>
+
+            <button type="submit" class="button">Add Product</button>
+        </form>
+    </div>
+</body>
+</html>

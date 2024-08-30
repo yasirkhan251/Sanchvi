@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% block title %}Product Listing{% endblock %}
+
+{% block content %}
+  <title>Studio Space Rent</title>
+
+  <style>
+    /* General Styles */
+    .slider-container {
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(to bottom right, #ecb3e7, #f8ffae); /* Linear gradient background */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slider-images {
+      display: flex;
+      align-items: center;
+      gap: 21px;
+    }
+
+    .slider-img {
+      width: 100px;  /* Adjusted size */
+      height: 365px; /* Adjusted size */
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      transition: 0.7s ease;
+    }
+
+    .slider-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    h1 {
+      font-family: "Jost", sans-serif;
+      font-size: 26px; /* Adjusted size */
+      font-weight: 700;
+      text-align: left;
+      text-transform: uppercase;
+      color: #fff;
+      position: absolute;
+      top: 50%;
+      left: -10%;
+      transform: rotate(270deg);
+      transition: 0.7s ease;
+    }
+
+    .details {
+      position: absolute;
+      bottom: 25px; /* Adjusted size */
+      left: 25px;  /* Adjusted size */
+    }
+
+    .details h2 {
+      font-family: "Jost", sans-serif;
+      font-size: 18px; /* Adjusted size */
+      font-weight: 700;
+      text-align: left;
+      line-height: 24px; /* Adjusted size */
+      color: #fff;
+      text-transform: uppercase;
+      transition: 0.7s ease;
+      display: none;
+    }
+
+    .details p {
+      font-family: "Jost", sans-serif;
+      font-size: 14px; /* Adjusted size */
+      font-weight: 700;
+      text-align: left;
+      line-height: 20px; /* Adjusted size */
+      color: #fff;
+      text-transform: uppercase;
+      transition: 0.7s ease;
+      display: none;
+    }
+
+    .slider-img.active {
+      width: 498px !important; /* Adjusted size */
+      height: 488px !important; /* Adjusted size */
+    }
+
+    .slider-img.active h1 {
+      display: none;
+    }
+
+    .slider-img.active .details p, 
+    .slider-img.active .details h2 {
+      display: block;
+    }
+
+    /* Contact Us Button */
+    .contact-us-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    
+    .contact-us-button {
+      background-color: #ee7fd0; /* Pink background */
+      color: #fff; /* White text */
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .contact-us-button:hover {
+      background-color: #ff69b4; /* Lighter Pink background on hover */
+      color: #ebf7a6; /* Change text color */
+    }
+
+    /* MOBILE VIEW STYLES */
+    @media screen and (max-width: 768px) {
+      .slider-container {
+        flex-direction: column; /* Stack images vertically */
+        height: auto; /* Adjust height to fit content */
+        padding: 20px; /* Add padding for better spacing */
+      }
+
+      .slider-images {
+        flex-direction: row; /* Scroll horizontally on mobile */
+        gap: 10px; /* Reduce gap between images */
+        overflow-x: auto; /* Enable horizontal scroll */
+      }
+
+      .slider-img {
+        width: 80%; /* Make images fill most of the screen */
+        height: auto; /* Adjust height for aspect ratio */
+        flex: 0 0 auto; /* Prevent the image from stretching */
+        margin: 0 10px;
+      }
+
+      .slider-img img {
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+      }
+
+      .details h2,
+      .details p {
+        font-size: 16px; /* Larger text for readability */
+      }
+
+      h1 {
+        font-size: 20px; /* Adjust the title font size */
+        top: 45%;
+        left: 10px;
+      }
+    }
+  </style>
+
+  <section class="slider-container">
+    <div class="slider-images">
+      <div class="slider-img">
+        <img src="/static/Images/S1.jpg" alt="1" />
+        <h1>Boho setup</h1>
+        <div class="details">
+          <h2>Boho setup</h2>
+          <p>RS-1800/+</p>
+        </div>
+      </div>
+      <div class="slider-img">
+        <img src="/static/Images/S2.jpg" alt="2" />
+        <h1>Dark grey roll</h1>
+        <div class="details">
+          <h2>Dark grey roll</h2>
+          <p>RS-500/-</p>
+        </div>
+      </div>
+      <div class="slider-img">
+        <img src="/static/Images/S3.jpg" alt="3" />
+        <h1>Swing with fairy drape</h1>
+        <div class="details">
+          <h2>Swing with fairy drape</h2>
+          <p>RS-1200/-</p>
+        </div>
+      </div>
+      <div class="slider-img active">
+        <img src="/static/Images/S4.jpg" alt="4" />
+        <h1>Golden mirror</h1>
+        <div class="details">
+          <h2>Golden mirror</h2>
+          <p>RS-500/-</p>
+        </div>
+      </div>
+      <div class="slider-img">
+        <img src="/static/Images/S5.jpg" alt="5" />
+        <h1>Sheer love</h1>
+        <div class="details">
+          <h2>Sheer love</h2>
+          <p>RS-500/-</p>
+        </div>
+      </div>
+      <div class="slider-img">
+        <img src="/static/Images/S6.jpg" alt="6" />
+        <h1>Vintage wall + Mauve sofa</h1>
+        <div class="details">
+          <h2>Vintage wall + Mauve sofa</h2>
+          <p>RS-1200/-</p>
+        </div>
+      </div>
+      <div class="slider-img">
+        <img src="/static/Images/S7.jpg" alt="7" />
+        <h1>Vintage wall</h1>
+        <div class="details">
+          <h2>Vintage wal</h2>
+          <p>RS-1000/-</p>
+        </div>
+      </div>
+      <div class="slider-img">
+        <img src="/static/Images/S8.jpg" alt="8" />
+        <h1>Purple punch</h1>
+        <div class="details">
+          <h2>Purple punch</h2>
+          <p>RS-1200</p>
+        </div>
+      </div>
+    </div>
+<br>
+  </section>
+
+  <!-- Contact Us Button -->
+  <div class="contact-us-container">
+    <a href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20hope%20you%27re%20doing%20well%21%20I%27m%20interested%20in%20learning%20more%20about%20the%20Studio%20Space%20you%20offer.%20Could%20you%20please%20provide%20me%20with%20more%20details%20regarding%20availability%2C%20pricing%2C%20and%20any%20specific%20requirements%3F%20I%20look%20forward%20to%20your%20response.%20Thank%20you%21" target="_blank"  class="contact-us-button">WhatsApp Us</a> 
+  </div>
+
+  <script src="/static/js/jQuerystudio.js"></script>
+  <script>
+    jQuery(document).ready(function ($) {
+      $(".slider-img").on("click", function () {
+        $(".slider-img").removeClass("active");
+        $(this).addClass("active");
+      });
+    });
+  </script>
+{% endblock %}

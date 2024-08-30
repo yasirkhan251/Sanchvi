@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+{% block title %} Product Sanchvi {% endblock %}
+
+{% block content %}
+<div id="imageModal" class="hidden">
+  <img id="modalImage" src="" alt="Enlarged Image" />
+  <button class="close-modal">&times;</button>
+</div>
+<div class="bg-background text-foreground">
+    <div class="max-w-4xl mx-auto p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="relative">
+             
+            
+                <img id="mainImage" src="{{ product.img.url }}" alt="Product Image" class="main-image w-full h-auto rounded-lg shadow-lg transition-transform transform hover:scale-105" />
+                <div class="absolute top-0 left-0 transform -translate-x-1/2 -translate-y-1 flex flex-col space-y-2">
+                    {% for image in product.images.all %}
+                        <img src="{{ image.image.url }}" alt="Image for {{ product.name }}" class="thumbnail w-24 h-24 rounded-lg shadow-lg transition-transform transform hover:scale-105 cursor-pointer">
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="flex flex-col justify-center">
+                <h1 class="text-2xl font-extrabold mb-2 ">{{ product.name }}</h1>
+              
+
+                <div class="mb-4 flex">
+                    <div class="mr-4">
+                        <label for="color" class="text-secondary">Select Color:</label>
+                        <select id="color" class="mt-1 block w-32 border border-border rounded-lg p-2">
+                            <option value="red">Red</option>
+                            <option value="blue">Blue</option>
+                            <option value="green">Green</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="size" class="text-secondary">Select Size:</label>
+                        <select id="size" class="mt-1 block w-32 border border-border rounded-lg p-2">
+                            {% for price in prices %}
+                                <option value="{{ price.size }}" data-price="{{ price.price }}">{{ price.size }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex items-center mb-2">
+                    <p id="currentPrice" class=" font-bold text-2xl mr-2">₹NaN</p>
+                    <p id="originalPrice" class="text-muted line-through">₹NaN</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="custom-button px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                        <a href="{% url 'addtocart'%}">Add to Cart</a>
+                    </button>
+                    <button id="whatsappOrderButton" class="custom-button px-4 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                        WhatsApp Order
+                    </button>
+                </div>
+                
+                <!-- <p class="text-muted mt-2">Free shipping on orders over ₹10000</p> -->
+                <button id="description-toggle" class="custom-button mt-4 px-4 py-2 rounded-lg pointer">
+                    View More
+                </button>
+                
+                <pre id="description" class="text-lg text-secondary mb-4" style="width: 150%;">{{ product.description }}</pre>
+              
+                
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .custom-button {
+        background-color: white;
+        color: black;
+        border: 1px solid #e83e8c; /* Optional: add border color for a touch of pink */
+    }
+
+    .custom-button:hover {
+        background-color: #f1f1f1; /* Light gray on hover */
+    }
+
+    .custom-button {
+        background-color: white;
+        color: black;
+        border: 1px solid #e83e8c; /* Optional: add border color for a touch of pink */
+    }
+
+    .custom-button:hover {
+        background-color: #f1f1f1; /* Light gray on hover */
+    }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sizeSelect = document.getElementById('size');
+    const whatsappOrderButton = document.getElementById('whatsappOrderButton');
+    const mainImage = document.getElementById('mainImage');
+
+    whatsappOrderButton.addEventListener('click', function() {
+        const selectedOption = sizeSelect.options[sizeSelect.selectedIndex];
+        const price = parseFloat(selectedOption.dataset.price);
+        const size = selectedOption.value;
+        const productName = "{{ product.name }}";
+        const productPrice = `₹${price.toFixed(2)}`;
+        const imageUrl = mainImage.src;
+
+        const message = `I would like to place an order for ${productName}. Size: ${size}, Price: ${productPrice}. `;
+        // const message = `I would like to place an order for ${productName}. Size: ${size}, Price: ${productPrice}. Here's the product image: ${imageUrl}`;
+
+        // Define the phone numbers
+        const phoneNumbers = ["919980146429", "918296250912"];
+
+        // Loop through each phone number and open the WhatsApp URL
+        phoneNumbers.forEach(function(phoneNumber) {
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        });
+    });
+});
+
+
+
+
+
+    
+    const dtoggle = document.getElementById('description-toggle');
+    const descr = document.getElementById('description');
+    descr.style.display = 'none'
+    dtoggle.addEventListener('click', function() {
+        if (descr.style.display === "none") {
+            descr.style.display = "block";
+            descr.style.cursor = 'pointer'
+            dtoggle.textContent = "Hide Description"; // Optionally change button text
+        } else {
+            descr.style.display = "none";
+            dtoggle.textContent = "View More "; // Optionally revert button text
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const sizeSelect = document.getElementById('size');
+        const currentPrice = document.getElementById('currentPrice');
+        const originalPrice = document.getElementById('originalPrice');
+
+        sizeSelect.addEventListener('change', function() {
+            const selectedOption = sizeSelect.options[sizeSelect.selectedIndex];
+            const price = parseFloat(selectedOption.dataset.price);
+            
+            currentPrice.textContent = `₹${price.toFixed(2)}`;
+            const original = price * 1.21;
+            originalPrice.textContent = `₹${original.toFixed(2)}`;
+        });
+
+        sizeSelect.dispatchEvent(new Event('change'));
+    });
+</script>
+
+<style>
+
+  /* Modal styling */
+.pointer{
+    cursor: pointer;
+}
+pre{
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 35px;
+}
+
+#imageModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+}
+
+#imageModal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#modalImage {
+    max-width: 80%;
+    max-height: 80%;
+    opacity: 0;
+    border-radius: 10px;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#imageModal.show #modalImage {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.dimmed {
+    opacity: 0.5;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Optional: Close button styling */
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+}
+
+  /* Modal Styles */
+.modal {
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 1); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1.3s ease-in-out;
+}
+
+.modal-content {
+    position: absolute;
+    top:0px;
+    max-width: 35%;
+    max-height: 0%;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Other Elements (non-modal) should be dimmed when modal is active */
+.dimmed {
+    opacity: 0.8;
+}
+
+    .main-image {
+        width: 400px;
+        height: 500px;
+        object-fit: cover;
+    }
+    .thumbnail {
+        cursor: pointer;
+    }
+  
+    .text-foreground {
+        color: #333;
+    }
+    .text-primary {
+        color: #333;
+    }
+    .text-secondary {
+        color: #666;
+    }
+    .text-muted {
+        color: #999;
+    }
+    .bg-primary {
+        background-color: #090909;
+    }
+    .text-primary-foreground {
+        color: #fff;
+    }
+    .bg-accent {
+        background-color: #e83e8c;
+    }
+    .text-accent-foreground {
+        color: #fff;
+    }
+    .border-border {
+        border-color: #ddd;
+    }
+    @media only screen and (max-width: 600px) {
+    .main-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .flex {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bg-background {
+        padding: 10px;
+    }
+
+    #imageModal {
+        padding: 10px;
+    }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 768px) {
+    .main-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #imageModal {
+        padding: 20px;
+    }
+}
+
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mainImage = document.getElementById('mainImage');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const content = document.querySelector('.bg-background');
+
+    // Function to show the modal with the clicked image
+    const showModal = (imgSrc) => {
+        modalImage.src = imgSrc;
+        modal.classList.add('show'); // Show modal with animation
+        content.classList.add('dimmed'); // Dim the background
+    };
+
+    // Function to hide the modal
+    const hideModal = () => {
+        modal.classList.remove('show'); // Hide modal with animation
+        content.classList.remove('dimmed'); // Remove background dimming
+    };
+
+    // Click event for the main image and thumbnails
+    mainImage.addEventListener('click', function() {
+        showModal(this.src);
+    });
+
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', function() {
+            showModal(this.src);
+        });
+    });
+
+    // Click event to close the modal when clicking outside the image
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal || e.target.closest('.close-modal')) {
+            hideModal();
+        }
+    });
+});
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainImage = document.getElementById('mainImage');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                const tempSrc = mainImage.src;
+                mainImage.src = this.src;
+                this.src = tempSrc;
+            });
+        });
+    });
+</script>
+
+{% endblock %}

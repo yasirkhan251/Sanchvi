@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .contactUs {
+        width: 100%;
+        padding: 20px 40px;
+        /* background: #fdfdfd; */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        box-sizing: border-box;
+        margin: 20px 0;
+    }
+
+    .contactUs .title {
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+
+    .contactUs .title h2 {
+        color: #333;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .box {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-gap: 20px;
+        margin-top: 20px;
+    }
+
+    .contact {
+        padding: 30px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact h3 {
+        color: #ecb3e7;
+        font-weight: 600;
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .formbox {
+        width: 100%;
+    }
+
+    .formbox .row50 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .inputBox {
+        flex: 1;
+        min-width: calc(50% - 20px);
+        margin-bottom: 20px;
+    }
+
+    .inputBox span {
+        color: #ecb3e7;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 1.1em;
+        text-transform: uppercase;
+    }
+
+    .inputBox input,
+    .inputBox textarea {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 1em;
+        outline: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        background: #fafafa;
+        transition: border 0.3s;
+    }
+
+    .inputBox input:focus,
+    .inputBox textarea:focus {
+        border: 1px solid #ecb3e7;
+    }
+
+    .inputBox input[type="submit"] {
+        background: #ff578b;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        padding: 14px;
+        font-size: 1.1em;
+        transition: background 0.3s, transform 0.3s;
+    }
+    .inputBox input[type="submit"] {
+        background: -webkit-linear-gradient(right, #ecb3e7, #f0cfa6);
+        border: none;
+        cursor: pointer;
+        padding: 14px;
+        font-size: 1.1em;
+        transition: background 0.3s, transform 0.3s;
+        border-radius: 4px;
+    }
+
+    .inputBox input[type="submit"]:hover {
+        background: -webkit-linear-gradient(right, #ecb3e7, #f0cfa6, #ecb3e7, #f0cfa6); /* Reverse gradient on hover */
+        transform: translateY(-2px);
+    }
+
+    .inputBox textarea {
+        resize: none;
+        height: 150px;
+    }
+
+    .contact.info,
+    .contact.map {
+        background: #fafafa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    @media (min-width: 768px) {
+        .box {
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto;
+        }
+
+        .form {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+        }
+
+        .info {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+        }
+
+        .map {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .contactUs {
+            padding: 40px 100px;
+        }
+
+        .box {
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto;
+        }
+    }
+</style>
+
+<div class="contactUs">
+    <div class="title">
+        <h2>Get in Touch</h2>
+    </div>
+    <div class="box">
+        <!-- Formbox -->
+        <div class="contact form">
+            <h3>Send a Message</h3>
+            <form>
+                <div class="formbox">
+                    <div class="row50">
+                        <div class="inputBox">
+                            <span>First Name</span>
+                            <input type="text" placeholder="First">
+                        </div>
+                        <div class="inputBox">
+                            <span>Last Name</span>
+                            <input type="text" placeholder="Last">
+                        </div>
+                    </div>
+
+                    <div class="row50">
+                        <div class="inputBox">
+                            <span>Email Id</span>
+                            <input type="email" placeholder="you@example.com">
+                        </div>
+                        <div class="inputBox">
+                            <span>Mobile</span>
+                            <input type="text" placeholder="+123 456 7890">
+                        </div>
+                    </div>
+
+                    <div class="inputBox">
+                        <span>Message</span>
+                        <textarea placeholder="Write Your Message here..."></textarea>
+                    </div>
+
+                    <div class="inputBox">
+                        <input type="submit" value="Send">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- InfoBox -->
+        <div class="contact info">
+            <h3>Contact Information</h3>
+            <p><strong>Address:</strong> 17/1, 4rd Floor, Tulsi Pharma Building, Berlie St, Langford Town, Shanti Nagar, Bengaluru, Karnataka 560025</p>
+            <p><strong>Email:</strong> sanchvi.sanjana19@gmail.com</p>
+            <p><strong>Studio space Phone:</strong> +91 78920 22190</p>
+            <p><strong>Rentals number Phone:</strong>+91 7676733044 </p>
+            <p><strong>Sales Phone Number:</strong>  +91 9980146429/ +91 8296250912</p>
+        </div>
+        <!-- MapBox -->
+        <div class="contact map">
+            <h3>Find Us Here</h3>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3890.725965124147!2d77.59230817457502!3d12.95743328681757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae167cf7b55ab9%3A0x47f41d54b8b46f78!2s17%2F1%2C%203rd%20Floor%2C%20Tulsi%20Pharma%20Building%2C%20Berlie%20St%2C%20Langford%20Town%2C%20Shanti%20Nagar%2C%20Bengaluru%2C%20Karnataka%20560025!5e0!3m2!1sen!2sin!4v1694187630789!5m2!1sen!2sin"
+                width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        
+            <br /><br />
+            
+            <!-- Button for directions -->
+            <a href="https://www.google.com/maps/dir//17%2F1,+3rd+Floor,+Tulsi+Pharma+Building,+Berlie+St,+Langford+Town,+Shanti+Nagar,+Bengaluru,+Karnataka+560025/@13.0383872,77.6142848,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3bae1531b618adb1:0x75e326f7709042f1!2m2!1d77.6017784!2d12.9586513?entry=ttu&g_ep=EgoyMDI0MDkwNC4wIKXMDSoASAFQAw%3D%3D" 
+               target="_blank" 
+               class="btn btn-primary">
+               Get Directions
+            </a>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

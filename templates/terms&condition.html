@@ -1,0 +1,83 @@
+{%extends 'base.html'%}
+{%block content%}
+
+<style>
+        
+    .container {
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    h1 {
+        color: #222;
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+    
+    h2 {
+        color: #444;
+        margin-top: 20px;
+        font-size: 1.5em;
+    }
+    
+    p {
+        color: #555;
+        line-height: 1.8;
+        font-size: 1.1em;
+        margin-bottom: 15px;
+    }
+    
+    button {
+        background-color: #222;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 18px;
+        margin-top: 30px;
+        transition: background-color 0.3s ease;
+    }
+    
+    button:hover {
+        background-color: #444;
+    }
+    </style>
+    <div class="container">
+        <h1>Terms and Conditions</h1>
+        <p><strong>Welcome to Sanchvi Studio.</strong></p>
+        <p>By accessing this website, you agree to be bound by these terms and conditions.</p>
+
+        <h2>1. Return & Refund</h2>
+        <p>Once the order is placed, it cannot be canceled. Outfits are made as per the client's information.</p>
+
+        <h2>2. Damage or any Defect</h2>
+        <p>If there is any damage on the outfit, it is important to make a video while unboxing or unpacking.<br>
+        This video needs to be shared via WhatsApp within 24 hours after you receive the outfit (dress).</p>
+
+        <h2>3. Support and Help</h2>
+        <p>We will be more than happy to assist you with any issue.</p>
+
+        <h2>4. Limitation of Liability</h2>
+        <p>We are not liable for any damages that may occur from the use of our website.</p>
+
+        <h2>5. Shipping</h2>
+        <p>Basic shipping charges pan-India: Rs 300/-<br>
+        Delivery within 14 to 21 days plus 6 to 7 working days for shipping.<br><br>
+        Express shipping is available based on date availability. Please contact us on our WhatsApp number, and our expert will assist you with the issue.</p>
+
+        <button id="acceptBtn">Accept Terms</button>
+    </div>
+
+    <script >
+        document.getElementById('acceptBtn').addEventListener('click', function() {
+    alert('Thank you for accepting the terms!');
+});
+
+    </script>
+{%endblock%}

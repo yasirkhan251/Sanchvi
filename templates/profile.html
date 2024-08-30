@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% block title%} Profile page {% endblock %}
+
+{% block content%}
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"> -->
+<style>
+    .profile-card {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+    width: 99%;
+    height: 50vh;
+    border-radius: 12px;
+    overflow: hidden;
+    /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); */
+    /* background-color: #fff; */
+}
+
+.left-section {border-radius: 12px;
+    background: linear-gradient(to bottom, #eda1e7, #4a1919);
+    /* padding: 30px; */
+    color: #fff;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.left-section .profile-images {
+    margin-bottom: 15px;
+}
+
+.left-section .profile-images img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.left-section h2 {
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+}
+
+.left-section p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.left-section .edit-icon {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.right-section {border-radius: 12px;
+    padding: 30px;
+    width: 20%;
+    background-color: white;
+}
+
+.right-section .info, .right-section .projects {
+    margin-bottom: 20px;
+}
+
+.right-section h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.right-section p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.right-section .social-icons a {
+    margin-right: 10px;
+    color: #555;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.right-section .social-icons a:hover {
+    color: #ff7676;
+}
+.modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+        
+    }
+
+    .modal-content {
+        margin: auto;
+        display: block;
+        /* width: 13%;
+        max-width: 700px; */
+        height: 400px;
+        width: 400px;
+
+        border-radius: 50%;
+     
+    }
+
+    .modal-content img {
+       height: 400px;
+        width: 400px;
+        border-radius: 50%;
+    }
+    .modal {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+}
+
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #fff;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #ed0b0b;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="profile-card">
+    <div class="left-section">
+        <div class="profile-images">
+            <img id="profileImg" src="{{request.user.profile.url}}" alt="Profile Image" style="cursor: pointer;">
+        </div>
+        <h2>{{request.user}}</h2>
+        <p></p>
+        <div class="edit-icon">
+            <i class="fa fa-pencil-alt"></i>
+        </div>
+    </div>
+    <div class="right-section">
+        <div class="info">
+            <h3>Information</h3>
+            <p><strong>Email:</strong> {{ request.user.email}}</p>
+            <p><strong>Phone:</strong>{{request.user.phone}}</p>
+        </div>
+        <div class="projects">
+            <h3>Personal Info:</h3>
+            <p><strong>Name:</strong> {{request.user.first_name}} {{request.user.last_name}}</p>
+            <p><strong>Username:</strong> {{request.user}}</p>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</div>
+<div id="imgModal" class="modal">
+    <span class="close">&times;</span>
+    <div class="modal-content">
+        <img id="modalImg" src="" alt="Profile Image">
+    </div>
+</div>
+<span class="close" aria-label="Close modal">&times;</span>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("imgModal");
+
+    // Get the image and insert it inside the modal
+    var img = document.getElementById("profileImg");
+    var modalImg = document.getElementById("modalImg");
+
+    // img.onclick = function() {
+    //     modal.style.display = "block";
+    //     modalImg.src = this.src;
+      
+       
+        
+    // }
+
+    // // Get the <span> element that closes the modal
+    // var span = document.getElementsByClassName("close")[0];
+
+    // // When the user clicks on <span> (x), close the modal
+    // span.onclick = function() {
+    //     modal.style.display = "none";
+    // }
+
+    // When the user clicks anywhere outside of the modal, close it
+ 
+    img.onclick = function() {
+    modal.style.display = "block";
+    modalImg.src = this.src;
+    setTimeout(function() {
+        modal.classList.add("show");
+    }, 10); // slight delay to ensure display change is registered
+}
+
+span.onclick = function() {
+    modal.classList.remove("show");
+    setTimeout(function() {
+        modal.style.display = "none";
+    }, 3); // matches the transition duration
+}
+
+
+</script>
+
+
+{% endblock %}

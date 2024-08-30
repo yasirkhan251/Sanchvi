@@ -1,0 +1,26 @@
+[0;1;32m●[0m nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Sat 2024-08-24 12:39:45 UTC; 19min ago
+       Docs: man:nginx(8)
+    Process: 693 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 764 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 1379 ExecReload=/usr/sbin/nginx -g daemon on; master_process on; -s reload [0;1;31m(code=exited, status=1/FAILURE)[0m
+   Main PID: 768 (nginx)
+      Tasks: 3 (limit: 9477)
+     Memory: 89.7M
+        CPU: 546ms
+     CGroup: /system.slice/nginx.service
+             ├─768 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+             ├─769 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
+             └─770 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
+
+Aug 24 12:59:12 sanchvi systemd[1]: [0;1;39m[0;1;31m[0;1;39mnginx.service: Control process exited, code=exited, status=1/FAILURE[0m
+Aug 24 12:59:12 sanchvi systemd[1]: [0;1;31m[0;1;39m[0;1;31mReload failed for A high performance web server and a reverse proxy server.[0m
+Aug 24 12:59:12 sanchvi systemd[1]: Reloading A high performance web server and a reverse proxy server...
+Aug 24 12:59:12 sanchvi nginx[1373]: nginx: [emerg] cannot load certificate "/etc/letsencrypt/live/sanchvi.com/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/letsencrypt/live/sanchvi.com/fullchain.pem, r) error:10000080:BIO routines::no such file)
+Aug 24 12:59:12 sanchvi systemd[1]: [0;1;39m[0;1;31m[0;1;39mnginx.service: Control process exited, code=exited, status=1/FAILURE[0m
+Aug 24 12:59:12 sanchvi systemd[1]: [0;1;31m[0;1;39m[0;1;31mReload failed for A high performance web server and a reverse proxy server.[0m
+Aug 24 12:59:19 sanchvi systemd[1]: Reloading A high performance web server and a reverse proxy server...
+Aug 24 12:59:19 sanchvi nginx[1379]: nginx: [emerg] cannot load certificate "/etc/letsencrypt/live/sanchvi.com/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/letsencrypt/live/sanchvi.com/fullchain.pem, r) error:10000080:BIO routines::no such file)
+Aug 24 12:59:19 sanchvi systemd[1]: [0;1;39m[0;1;31m[0;1;39mnginx.service: Control process exited, code=exited, status=1/FAILURE[0m
+Aug 24 12:59:19 sanchvi systemd[1]: [0;1;31m[0;1;39m[0;1;31mReload failed for A high performance web server and a reverse proxy server.[0m

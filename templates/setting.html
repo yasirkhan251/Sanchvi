@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #ecb3e7, #f8ffae);
+            margin: 0;
+            padding: 0;
+        }
+
+        .settings-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .settings-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-card h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0;
+        }
+
+        .form-actions {
+            text-align: center;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            background-color: #ee7fd0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-actions button:hover {
+            background-color: #ff69b4;
+        }
+
+        .profile-image-preview {
+            display: block;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="settings-container">
+    <div class="settings-card">
+        <h2>Edit Profile</h2>
+
+        <!-- Profile Image Preview -->
+        <img id="profileImage" src="/path-to-default-image.png" alt="Profile Image" class="profile-image-preview">
+
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="profilePic">Profile Picture</label>
+                <input type="file" id="profilePic" accept="image/*" onchange="previewProfileImage(event)">
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" value="smartlegend">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" value="smartlegend251@gmail.com">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" value="8073404431">
+            </div>
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" value="Yasir Khan">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Preview profile image before uploading
+    function previewProfileImage(event) {
+        const profileImage = document.getElementById('profileImage');
+        profileImage.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    // Handle form submission
+    document.getElementById('profileForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = {
+            username: document.getElementById('username').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            name: document.getElementById('name').value
+        };
+
+        // Send this data to the server for updating the profile (backend integration needed)
+        console.log('Form Data:', formData);
+        alert('Profile details have been updated!');
+    });
+</script>
+
+</body>
+</html>

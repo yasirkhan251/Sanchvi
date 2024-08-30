@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% block title %}Product Listing{% endblock %}
+
+{% block content %}
+<style>
+    .containers {
+        display: flex;
+        width: 98%;
+        max-width: 100%;
+        margin: auto;
+        overflow: hidden;
+        padding: 20px 0;
+        gap: 20px;
+        height: calc(100vh - 20px); /* Full height minus padding */
+        margin-top: 60px; /* Adjust this value based on the height of your navbar */
+    }
+    .sidebars {
+        width: 20%;
+        background-color: #f8f8f8;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        position: fixed;
+        height: calc(100vh - 200px); /* Full height minus padding and margin-top */
+    }
+    .sidebars h2 {
+        margin: 0 0 50px;
+        font-size: 1.5em;
+        color: #c2185b; /* Dark pink */
+    }
+    .sidebars ul {
+        list-style: none;
+        padding: 0;
+    }
+    .sidebars ul li {
+        margin-top: 20px;
+        margin-bottom: 30px;
+        margin-left: 30%;
+
+        /* text-align: center; */
+    }
+    .sidebars ul li a {
+        color: #666;
+        text-decoration: none;
+        font-size: larger;
+    }
+    .sidebars ul li a:hover {
+        color: #c2185b; /* Dark pink */
+    }
+    .products-container {
+        margin-left: 25%; /* sidebars width + gap */
+        overflow-y: auto;
+        height: calc(100vh - 100px); /* Full height minus padding and margin-top */
+        padding-right: 20px; /* Space for scrollbar */
+        width: 75%;
+        scrollbar-width: none; /* For Firefox */
+        -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    }
+    .products {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+    .product {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: relative;
+        padding-bottom: 40px;
+    }
+    .product:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .product img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s;
+    }
+    .product:hover img {
+        transform: scale(1.05);
+    }
+    .product-content {
+        padding: 15px;
+        text-align: center;
+    }
+    .product h3 {
+        margin: 10px 0;
+        font-size: 1.5em;
+        font-weight: 500;
+        color: #c2185b; /* Dark pink */
+    }
+    .product p {
+        color: #666;
+        font-size: 0.9em;
+        margin: 10px 0;
+    }
+    .product .price {
+        color: #d81b60; /* Another shade of dark pink */
+        font-size: 1.4em;
+        margin: 10px 0;
+        font-weight: 700;
+        position: absolute; /* Position the price absolutely within the product */
+        bottom: 0px; /* Place the price 15px from the bottom */
+        left: 0;
+        right: 0;
+        text-align: center; /* Center the price text */
+    }
+    .product .buy-now {
+        background: #c2185b; /* Dark pink */
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 10px;
+        border-radius: 5px;
+        transition: background 0.3s;
+        font-size: 1em;
+    }
+    .product .buy-now:hover {
+        background: #d81b60; /* Another shade of dark pink */
+    }
+    .product .icon {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #d81b60; /* Another shade of dark pink */
+        color: #fff;
+        padding: 10px;
+        border-radius: 50%;
+        font-size: 1.2em;
+        transition: background 0.3s;
+    }
+    .product:hover .icon {
+        background: #c2185b; /* Dark pink */
+    }
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+            margin-top: 0; /* Reset margin for mobile view */
+        }
+        .sidebars {
+            position: relative;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .products-container {
+            margin-left: 0;
+            height: auto;
+            
+        }
+        .products {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    
+</style>
+
+<div class="containers">
+    <div class="sidebars">
+        <center><h2>Categories</h2></center>
+        <ul>
+            {% for x in allcat %}
+            <li><a href="{% url 'product'  x.c_id x.id  %}">{{ x.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="products-container">
+        <div class="products">
+            {% for x in product %}
+            <div class="product">
+                <a href="{% url 'productdetail' x.id %}"> 
+                <img src="{{ x.img.url }}" alt="{{ x.name }}">
+                <div class="product-content">
+                    <span class="icon"><i class="fas fa-heart"></i></span>
+                    <h3>{{ x.name}}</h3>
+                    <!-- <p>{{ x.description }}</p> -->
+                  
+                    {%if x.prices.all%}
+                    
+                    <div class="price" style="font-size: large">Starting at : ₹{{ x.prices.all.0.price }}</div>
+                    {%endif%}
+                    
+                    </a>
+                    
+                </div>
+            </div>
+            {% empty %}
+            
+            <div><h2>No Product added</h2></div>
+            
+                    </div>
+            {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

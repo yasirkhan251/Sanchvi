@@ -1,0 +1,489 @@
+{% extends 'base.html' %}
+{% block title%} Dashboard Sanchvi {% endblock %}
+
+{% block content%}
+<section class="py-20 bg-light overflow-hidden ">
+    <div class="container">
+      <div class="row mb-20 align-items-center justify-content-between">
+        <div class="col-12 col-lg-auto mb-12 mb-xl-0">
+          <h2 class="font-heading">
+            <span>Found 125 results for</span>
+            <a class="position-relative text-info text-underline" href="#">Sports</a>
+          </h2>
+        </div>
+        <div class="col-12 col-lg-auto row align-items-center">
+          <div class="col-12 col-sm-auto mb-4 mb-sm-0 me-5">
+            <select class="form-select ps-8 py-4 bg-white lead border" name="" id="">
+              <option value="1">Sort by newest</option>
+              <option value="2">Sort by price</option>
+              <option value="3">Sort by most popular</option>
+            </select>
+          </div>
+          <div class="col-12 col-sm-auto">
+            <a class="btn me-3 h-100 p-4 bg-white rounded-2 border" href="#">
+              <svg width="20" height="24" viewbox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="4" height="4" rx="2" fill="#2B51C6"></rect><rect x="8" width="4" height="4" rx="2" fill="#2B51C6"></rect><rect x="16" width="4" height="4" rx="2" fill="#2B51C6"></rect><rect y="10" width="4" height="4" rx="2" fill="#2B51C6"></rect><rect x="8" y="10" width="4" height="4" rx="2" fill="#2B51C6"></rect><rect x="16" y="10" width="4" height="4" rx="2" fill="#2B51C6"></rect><rect y="20" width="4" height="4" rx="2" fill="#2B51C6"></rect><rect x="8" y="20" width="4" height="4" rx="2" fill="#2B51C6"></rect><rect x="16" y="20" width="4" height="4" rx="2" fill="#2B51C6"></rect></svg>
+            </a>
+            <a class="btn me-3 h-100 p-4 bg-transparent rounded-2 border" href="#">
+              <svg class="text-gray-200 group-hover:text-blue-300" width="28" height="24" viewbox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="4" height="4" rx="2" fill="currentColor"></rect><rect x="8" width="4" height="4" rx="2" fill="currentColor"></rect><rect x="16" width="4" height="4" rx="2" fill="currentColor"></rect><rect x="24" width="4" height="4" rx="2" fill="currentColor"></rect><rect y="10" width="4" height="4" rx="2" fill="currentColor"></rect><rect x="8" y="10" width="4" height="4" rx="2" fill="currentColor"></rect><rect x="16" y="10" width="4" height="4" rx="2" fill="currentColor"></rect><rect x="24" y="10" width="4" height="4" rx="2" fill="currentColor"></rect><rect y="20" width="4" height="4" rx="2" fill="currentColor"></rect><rect x="8" y="20" width="4" height="4" rx="2" fill="currentColor"></rect><rect x="16" y="20" width="4" height="4" rx="2" fill="currentColor"></rect><rect x="24" y="20" width="4" height="4" rx="2" fill="currentColor"></rect></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-24">
+        <div class="col-12 d-lg-none">
+          <div class="row">
+            <div class="col-6 col-md-4 px-2 mb-4">
+              <div class="py-6 px-2 text-center bg-light-light">
+                <a class="btn p-0 fw-bold" href="#">Category</a>
+                <ul class="d-none list-unstyled text-start mt-6 mb-0">
+                  <li class="mb-4"><a class="link-dark text-decoration-none" href="#">New in</a></li>
+                  <li class="mb-4"><a class="link-dark text-decoration-none" href="#">Activewear</a></li>
+                  <li class="mb-4"><a class="link-dark text-decoration-none" href="#">Hoodies & Sweatshirts</a></li>
+                  <li class="mb-4"><a class="link-dark text-decoration-none" href="#">Jackets</a></li>
+                  <li class="mb-4"><a class="link-dark text-decoration-none" href="#">Multipacks</a></li>
+                  <li class="mb-4"><a class="link-dark text-decoration-none" href="#">Bags</a></li>
+                  <li class="mb-4"><a class="link-dark text-decoration-none" href="#">Sports</a></li>
+                  <li class="mb-4"><a class="link-dark text-decoration-none" href="#">Gifts</a></li>
+                  <li><a class="link-dark text-decoration-none" href="#">Notes</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 px-2 mb-4">
+              <div class="py-6 px-2 text-center bg-light-light">
+                <a class="btn p-0 fw-bold" href="#">Colors</a>
+                <div class="d-none mt-6 d-flex flex-wrap">
+                  <button class="btn me-4 mb-2 rounded-circle border border-info p-1">
+                    <div class="rounded-circle bg-info p-3"></div>
+                  </button>
+                  <button class="btn me-4 mb-2 rounded-circle border p-1">
+                    <div class="rounded-circle bg-primary p-3"></div>
+                  </button>
+                  <button class="btn me-4 mb-2 rounded-circle border p-1">
+                    <div class="rounded-circle bg-secondary p-3"></div>
+                  </button>
+                  <button class="btn me-4 mb-2 rounded-circle border p-1">
+                    <div class="rounded-circle bg-danger p-3"></div>
+                  </button>
+                  <button class="btn me-4 mb-2 rounded-circle border border-transparent p-1">
+                    <div class="rounded-circle bg-success p-3"></div>
+                  </button>
+                  <button class="btn me-4 mb-2 rounded-circle border border-transparent p-1">
+                    <div class="rounded-circle bg-danger-light p-3"></div>
+                  </button>
+                  <button class="btn me-4 mb-2 rounded-circle border border-transparent p-1">
+                    <div class="rounded-circle bg-warning p-3"></div>
+                  </button>
+                  <button class="btn mb-2 rounded-circle border border-transparent p-1">
+                    <div class="rounded-circle bg-light p-3"></div>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 px-2 mb-4">
+              <div class="py-6 px-4 text-center bg-light-light">
+                <a class="btn p-0 fw-bold" href="#">Price</a>
+                <div class="d-none mt-6">
+                  <input class="form-range mb-4" type="range" min="1" max="100" value="50" style="height: 4px;">
+                  <div class="d-flex justify-content-between">
+                    <span class="d-inline-block h6 text-info">$0</span>
+                    <span class="d-inline-block h6 text-info">$289</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 px-2 mb-4">
+              <div class="py-6 px-4 text-center bg-light-light">
+                <a class="btn p-0 fw-bold" href="#">Size</a>
+                <div class="d-none mt-6 row justify-content-center mb-n2">
+                  <button class="mb-2 btn col-4 py-1 mx-1 border fw-normal">36</button>
+                  <button class="position-relative mb-2 mx-1 btn col-4 py-1 border fw-normal">
+                    37
+                    <span class="position-absolute bottom-0 start-0 w-100 pt-1 bg-info"></span>
+                  </button>
+                  <button class="mb-2 btn col-4 py-1 mx-1 border fw-normal">38</button>
+                  <button class="mb-2 btn col-4 py-1 mx-1 border fw-normal">39</button>
+                  <button class="mb-2 btn col-4 py-1 mx-1 border fw-normal">40</button>
+                  <button class="mb-2 btn col-4 py-1 mx-1 border fw-normal">41</button>
+                  <button class="mb-2 btn col-4 py-1 mx-1 border fw-normal">42</button>
+                  <button class="mb-2 btn col-4 py-1 mx-1 border fw-normal">43</button>
+                  <button class="mb-2 btn col-4 py-1 mx-1 border fw-normal">44</button>
+                  <div class="col-12 mt-4 text-end">
+                    <a class="link-info text-decoration-none" href="#">
+                      <span class="me-2">Show all</span>
+                      <svg width="14" height="27" viewbox="0 0 14 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.83901 26.2775L0.151884 19.5904L0.987775 18.7545L6.66766 24.4343L6.66347 0.782814L7.84208 0.782814L7.84626 24.4343L13.1082 19.1724L13.9441 20.0083L7.6749 26.2775C7.44407 26.5083 7.06985 26.5083 6.83901 26.2775Z" fill="#3C60D9"></path>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 px-2 mb-4">
+              <div class="py-6 px-4 text-center bg-light-light">
+                <a class="btn p-0 fw-bold" href="#">Location</a>
+                <div class="d-none mt-6">
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox">
+                    <label class="fomr-check-label">Standard</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox">
+                    <label class="fomr-check-label">Next day (yes!)</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 px-2 mb-4">
+              <div class="py-6 px-4 text-center bg-light-light">
+                <a class="btn p-0 fw-bold" href="#">Location</a>
+                <input class="d-none form-control mt-6 px-8 py-4 bg-white border" type="serach" placeholder="City">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-none d-lg-block col-3 px-3">
+          <div class="mb-6 py-10 px-12 bg-light-light">
+            <h3 class="mb-8 h5">Category</h3>
+            <ul class="list-unstyled mb-0">
+              <li class="mb-4"><a class="link-dark h6 fw-normal text-decoration-none" href="#">New in</a></li>
+              <li class="mb-4"><a class="link-dark h6 fw-normal text-decoration-none" href="#">Activewear</a></li>
+              <li class="mb-4"><a class="link-dark h6 fw-normal text-decoration-none" href="#">Hoodies & Sweatshirts</a></li>
+              <li class="mb-4"><a class="link-dark h6 fw-normal text-decoration-none" href="#">Jackets</a></li>
+              <li class="mb-4"><a class="link-dark h6 fw-normal text-decoration-none" href="#">Multipacks</a></li>
+              <li class="mb-4"><a class="link-dark h6 fw-normal text-decoration-none" href="#">Bags</a></li>
+              <li class="mb-4"><a class="link-dark h6 fw-normal text-decoration-none" href="#">Sports</a></li>
+              <li class="mb-4"><a class="link-dark h6 fw-normal text-decoration-none" href="#">Gifts</a></li>
+              <li><a class="link-dark h6 fw-normal text-decoration-none" href="#">Notes</a></li>
+            </ul>
+          </div>
+          <div class="mb-6 py-10 px-12 bg-light-light">
+            <h3 class="mb-8 h5">Colors</h3>
+            <div class="d-flex flex-wrap">
+              <button class="btn me-4 mb-2 rounded-circle border border-info p-1">
+                <div class="rounded-circle bg-info p-3"></div>
+              </button>
+              <button class="btn me-4 mb-2 rounded-circle border p-1">
+                <div class="rounded-circle bg-primary p-3"></div>
+              </button>
+              <button class="btn me-4 mb-2 rounded-circle border p-1">
+                <div class="rounded-circle bg-secondary p-3"></div>
+              </button>
+              <button class="btn me-4 mb-2 rounded-circle border p-1">
+                <div class="rounded-circle bg-danger p-3"></div>
+              </button>
+              <button class="btn me-4 mb-2 rounded-circle border border-transparent p-1">
+                <div class="rounded-circle bg-success p-3"></div>
+              </button>
+              <button class="btn me-4 mb-2 rounded-circle border border-transparent p-1">
+                <div class="rounded-circle bg-danger-light p-3"></div>
+              </button>
+              <button class="btn me-4 mb-2 rounded-circle border border-transparent p-1">
+                <div class="rounded-circle bg-warning p-3"></div>
+              </button>
+              <button class="btn mb-2 rounded-circle border border-transparent p-1">
+                <div class="rounded-circle bg-light p-3"></div>
+              </button>
+            </div>
+          </div>
+          <div class="mb-6 py-10 px-12 bg-light-light">
+            <h3 class="mb-8 h5">Price</h3>
+            <div>
+              <input class="form-range mb-4" type="range" min="1" max="100" value="50" style="height: 4px;">
+              <div class="d-flex justify-content-between">
+                <span class="d-inline-block h6 text-info">$0</span>
+                <span class="d-inline-block h6 text-info">$289</span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-6 py-10 py-12 ps-12 pe-6 bg-light-light">
+            <h3 class="mb-8 h5">Size</h3>
+            <div class="flex flex-wrap mb-n2">
+              <button class="mb-2 btn py-1 me-1 px-0 border fw-normal" style="width: 64px;">36</button>
+              <button class="position-relative mb-2 me-1 btn py-1 px-0 border fw-normal" style="width: 64px;">
+                37
+                <span class="position-absolute bottom-0 start-0 w-100 pt-1 bg-info"></span>
+              </button>
+              <button class="mb-2 btn py-1 me-1 px-0 border fw-normal" style="width: 64px;">38</button>
+              <button class="mb-2 btn py-1 me-1 px-0 border fw-normal" style="width: 64px;">39</button>
+              <button class="mb-2 btn py-1 me-1 px-0 border fw-normal" style="width: 64px;">40</button>
+              <button class="mb-2 btn py-1 me-1 px-0 border fw-normal" style="width: 64px;">41</button>
+              <button class="mb-2 btn py-1 me-1 px-0 border fw-normal" style="width: 64px;">42</button>
+              <button class="mb-2 btn py-1 me-1 px-0 border fw-normal" style="width: 64px;">43</button>
+              <button class="mb-2 btn py-1 me-1 px-0 border fw-normal" style="width: 64px;">44</button>
+            </div>
+            <div class="mt-4 text-end">
+              <a class="link-dark text-decoration-none text-info" href="#">
+                <span class="me-2">Show all</span>
+                <svg width="14" height="27" viewbox="0 0 14 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.83901 26.2775L0.151884 19.5904L0.987775 18.7545L6.66766 24.4343L6.66347 0.782814L7.84208 0.782814L7.84626 24.4343L13.1082 19.1724L13.9441 20.0083L7.6749 26.2775C7.44407 26.5083 7.06985 26.5083 6.83901 26.2775Z" fill="#3C60D9"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="mb-6 py-10 px-12 bg-light-light">
+            <h3 class="mb-6 h5">Location</h3>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox">
+              <label class="fomr-check-label">Standard</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox">
+              <label class="fomr-check-label">Next day (yes!)</label>
+            </div>
+          </div>
+          <div class="mb-6 py-10 px-12 bg-light-light">
+            <h3 class="mb-6 h5">Location</h3>
+            <input class="form-control mt-6 px-8 py-4 bg-white border" type="serach" placeholder="City">
+          </div>
+        </div>
+        <div class="col-12 col-lg-9 px-3">
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/waterbottle.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">BRILE water filter</h3>
+                  <p class="h6 text-info">
+                    <span>$29.89</span>
+                    <span class="small text-secondary text-decoration-line-through">$33.69</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/cycle.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Bicycle S20</h3>
+                  <p class="h6 text-info">
+                    <span>$14.30</span>
+                    <span class="small text-secondary text-decoration-line-through">$15.90</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/basketball.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Nike basketball ball</h3>
+                  <p class="h6 text-info">
+                    <span>$24.89</span>
+                    <span class="small text-secondary text-decoration-line-through">$33.69</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-info rounded-pill fw-bold text-info">NEW</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/skateboard.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Kiteboard WH-004</h3>
+                  <p class="h6 text-info">
+                    <span>$199.90</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-10%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/backpack.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Backpack Travel</h3>
+                  <p class="h6 text-info">
+                    <span>$21.99</span>
+                    <span class="small text-secondary text-decoration-line-through">$24.00</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/cycle.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Bicycle S20</h3>
+                  <p class="h6 text-info">
+                    <span>$14.30</span>
+                    <span class="small text-secondary text-decoration-line-through">$15.90</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/waterbottle.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">BRILE water filter</h3>
+                  <p class="h6 text-info">
+                    <span>$29.89</span>
+                    <span class="small text-secondary text-decoration-line-through">$33.69</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/cycle.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Bicycle S20</h3>
+                  <p class="h6 text-info">$14.30</p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/basketball.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Nike basketball ball</h3>
+                  <p class="h6 text-info">
+                    <span>$34.89</span>
+                    <span class="small text-secondary text-decoration-line-through">$33.69</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-info rounded-pill fw-bold text-info">NEW</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/skateboard.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Kiteboard WH-004</h3>
+                  <p class="h6 text-info">$199.90</p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/backpack.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Backpack Travel</h3>
+                  <p class="h6 text-info">
+                    <span>$21.99</span>
+                    <span class="small text-secondary text-decoration-line-through">$24.00</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/cycle.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Bicycle S20</h3>
+                  <p class="h6 text-info">
+                    <span>$14.30</span>
+                    <span class="small text-secondary text-decoration-line-through">$15.90</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/waterbottle.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">BRILE water filter</h3>
+                  <p class="h6 text-info">
+                    <span>$29.89</span>
+                    <span class="small text-secondary text-decoration-line-through">$33.69</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/cycle.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Bicycle S20</h3>
+                  <p class="h6 text-info">
+                    <span>$14.30</span>
+                    <span class="small text-secondary text-decoration-line-through">$15.90</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 px-3 mb-8">
+              <div class="p-6 bg-light-light">
+                <span class="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span>
+                <a class="link-dark text-decoration-none d-block px-6 mt-6 mb-2" href="#">
+                  <img class="mb-5 mx-auto img-fluid w-100" style="height: 224px; object-fit: contain;" src="yofte-assets/images/basketball.png" alt="">
+                  <h3 class="mb-2 lead fw-bold">Nike basketball ball</h3>
+                  <p class="h6 text-info">
+                    <span>$34.89</span>
+                    <span class="small text-secondary text-decoration-line-through">$33.69</span>
+                  </p>
+                </a>
+                <a class="ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3" href="#" style="width: 48px; height: 48px;">
+                  <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="2" height="12" fill="#161616"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="#161616"></rect></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center"><a class="btn btn-primary" href="#">Show More</a></div>
+    </div>
+  </section>
+
+  {% for x in products %}
+{{x.name}}
+{%empty%}
+
+<h4>No products</h4>
+
+{%endfor%}
+
+{% endblock %}

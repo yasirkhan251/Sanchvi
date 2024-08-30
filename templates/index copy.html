@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            background-color: #ffe6f0; /* Light pink background */
+        }
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            background-color: #ffc0cb; /* Pink background */
+            padding-top: 20px;
+            color: #fff; /* White text color */
+        }
+        .sidebar h4 {
+            color: #fff;
+        }
+        .nav-link {
+            color: #fff;
+        }
+        .nav-link:hover {
+            color: #ff69b4; /* Hot pink text on hover */
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #ffb6c1; /* Light pink background */
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important; /* White text color */
+        }
+        .navbar-toggler {
+            border-color: #fff; /* White border for the toggler */
+        }
+        .navbar-toggler-icon {
+            background-color: #fff; /* White color for the toggler icon */
+        }
+        .card {
+            margin: 15px 0;
+            border: 1px solid #ffc0cb; /* Pink border */
+        }
+        .card-body {
+            background-color: #ffe6f0; /* Light pink background */
+        }
+        .btn-primary {
+            background-color: #ff69b4; /* Hot pink background */
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #ff1493; /* Deep pink background on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h4>Navigation</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="#">Brand</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <!-- Product Card 1 -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/150" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Product 1</h5>
+                            <p class="card-text">Description of Product 1.</p>
+                            <p class="card-text"><strong>Price: $999</strong></p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 2 -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/150" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Product 2</h5>
+                            <p class="card-text">Description of Product 2.</p>
+                            <p class="card-text"><strong>Price: $1200</strong></p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 3 -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/150" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Product 3</h5>
+                            <p class="card-text">Description of Product 3.</p>
+                            <p class="card-text"><strong>Price: $250</strong></p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 4 -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/150" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Product 4</h5>
+                            <p class="card-text">Description of Product 4.</p>
+                            <p class="card-text"><strong>Price: $1800</strong></p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Repeat row for more products -->
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
