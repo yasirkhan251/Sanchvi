@@ -70,6 +70,8 @@ def contact_page(req):
     return render(req, 'contact_page.html')
 def termsandcondition(req):
     return render(req, 'terms&condition.html')
+def privacyandpolicy(req):
+    return render(req, 'privacyandpolicy.html')
 
 
 

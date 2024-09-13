@@ -13,6 +13,7 @@ urlpatterns =[
     path('Terms&Condition', termsandcondition, name='Terms&Condition'),
     path('Add_To_Cart', addtocart, name='addtocart'),
     path('Orders', orders, name='orders'),
+    path('Privacy&Policy' , privacyandpolicy, name='privacyandpolicy'),
 
     path('add-product/', add_product, name='add_product'),# to be added the products for adminpanel
 
