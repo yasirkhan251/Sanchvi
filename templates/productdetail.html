@@ -2,6 +2,8 @@
 {% block title %} Product Sanchvi {% endblock %}
 
 {% block content %}
+<form action="{%url 'addcart' %}" method="post">
+    {% csrf_token %}
 <div id="imageModal" class="hidden">
   <img id="modalImage" src="" alt="Enlarged Image" />
   <button class="close-modal">&times;</button>
@@ -21,12 +23,15 @@
             </div>
             <div class="flex flex-col justify-center">
                 <h1 class="text-2xl font-extrabold mb-2 ">{{ product.name }}</h1>
-              
+               
+                <input type="text" name="product" value="{{ product.name }}" hidden>
+                <input type="text" name="productid" value="{{ product.id }}" hidden>
+                <input type="text" name="price" id="priceInput" hidden>
 
                 <div class="mb-4 flex">
                     <div class="mr-4">
                         <label for="color" class="text-secondary">Select Color:</label>
-                        <select id="color" class="mt-1 block w-32 border border-border rounded-lg p-2">
+                        <select id="color" name="color" class="mt-1 block w-32 border border-border rounded-lg p-2">
                             <option value="red">Red</option>
                             <option value="blue">Blue</option>
                             <option value="green">Green</option>
@@ -34,7 +39,7 @@
                     </div>
                     <div>
                         <label for="size" class="text-secondary">Select Size:</label>
-                        <select id="size" class="mt-1 block w-32 border border-border rounded-lg p-2">
+                        <select id="size" name="size"  class="mt-1 block w-32 border border-border rounded-lg p-2">
                             {% for price in prices %}
                                 <option value="{{ price.size }}" data-price="{{ price.price }}">{{ price.size }}</option>
                             {% endfor %}
@@ -47,8 +52,8 @@
                     <p id="originalPrice" class="text-muted line-through">₹NaN</p>
                 </div>
                 <div class="flex space-x-2">
-                    <button class="custom-button px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                        <a href="{% url 'addtocart'%}">Add to Cart</a>
+                    <button type="submit" class="custom-button px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                        Add to Cart
                     </button>
                     <button id="whatsappOrderButton" class="custom-button px-4 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105">
                         WhatsApp Order
@@ -56,7 +61,7 @@
                 </div>
                 
                 <!-- <p class="text-muted mt-2">Free shipping on orders over ₹10000</p> -->
-                <button id="description-toggle" class="custom-button mt-4 px-4 py-2 rounded-lg pointer">
+                <button type="button" id="description-toggle" class="custom-button mt-4 px-4 py-2 rounded-lg pointer">
                     View More
                 </button>
                 
@@ -67,6 +72,7 @@
         </div>
     </div>
 </div>
+</form>
 <style>
     .custom-button {
         background-color: white;
@@ -134,23 +140,29 @@ document.addEventListener('DOMContentLoaded', function() {
             dtoggle.textContent = "View More "; // Optionally revert button text
         }
     });
-
     document.addEventListener('DOMContentLoaded', function() {
-        const sizeSelect = document.getElementById('size');
-        const currentPrice = document.getElementById('currentPrice');
-        const originalPrice = document.getElementById('originalPrice');
+    const sizeSelect = document.getElementById('size');
+    const currentPrice = document.getElementById('currentPrice');
+    const originalPrice = document.getElementById('originalPrice');
+    const priceInput = document.getElementById('priceInput'); // Get the price input field
 
-        sizeSelect.addEventListener('change', function() {
-            const selectedOption = sizeSelect.options[sizeSelect.selectedIndex];
-            const price = parseFloat(selectedOption.dataset.price);
-            
-            currentPrice.textContent = `₹${price.toFixed(2)}`;
-            const original = price * 1.21;
-            originalPrice.textContent = `₹${original.toFixed(2)}`;
-        });
+    sizeSelect.addEventListener('change', function() {
+        const selectedOption = sizeSelect.options[sizeSelect.selectedIndex];
+        const price = parseFloat(selectedOption.dataset.price);
+        
+        // Update the displayed prices
+        currentPrice.textContent = `₹${price.toFixed(2)}`;
+        
+        const original = price * 1.21;
+        originalPrice.textContent = `₹${original.toFixed(2)}`;
 
-        sizeSelect.dispatchEvent(new Event('change'));
+        // Update the hidden price input field with the selected price
+        priceInput.value = price.toFixed(2);
     });
+
+    // Trigger a change event to set the initial values
+    sizeSelect.dispatchEvent(new Event('change'));
+});
 </script>
 
 <style>

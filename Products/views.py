@@ -128,11 +128,6 @@ def add_product(request):
     return render(request, 'add_product.html', context)
 
 
-def addtocart(req):
-    return render(req, 'addtocart.html')
-
-def orders(req):
-    return render(req, 'order.html')
 
 def settings_view(request):
     return render(request, 'setting.html') 

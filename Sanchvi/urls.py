@@ -10,7 +10,8 @@ urlpatterns = [
     path('auth/', include('Accounts.urls')),
     path('in/', include('Products.urls')),
     path('StudioSpace', studiospace, name='studiospace' ),
-    path('pay/', include('Payments.urls')),
+    path('checkout/', include('Payments.urls')),
+    path('cart/', include('Cart.urls')),
 
 
 ]

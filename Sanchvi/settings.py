@@ -33,7 +33,8 @@ INSTALLED_APPS = [
 EXT = [
     'Accounts',
     'Products',
-    'Payments'
+    'Payments',
+    'Cart'
 
 ]
 

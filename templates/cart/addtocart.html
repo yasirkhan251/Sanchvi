@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block title %} Add To Cart {% endblock %}
+
+{% block content %}
+ 
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    .cart-container {
+        width: 80%;
+        margin: 65px auto;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        max-height: 75vh; /* Set a maximum height for the cart */
+        overflow-y: auto; /* Enable vertical scrolling */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .cart-container1 {
+        width: 80%;
+        margin: 0px auto;
+        background-color: #fff;
+        border-radius: 10px;
+        margin-top: -3.7%;
+        padding: 20px;
+        max-height: 75vh; /* Set a maximum height for the cart */
+        overflow-y: auto; /* Enable vertical scrolling */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+
+    h1 {
+        text-align: center;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .cart-item img {
+        width: 120px;
+        height: auto;
+        margin-right: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+
+    .item-details {
+        flex-grow: 1;
+    }
+
+    .item-details h3 {
+        margin: 0;
+        font-size: 20px;
+        padding-bottom: 10px;
+    }
+
+    .item-details p {
+        margin: 5px 0;
+    }
+
+    .item-details .price {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .item-details label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .item-details input[type="number"] {
+        width: 60px;
+        padding: 5px;
+        margin-left: 10px;
+    }
+
+    .remove-btn {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .remove-btn:hover {
+        background-color: #c82333;
+    }
+
+    .checkout-btn {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .checkout-btn:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="cart-container">
+    <h1 style="font-size: larger;">Your Cart</h1>
+    {% if  item %}
+    <!-- Loop through the cart items -->
+    {% for x in item %}
+    <div class="cart-item">
+        <img src="{{ x.product.img.url }}" alt="{{ item.name }}">
+        <div class="item-details">
+            <h3>{{ x.product }}</h3>
+            <p class="price">₹{{ x.price }}</p>
+            <p>Size: {{x.size}}</p>
+            <p>Color: {{x.color}}</p>
+            <div>
+                <label for="qty{{ forloop.counter }}">Quantity:</label>
+                <input type="number" id="qty{{ forloop.counter }}" name="qty{{ forloop.counter }}" value="{{ x.qty }}" min="1">
+            </div>
+        </div>
+        <a href="{% url 'deletecart' x.id%}"><button class="remove-btn" >Remove</button></a>
+    </div>
+    
+   
+    
+
+    {% endfor %}
+     
+    {%else%}
+    
+    
+    <div style="height: 50vh;text-align: center;">
+        <br><br><br>
+                <p style="font-size: x-large;;">You havent added any items </p>
+            </div><a href="/#shop"> <button class="checkout-btn" style="background-color: orange; ">Shop Now</button></a>    
+    {% endif%}
+</div>
+{% if item%}
+<div class="cart-container1">
+<button class="checkout-btn">Proceed to checkout</button>
+</div>
+{%endif%}
+{% endblock %}
