@@ -1,0 +1,152 @@
+
+{% extends 'base.html' %}
+{% block title %} Add To Cart {% endblock %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="/static/css/checkout.css">
+
+    
+<div class="container " style=" background-color: white; width: 100%; border-radius: 10px;">
+    <div class="checkoutLayout">
+
+        
+        <div class="returnCart">
+            <a href="/">keep shopping</a>
+            <h1>List Product in Cart</h1>
+            
+            <div class="list">
+                {% for x in item %}
+                <div class="item">
+                    <img src="{{ x.product.img.url }}" alt="{{ x.product.name }}">
+                    <div class="info">
+                        <div class="name">{{ x.product }}</div>
+                        <div class="price">₹<span class="item-price">{{ x.price }}</span></div>
+                    </div>
+                    <div class="quantity">{{ x.qty }}</div>
+                    <div class="returnPrice">₹<span class="total-price" data-price="{{ x.price }}" data-qty="{{ x.qty }}"></span></div>
+                </div>
+                {%empty%}
+                <div class="info">You haven't added any items</div>
+              <button style="background-color: yellow; color: black;"  class="buttonCheckout"><a href="/#shop">Shop here</a></button>
+            {% endfor %}
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Select all elements with the class 'total-price'
+                    const totalPrices = document.querySelectorAll('.total-price');
+                    
+                    totalPrices.forEach(function (element) {
+                        // Get the price and quantity from the data attributes
+                        const price = parseFloat(element.getAttribute('data-price'));
+                        const qty = parseInt(element.getAttribute('data-qty'));
+            
+                        // Calculate the total price
+                        const totalPrice = price * qty;
+            
+                        // Display the total price
+                        element.textContent = totalPrice.toFixed(2);
+                    });
+                });
+            </script>
+            
+            </div>
+           
+        </div>
+
+
+        <div class="right">
+            <h1>Checkout</h1>
+
+            <div class="form">
+                <div class="group">
+                    <label for="name">Full Name</label>
+                    <input type="text" name="name" id="name">
+                </div>
+    
+                <div class="group">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" name="phone" id="phone">
+                </div>
+    
+                <div class="group">
+                    <label for="address">Address</label>
+                    <input type="text" name="address" id="address">
+                </div>
+    
+                <div class="group">
+                    <label for="country">Country</label>
+                    <select name="country" id="country">
+                        <option value="">Choose..</option>
+                        <option value="">Kingdom</option>
+                    </select>
+                </div>
+    
+                <div class="group">
+                    <label for="city">City</label>
+                    <select name="city" id="city">
+                        <option value="">Choose..</option>
+                        <option value="">London</option>
+                    </select>
+                </div>
+            </div>
+            <div class="return">
+                <div class="row">
+                    <div>Total Quantity</div>
+                    <div id="totalQuantity">0</div>
+                </div>
+                <div class="row">
+                    <div>Total Price</div>
+                    <div id="totalPrice">₹0</div>
+                </div>
+                <form method="post">
+                    {%csrf_token%}
+            <button class="buttonCheckout">CHECKOUT</button>
+        </form>
+            </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Calculate total quantity and price
+        function calculateTotal() {
+            const items = document.querySelectorAll('.item');
+            let totalQuantity = 0;
+            let totalPrice = 0;
+
+            items.forEach(function (item) {
+                const price = parseFloat(item.querySelector('.item-price').textContent);
+                const quantity = parseInt(item.querySelector('.quantity').textContent);
+
+                totalQuantity += quantity;
+                totalPrice += price * quantity;
+            });
+
+            // Update the total quantity and price in the UI
+            document.getElementById('totalQuantity').textContent = totalQuantity;
+            document.getElementById('totalPrice').textContent = '₹' + totalPrice.toFixed(2);
+        }
+
+        // Call the function to calculate total on page load
+        calculateTotal();
+
+        // Event listener for quantity input changes
+        document.querySelectorAll('.item-qty').forEach(input => {
+            input.addEventListener('change', function () {
+                calculateTotal(); // Recalculate totals if quantities are changed
+            });
+        });
+
+        // Handle form submission
+        document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Form submission logic as previously defined
+            // ...
+        });
+    });
+</script>
+<script src="checkout.js"></script>
+{% endblock %}

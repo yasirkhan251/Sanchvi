@@ -31,7 +31,8 @@
                 <div class="mb-4 flex">
                     <div class="mr-4">
                         <label for="color" class="text-secondary">Select Color:</label>
-                        <select id="color" name="color" class="mt-1 block w-32 border border-border rounded-lg p-2">
+                        <select id="color" required name="color" class="mt-1 block w-32 border border-border rounded-lg p-2">
+                            <option value="">--select--</option>
                             <option value="red">Red</option>
                             <option value="blue">Blue</option>
                             <option value="green">Green</option>
@@ -39,7 +40,8 @@
                     </div>
                     <div>
                         <label for="size" class="text-secondary">Select Size:</label>
-                        <select id="size" name="size"  class="mt-1 block w-32 border border-border rounded-lg p-2">
+                        <select required id="size" name="size"  class="mt-1 block w-32 border border-border rounded-lg p-2">
+                            <option value="">--select--</option>
                             {% for price in prices %}
                                 <option value="{{ price.size }}" data-price="{{ price.price }}">{{ price.size }}</option>
                             {% endfor %}

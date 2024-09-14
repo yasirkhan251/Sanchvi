@@ -11,7 +11,7 @@
 
     .cart-container {
         width: 80%;
-        margin: 65px auto;
+        margin: 40px auto;
         background-color: #fff;
         border-radius: 10px;
         padding: 20px;
@@ -22,14 +22,14 @@
     
     .cart-container1 {
         width: 80%;
-        margin: 0px auto;
+        margin: 1px auto;
         background-color: #fff;
         border-radius: 10px;
         margin-top: -3.7%;
-        padding: 20px;
+        padding: 5px;
         max-height: 75vh; /* Set a maximum height for the cart */
         overflow-y: auto; /* Enable vertical scrolling */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.0);
     }
 
 
@@ -120,41 +120,72 @@
 
 <div class="cart-container">
     <h1 style="font-size: larger;">Your Cart</h1>
-    {% if  item %}
+    {% if item %}
     <!-- Loop through the cart items -->
     {% for x in item %}
     <div class="cart-item">
-        <img src="{{ x.product.img.url }}" alt="{{ item.name }}">
+        <img src="{{ x.product.img.url }}" alt="{{ x.product.name }}">
         <div class="item-details">
             <h3>{{ x.product }}</h3>
             <p class="price">₹{{ x.price }}</p>
-            <p>Size: {{x.size}}</p>
-            <p>Color: {{x.color}}</p>
+            <p>Size: {{ x.size }}</p>
+            <p>Color: {{ x.color }}</p>
             <div>
                 <label for="qty{{ forloop.counter }}">Quantity:</label>
-                <input type="number" id="qty{{ forloop.counter }}" name="qty{{ forloop.counter }}" value="{{ x.qty }}" min="1">
+                <input type="number" id="qty{{ forloop.counter }}" name="qty{{ forloop.counter }}" class="item-qty" data-id="{{ x.id }}" value="{{ x.qty }}" min="1">
             </div>
         </div>
-        <a href="{% url 'deletecart' x.id%}"><button class="remove-btn" >Remove</button></a>
+        <a href="{% url 'deletecart' x.id %}"><button class="remove-btn">Remove</button></a>
     </div>
-    
-   
-    
-
     {% endfor %}
-     
-    {%else%}
-    
-    
+    {% else %}
     <div style="height: 50vh;text-align: center;">
         <br><br><br>
-                <p style="font-size: x-large;;">You havent added any items </p>
-            </div><a href="/#shop"> <button class="checkout-btn" style="background-color: orange; ">Shop Now</button></a>    
-    {% endif%}
+        <p style="font-size: x-large;">You haven't added any items</p>
+    </div>
+    <a href="/#shop"> <button class="checkout-btn" style="background-color: orange;">Shop Now</button></a>
+    {% endif %}
 </div>
-{% if item%}
+{% if item %}
 <div class="cart-container1">
-<button class="checkout-btn">Proceed to checkout</button>
+    <a href="{% url 'checkout' %}"><button class="checkout-btn">Proceed to checkout</button></a>
 </div>
-{%endif%}
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Event listener for quantity input changes
+        document.querySelectorAll('.item-qty').forEach(input => {
+            input.addEventListener('change', function () {
+                const itemId = this.getAttribute('data-id');
+                const newQuantity = this.value;
+
+                // Update quantity in the database via AJAX
+                updateCartQuantity(itemId, newQuantity);
+            });
+        });
+
+        function updateCartQuantity(itemId, quantity) {
+            fetch('/cart/update_quantity/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}' // Include the CSRF token
+                },
+                body: JSON.stringify({ 'item_id': itemId, 'quantity': quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Quantity updated successfully.');
+                } else {
+                    alert('Error updating quantity.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+</script>
+
+
 {% endblock %}

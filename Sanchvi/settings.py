@@ -1,6 +1,6 @@
 from pathlib import Path
-import paypalrestsdk
 import os
+import paypalrestsdk
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -34,7 +34,8 @@ EXT = [
     'Accounts',
     'Products',
     'Payments',
-    'Cart'
+    'Cart',
+    'paypal.standard.ipn',
 
 ]
 
@@ -137,7 +138,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #authentication for user, admin 
 # AUTH_USER_MODEL = 'Accounts.MyUser' 
 # if user is not logged in for purchasing can directly come to this login link by default
-# LOGIN_URL = '/auth/login' # keep it for now
+LOGIN_URL = '/auth/login' # keep it for now
 
 
 # Default primary key field type
@@ -148,15 +149,22 @@ AUTH_USER_MODEL = 'Accounts.MyUser'
 
 
 
-# PayPal settings
-PAYPAL_CLIENT_ID = 'AWHRoWBdw5fddjAw7g1ETCetpQD0tnPWNZXpzjVIGhOHDUzYE1KCbbMpYjqrSMROLFHNKiGt0abQOQzR'
-PAYPAL_CLIENT_SECRET = 'EBbpwbqpUg2GGVRnbdrpSvHgkprw7uoRL6gKt7UgrBb6VaOVTVDYSV4WQCDTTu6u2qouh_PvIc53ncNB'
-PAYPAL_MODE = 'sandbox'  # Change to 'live' for production
+# # PayPal settings
+# PAYPAL_CLIENT_ID = 'AWHRoWBdw5fddjAw7g1ETCetpQD0tnPWNZXpzjVIGhOHDUzYE1KCbbMpYjqrSMROLFHNKiGt0abQOQzR'
+# PAYPAL_CLIENT_SECRET = 'EBbpwbqpUg2GGVRnbdrpSvHgkprw7uoRL6gKt7UgrBb6VaOVTVDYSV4WQCDTTu6u2qouh_PvIc53ncNB'
+# PAYPAL_MODE = 'sandbox'  # Change to 'live' for production
 
-# PayPal SDK Configuration
 
-paypalrestsdk.configure({
-  "mode": PAYPAL_MODE,  # "sandbox" or "live"
-  "client_id": PAYPAL_CLIENT_ID,
-  "client_secret": PAYPAL_CLIENT_SECRET
-})
+# # PayPal SDK Configuration
+
+# paypalrestsdk.configure({
+#   "mode": PAYPAL_MODE,  # "sandbox" or "live"
+#   "client_id": PAYPAL_CLIENT_ID,
+#   "client_secret": PAYPAL_CLIENT_SECRET
+# })
+
+
+# # paypal new intrigation 
+
+# PAYPAL_TEST = True
+PAYPAL_RECEIVER_EMAIL= 'yuvrajsrivastava02@gmail.com' # this is sandbox account

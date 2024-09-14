@@ -36,19 +36,35 @@ def product_landing(req,c_id, id):
     }
     return render(req, 'Shop_product_list.html' , queryset)
 
-def product_detail(req,pid):
+def product_detail(req, pid):
+    # Try to get the product by ID, if it doesn't exist, show a friendly message
+    try:
+        product = Product.objects.get(id=pid)
+    except Product.DoesNotExist:
+        # Option 1: Render a custom 'not found' template
+        return render(req, 'product_not_found.html', {'message': 'Product not found'})
+
+        # Option 2: Redirect to the product list page
+        # return redirect('product_list') # Uncomment this if you have a product list page
+
+        # Option 3: Return a plain HTTP response with an error message
+        # return HttpResponse("Product not found", status=404)
+
+    # If the product exists, proceed with rendering the detail page
+    img = product.images.all()
+    prices = Productprice.objects.filter(product=product)
     
-    products = get_object_or_404(Product,id = pid)
-    img = products.images.all()
-    prices = Productprice.objects.filter(product=products)
+    # Assuming 'cat' is fetched somewhere; if it's missing, you should add its logic.
+    # cat = Category.objects.all() # You might want to include this or modify as needed
+
     queryset = {
-            'product':products,
-            'imgs':img,
-            'allcat':cat,
-            'prices':prices,
-            
-        }
-    return render(req, 'productdetail.html' , queryset)
+        'product': product,
+        'imgs': img,
+        'allcat': cat,  # Make sure 'cat' is defined somewhere in your code
+        'prices': prices,
+    }
+
+    return render(req, 'productdetail.html', queryset)
 
 
 def all_video(req):
