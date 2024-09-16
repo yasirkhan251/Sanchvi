@@ -4,6 +4,7 @@
 
 {% block content %}
 
+
     <link rel="stylesheet" href="/static/css/checkout.css">
 
     
@@ -103,6 +104,37 @@
                     {%csrf_token%}
             <button class="buttonCheckout">CHECKOUT</button>
         </form>
+
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Launch demo modal
+          </button>
+          
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 style="color: black;" class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                  
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="color: black;">
+                  <p>select preferred payment method</p>
+                  <input type="radio" name="phonepe" id="" value="phonepe">PhonePe
+                  <input type="radio" name="PayPal" id="" value="PayPal">PayPal
+                  <input type="radio" name="Credit/Debit" id="">Credit/Debit
+                  <!-- <select name="payment" id="">
+                    <option value="phonepe">Phonepe</option>
+                    <option value="paypal">Phonepe</option>
+                  </select> -->
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
             </div>
     </div>
 </div>

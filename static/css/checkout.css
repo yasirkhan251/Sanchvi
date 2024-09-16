@@ -33,7 +33,7 @@ header .totalQuantity{
     background-color: #b31010;
     width: 40px;
     height: 40px;
-    color: #fff;
+    /* color: #fff; */
     font-weight: bold;
     display: flex;
     justify-content: center;
