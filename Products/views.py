@@ -53,7 +53,7 @@ def product_detail(req, pid):
     # If the product exists, proceed with rendering the detail page
     img = product.images.all()
     prices = Productprice.objects.filter(product=product)
-    
+    colorpalet =  Productcolorpalet.objects.filter(Product=product)
     # Assuming 'cat' is fetched somewhere; if it's missing, you should add its logic.
     # cat = Category.objects.all() # You might want to include this or modify as needed
 
@@ -62,6 +62,7 @@ def product_detail(req, pid):
         'imgs': img,
         'allcat': cat,  # Make sure 'cat' is defined somewhere in your code
         'prices': prices,
+        'color':colorpalet
     }
 
     return render(req, 'productdetail.html', queryset)

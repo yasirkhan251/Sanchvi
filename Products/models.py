@@ -59,7 +59,7 @@ class Productprice(models.Model):
         return f'{self.product.name} - {self.size}'
     
 class Productcolorpalet(models.Model):
-    Product = models.ForeignKey(Product,related_name='colorpalet', on_delete=models.CASCADE )
+    Product = models.ForeignKey(Product, on_delete=models.CASCADE )
     color= models.CharField(max_length=50, null=True, blank=True)
     
 

@@ -32,16 +32,23 @@
                     <div class="mr-4">
                         <label for="color" class="text-secondary">Select Color:</label>
                         <select id="color" required name="color" class="mt-1 block w-32 border border-border rounded-lg p-2">
-                            <option value="">--select--</option>
-                            <option value="red">Red</option>
-                            <option value="blue">Blue</option>
-                            <option value="green">Green</option>
+                            <option value="" >--select--</option>
+                           
+                            {%for clr in color%}
+                            <option value="{{clr.color}}">{{clr.color}}</option>
+                       
+                           {%empty%}
+                            
+                            <option value="color">original color</option>
+                           
+                            {%endfor%}
+                           
                         </select>
                     </div>
                     <div>
                         <label for="size" class="text-secondary">Select Size:</label>
                         <select required id="size" name="size"  class="mt-1 block w-32 border border-border rounded-lg p-2">
-                            <option value="">--select--</option>
+                            <!-- <option value=""  data-price="0">--select--</option> -->
                             {% for price in prices %}
                                 <option value="{{ price.size }}" data-price="{{ price.price }}">{{ price.size }}</option>
                             {% endfor %}
