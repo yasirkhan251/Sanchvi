@@ -116,3 +116,13 @@ def admin_login_page(req):
 
 def admin_register_page(req):
     return render(req, 'admin/register.html')
+
+
+
+# profile settings
+
+def settings_view(request):
+    return render(request, 'profile/setting.html') 
+
+def profile(req):
+    return render(req, 'profile/profile.html')

@@ -1,11 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
-    @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
-
-    body {
-        font-family: 'Poppins', sans-serif;
-    }
+  
 
     .contactUs {
         width: 100%;
@@ -173,33 +169,34 @@
         <!-- Formbox -->
         <div class="contact form">
             <h3>Send a Message</h3>
-            <form>
+            <form method="post" >
+                {%csrf_token%}
                 <div class="formbox">
                     <div class="row50">
                         <div class="inputBox">
                             <span>First Name</span>
-                            <input type="text" placeholder="First">
+                            <input type="text" name="first_name" placeholder="First">
                         </div>
                         <div class="inputBox">
                             <span>Last Name</span>
-                            <input type="text" placeholder="Last">
+                            <input type="text" name="last_name" placeholder="Last">
                         </div>
                     </div>
 
                     <div class="row50">
                         <div class="inputBox">
                             <span>Email Id</span>
-                            <input type="email" placeholder="you@example.com">
+                            <input type="email" name="email" placeholder="you@example.com">
                         </div>
                         <div class="inputBox">
                             <span>Mobile</span>
-                            <input type="text" placeholder="+123 456 7890">
+                            <input type="text" name="mobile" placeholder="+123 456 7890">
                         </div>
                     </div>
 
                     <div class="inputBox">
                         <span>Message</span>
-                        <textarea placeholder="Write Your Message here..."></textarea>
+                        <textarea name="message" placeholder="Write Your Message here..."></textarea>
                     </div>
 
                     <div class="inputBox">

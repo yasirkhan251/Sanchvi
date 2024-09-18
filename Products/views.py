@@ -15,80 +15,39 @@ class ProductList(ListView):
     context_object_name = 'products'
 
 
-def product_landing(req,c_id, id):
-    category= get_object_or_404(Category, c_id = c_id)
-    products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('prices', 'images')
-    prices = Productprice.objects.filter(product__in=products)
-
-    # category= Category.objects.filter(c_id = c_id)
-    
-  
-    # products = Product.objects.filter(category = id)
-    
-
-    img = ProductImage.objects.all()
-    queryset = {
-        'product':products,
-        'catogery':category,
-        'allcat':cat,
-        'imgs':img,
-        'prices':prices,
-    }
-    return render(req, 'Shop_product_list.html' , queryset)
-
-def product_detail(req, pid):
-    # Try to get the product by ID, if it doesn't exist, show a friendly message
-    try:
-        product = Product.objects.get(id=pid)
-    except Product.DoesNotExist:
-        # Option 1: Render a custom 'not found' template
-        return render(req, 'product_not_found.html', {'message': 'Product not found'})
-
-        # Option 2: Redirect to the product list page
-        # return redirect('product_list') # Uncomment this if you have a product list page
-
-        # Option 3: Return a plain HTTP response with an error message
-        # return HttpResponse("Product not found", status=404)
-
-    # If the product exists, proceed with rendering the detail page
-    img = product.images.all()
-    prices = Productprice.objects.filter(product=product)
-    colorpalet =  Productcolorpalet.objects.filter(Product=product)
-    # Assuming 'cat' is fetched somewhere; if it's missing, you should add its logic.
-    # cat = Category.objects.all() # You might want to include this or modify as needed
-
-    queryset = {
-        'product': product,
-        'imgs': img,
-        'allcat': cat,  # Make sure 'cat' is defined somewhere in your code
-        'prices': prices,
-        'color':colorpalet
-    }
-
-    return render(req, 'productdetail.html', queryset)
 
 
-def all_video(req):
-    return render(req, 'all_videos.html')
 
 def basehtml(req):
     cat = Category.objects.all()
     
     return render(req, 'base.html',{'cat': cat})
 
-def aboutus(req):
-    return render(req, 'aboutus.html')
 
 
-def profile(req):
-    return render(req, 'profile.html')
+
 
 def contact_page(req):
-    return render(req, 'contact_page.html')
-def termsandcondition(req):
-    return render(req, 'terms&condition.html')
-def privacyandpolicy(req):
-    return render(req, 'privacyandpolicy.html')
+    if req.method== 'POST':
+        first_name = req.POST['first_name']
+        last_name = req.POST['last_name']
+        email = req.POST['email']
+        mobile = req.POST['mobile']
+        message = req.POST['message']
+
+        contact = ContactMe.objects.create(
+            first_name = first_name,
+            last_name = last_name,
+            email =email,
+            mobile = mobile,
+            message = message
+        )
+
+        contact.save()
+        return render(req, 'contact/thankyou_for_contact.html')
+    
+    return render(req, 'contact/contact_page.html')
+
 
 
 
@@ -146,5 +105,66 @@ def add_product(request):
 
 
 
-def settings_view(request):
-    return render(request, 'setting.html') 
+
+
+
+
+# Product
+
+def all_video(req):
+    return render(req, 'product/all_videos.html')
+
+def product_landing(req,c_id, id):
+    category= get_object_or_404(Category, c_id = c_id)
+    products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('prices', 'images')
+    prices = Productprice.objects.filter(product__in=products)
+
+    # category= Category.objects.filter(c_id = c_id)
+    
+  
+    # products = Product.objects.filter(category = id)
+    
+
+    img = ProductImage.objects.all()
+    queryset = {
+        'product':products,
+        'catogery':category,
+        'allcat':cat,
+        'imgs':img,
+        'prices':prices,
+    }
+    return render(req, 'product/Shop_product_list.html' , queryset)
+
+def product_detail(req, pid):
+    # Try to get the product by ID, if it doesn't exist, show a friendly message
+    try:
+        product = Product.objects.get(id=pid)
+    except Product.DoesNotExist:
+        # Option 1: Render a custom 'not found' template
+        return render(req, 'product/product_not_found.html', {'message': 'Product is Unavailable at a moment'})
+
+        # Option 2: Redirect to the product list page
+        # return redirect('product_list') # Uncomment this if you have a product list page
+
+        # Option 3: Return a plain HTTP response with an error message
+        # return HttpResponse("Product not found", status=404)
+
+    # If the product exists, proceed with rendering the detail page
+    img = product.images.all()
+    prices = Productprice.objects.filter(product=product)
+    colorpalet =  Productcolorpalet.objects.filter(Product=product)
+    # Assuming 'cat' is fetched somewhere; if it's missing, you should add its logic.
+    # cat = Category.objects.all() # You might want to include this or modify as needed
+
+    queryset = {
+        'product': product,
+        'imgs': img,
+        'allcat': cat,  # Make sure 'cat' is defined somewhere in your code
+        'prices': prices,
+        'color':colorpalet
+    }
+
+    return render(req, 'product/productdetail.html', queryset)
+
+
+

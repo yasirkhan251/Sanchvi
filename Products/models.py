@@ -61,6 +61,8 @@ class Productprice(models.Model):
 class Productcolorpalet(models.Model):
     Product = models.ForeignKey(Product, on_delete=models.CASCADE )
     color= models.CharField(max_length=50, null=True, blank=True)
+    def __str__(self):
+        return f"{self.Product} : {self.color}"
     
 
 class ProductImage(models.Model):
@@ -69,3 +71,14 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f'{self.product.name} - Image'
+
+
+
+class ContactMe(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    mobile = models.BigIntegerField()
+    message = models.TextField()
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} : {self.email} / {self.mobile}"

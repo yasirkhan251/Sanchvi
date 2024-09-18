@@ -5,10 +5,7 @@ from Products.models import *
 def index(req):
     return render(req, 'index.html')
  
-def studiospace(req):
-    cat = Category.objects.all()
 
-    return render(req, 'Studiospace.html',{'allcat':cat})
 
 
 class CategoryList(ListView):
@@ -25,3 +22,14 @@ class CategoryList(ListView):
         return context
     
    
+   
+# About session
+def studiospace(req):
+    cat = Category.objects.all()
+    return render(req, 'about/Studiospace.html',{'allcat':cat})
+def aboutus(req):
+    return render(req, 'about/aboutus.html')
+def termsandcondition(req):
+    return render(req, 'about/terms&condition.html')
+def privacyandpolicy(req):
+    return render(req, 'about/privacyandpolicy.html')

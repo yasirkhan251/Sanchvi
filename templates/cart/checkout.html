@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="/static/css/checkout.css">
 
     
-<div class="container " style=" background-color: white; width: 100%; border-radius: 10px;">
+<div class="container " style=" background-color: white;  width: 100%; border-radius: 10px;">
     <div class="checkoutLayout">
 
         
         <div class="returnCart">
-            <a href="/">keep shopping</a>
+            <a href="/"> <p style='font-size: larger;'>Keep Shopping</p></a>
             <h1>List Product in Cart</h1>
             
             <div class="list">
@@ -56,7 +56,7 @@
         </div>
 
 
-        <div class="right">
+        <div class="right" style="color: black;">
             <h1>Checkout</h1>
 
             <div class="form">
@@ -79,7 +79,7 @@
                     <label for="country">Country</label>
                     <select name="country" id="country">
                         <option value="">Choose..</option>
-                        <option value="">Kingdom</option>
+                        <option value="">India</option>
                     </select>
                 </div>
     
@@ -87,7 +87,7 @@
                     <label for="city">City</label>
                     <select name="city" id="city">
                         <option value="">Choose..</option>
-                        <option value="">London</option>
+                        <option value="">Bangalore</option>
                     </select>
                 </div>
             </div>
@@ -105,34 +105,43 @@
             <button class="buttonCheckout">CHECKOUT</button>
         </form>
 
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Launch demo modal
-          </button>
-          
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <center>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Other Payment Options
+            </button>
+        </center>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 style="color: black;" class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                  
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 style="color: black;" class="modal-title fs-5" id="exampleModalLabel">Payment Options</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="color: black;">
+                        <p>Select preferred payment method</p>
+                        <div>
+                            <input type="radio" name="paymentMethod" id="phonepe" value="phonepe">
+                            <label for="phonepe">PhonePe (UPI)</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="paymentMethod" id="paypal" value="PayPal">
+                            <label for="paypal">PayPal</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="paymentMethod" id="creditDebit" value="creditDebit">
+                            <label for="creditDebit">Credit/Debit Card</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
                 </div>
-                <div class="modal-body" style="color: black;">
-                  <p>select preferred payment method</p>
-                  <input type="radio" name="phonepe" id="" value="phonepe">PhonePe
-                  <input type="radio" name="PayPal" id="" value="PayPal">PayPal
-                  <input type="radio" name="Credit/Debit" id="">Credit/Debit
-                  <!-- <select name="payment" id="">
-                    <option value="phonepe">Phonepe</option>
-                    <option value="paypal">Phonepe</option>
-                  </select> -->
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
+            </div>
+        </div>
+        
             </div>
           </div>
             </div>
