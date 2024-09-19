@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="/static/css/checkout.css">
 
     
-<div class="container " style=" background-color: white;  width: 100%; border-radius: 10px;">
+<div class="container " style=" background: rgba(255, 255, 255, 0.625);    min-width: 100%; ">
     <div class="checkoutLayout">
 
         
-        <div class="returnCart">
+        <div class="returnCart" style="  font-family: monospace;
+        overflow-x: hidden;
+        font-synthesis: 15px; ">
             <a href="/"> <p style='font-size: larger;'>Keep Shopping</p></a>
             <h1>List Product in Cart</h1>
             
@@ -56,13 +58,13 @@
         </div>
 
 
-        <div class="right" style="color: black;">
-            <h1>Checkout</h1>
+        <div class="right" style='color: #000;' >
+            <center><h1 style="font-weight: 600;">Checkout</h1></center>
 
             <div class="form">
                 <div class="group">
                     <label for="name">Full Name</label>
-                    <input type="text" name="name" id="name">
+                    <input type="text"  name="name" id="name">
                 </div>
     
                 <div class="group">
@@ -94,11 +96,10 @@
             <div class="return">
                 <div class="row">
                     <div>Total Quantity</div>
-                    <div id="totalQuantity">0</div>
-                </div>
+usus                </div>
                 <div class="row">
                     <div>Total Price</div>
-                    <div id="totalPrice">₹0</div>
+                    <div id="totalPrice" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">₹0</div>
                 </div>
                 <form method="post">
                     {%csrf_token%}
@@ -189,5 +190,8 @@
         });
     });
 </script>
+<style>input{
+    color: black;
+}</style>
 <script src="checkout.js"></script>
 {% endblock %}

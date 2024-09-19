@@ -1,8 +1,4 @@
-body{
-    font-family: monospace;
-    overflow-x: hidden;
-    font-synthesis: 15px;
-}
+
 a{
     text-decoration: none;
 }
@@ -82,6 +78,7 @@ header .totalQuantity{
     transform: translateX(-50%) translateY(0);
 }
 .cart{
+    
     color: #fff;
     position: fixed;
     width: 400px;
@@ -197,7 +194,7 @@ header .totalQuantity{
     margin-top: 10px;
     border:none;
     /* background-color: #6a6fc9; */
-    color: #fff;
+    /* color: #fff; */
 }
 .checkoutLayout .right .return .row{
     display: flex;
@@ -255,4 +252,7 @@ header .totalQuantity{
 .returnCart .list .item .returnPrice{
     font-size: large;
     font-weight: bold;
+}
+input{
+    color: black;
 }
