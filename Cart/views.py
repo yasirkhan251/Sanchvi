@@ -6,10 +6,107 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 import json
 from django.contrib.auth.decorators import login_required
+import requests
+# paypal settings 
 import uuid
 from django.conf import settings
+from paypal.standard.forms import PayPalPaymentsForm
 
 # Create your views here.
+
+
+
+
+
+
+@login_required
+def checkout(req):
+    user = req.user
+    cart = Cart.objects.filter(user=user)
+   
+    # Calculate total amount in INR
+    total_amount_inr = sum(float(item.price) * item.qty for item in cart)
+
+    # Your API key for the ExchangeRatesAPI
+    api_key = '288aaa6e49d518c10249029d9ab6b8d2'
+
+    # Fetch real-time conversion rate from INR to USD
+    try:
+        response = requests.get(f'https://api.exchangeratesapi.io/v1/latest?access_key={api_key}&symbols=USD,INR')
+        data = response.json()
+        if response.status_code == 200 and 'rates' in data:
+            # Get conversion rate from INR to USD
+            inr_to_usd_rate = data['rates']['USD'] / data['rates']['INR']
+            total_amount_usd = total_amount_inr * inr_to_usd_rate
+        else:
+            # Handle the case where the API request was not successful
+            print('Error fetching conversion rate:', data.get('error', 'Unknown error'))
+            total_amount_usd = total_amount_inr  # Fallback to INR amount
+    except Exception as e:
+        # Handle any exceptions that occur during the API request
+        print('Exception during API request:', e)
+        total_amount_usd = total_amount_inr  # Fallback to INR amount
+
+    if req.method == "POST":
+        # Capture shipping address details
+        name = req.POST['name']
+        phone = req.POST['phone']
+        address = req.POST['address']
+        country = req.POST['country']
+        city = req.POST['city']
+
+        # Create a new shipping address
+        shipping_address = Shipping_address.objects.create(
+            name=name,
+            phone=phone,
+            address=address,
+            country=country,
+            city=city,
+        )
+        shipping_address.save()
+        
+        print('i am in payment mode')
+        payment_method = req.POST.get('paymentMethod')
+
+        if payment_method == 'paypal':
+            # Setup PayPal payment with USD
+            paypal_dict = {
+                'business': settings.PAYPAL_RECEIVER_EMAIL,
+                'amount': f"{total_amount_usd:.2f}",  # Convert amount to 2 decimal places
+                'item_name': f'Order from {user.username}',
+                'invoice': str(uuid.uuid4()),
+                'currency_code': 'USD',     
+                'notify_url': req.build_absolute_uri(reverse('paypal-ipn')),
+                'return_url': req.build_absolute_uri(reverse('handle_payment_success', kwargs={'address_id': shipping_address.id})),
+                'cancel_return': req.build_absolute_uri(reverse('checkout')),
+            }
+            form = PayPalPaymentsForm(initial=paypal_dict)
+            context = {
+                'order': None,
+                'shipping_address': shipping_address,
+                'paypal_form': form
+            }
+            return render(req, 'payments/paypal_payment.html', context)
+
+    # Convert total price for each item
+    for item in cart:
+        item.total_price = float(item.price) * item.qty
+
+    # Initial rendering to capture shipping details
+    queryser = {'item': cart, 'total_amount': total_amount_inr}
+    return render(req, 'cart/checkout.html', queryser)
+
+
+
+
+
+
+
+
+
+
+
+
 @require_POST
 def update_quantity(request):
     try:
@@ -140,172 +237,7 @@ def deletecart(req, cid):
 
 
 
-import uuid
-@login_required
-def checkout(req):
-    user = req.user
-    cart = Cart.objects.filter(user=user)
 
-    # Calculate total amount using float conversion
-    total_amount = sum(float(item.price) * item.qty for item in cart)
-
-    
-
-    if req.method == "POST":
-        # Create a unique order ID
-        order = Order.objects.create(
-            user=user,
-            order_id=str(uuid.uuid4()),
-            total_amount=total_amount
-        )
-
-        # Add items to the order
-        for item in cart:
-            OrderItem.objects.create(
-                order=order,
-                product=item.product,
-                size=item.size,
-                color=item.color,
-                qty=item.qty,
-                price=item.price
-            )
-
-        cart.delete()  # Clear the cart after placing the order
-        return redirect(reverse('order_success', args=[order.order_id]))
-
-    # Calculate total price for each item
-    for item in cart:
-        item.total_price = float(item.price) * item.qty
-
-    queryser = {'item': cart, 'total_amount': total_amount}
-    return render(req, 'cart/checkout.html', queryser)
-
-
-
-
-
-@login_required
-def checkout(req):
-    user = req.user
-    cart = Cart.objects.filter(user=user)
-
-    # Calculate total amount using float conversion
-    total_amount = sum(float(item.price) * item.qty for item in cart)
-
-    if req.method == "POST":
-        try:
-            # Create a unique order ID
-            order = Order.objects.create(
-                user=user,
-                order_id=str(uuid.uuid4()),
-                total_amount=total_amount
-            )
-
-            # Add items to the order
-            for item in cart:
-                OrderItem.objects.create(
-                    order=order,
-                    product=item.product,
-                    size=item.size,
-                    color=item.color,
-                    qty=item.qty,
-                    price=item.price
-                )
-
-            # Clear the cart after placing the order
-            cart.delete()
-
-            # Redirect to the order success page
-            return render(req, 'cart/order_success.html', args=[order.order_id])
-
-
-        except Exception as e:
-            print(f"Error while creating order: {e}")
-            return render(req, 'cart/checkout.html', {
-                'item': cart, 
-                'total_amount': total_amount, 
-                'error_message': 'There was an error processing your order. Please try again.'
-            })
-
-    # Set up PayPal payment details
- 
-
-    # Calculate total price for each item for display purposes
-    for item in cart:
-        item.total_price = float(item.price) * item.qty
-
-    queryser = {
-        'item': cart,
-        'total_amount': total_amount,
-      
-    }
-    return render(req, 'cart/checkout.html', queryser)
-# from paypalrestsdk import Payment
-
-# @login_required
-# def checkout(req):
-#     user = req.user
-#     cart = Cart.objects.filter(user=user)
-
-#     # Calculate total amount using float conversion
-#     total_amount = sum(float(item.price) * item.qty for item in cart)
-
-#     if req.method == "POST":
-#         try:
-#             # Set up PayPal payment details
-#             payment = Payment({
-#                 "intent": "sale",
-#                 "payer": {
-#                     "payment_method": "paypal"
-#                 },
-#                 "redirect_urls": {
-#                     "return_url": req.build_absolute_uri(reverse('execute_payment')),
-#                     "cancel_url": req.build_absolute_uri(reverse('checkout'))
-#                 },
-#                 "transactions": [{
-#                     "item_list": {
-#                         "items": [{
-#                             "name": item.product.name,
-#                             "sku": item.product.id,
-#                             "price": str(item.price),
-#                             "currency": "USD",  # Set currency to INR
-#                             "quantity": item.qty
-#                         } for item in cart]
-#                     },
-#                     "amount": {
-#                         "total": str(total_amount),
-#                         "currency": "USD"  # Set currency to INR
-#                     },
-#                     "description": "Order from your store"
-#                 }]
-#             })
-
-#             if payment.create():
-#                 # Redirect the user to PayPal for payment approval
-#                 for link in payment.links:
-#                     if link.rel == "approval_url":
-#                         return redirect(link.href)
-#             else:
-#                 print(payment.error)
-#                 raise Exception("Payment creation failed")
-
-#         except Exception as e:
-#             print(f"Error while creating PayPal payment: {e}")
-#             return render(req, 'cart/checkout.html', {
-#                 'item': cart, 
-#                 'total_amount': total_amount, 
-#                 'error_message': 'There was an error processing your payment. Please try again.'
-#             })
-
-#     # Calculate total price for each item for display purposes
-#     for item in cart:
-#         item.total_price = float(item.price) * item.qty
-
-#     queryser = {
-#         'item': cart,
-#         'total_amount': total_amount,
-#     }
-#     return render(req, 'cart/checkout.html', queryser)
 
 
 

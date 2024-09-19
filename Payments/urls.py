@@ -1,8 +1,13 @@
-from django.urls import path
+from django.urls import path,include
 from .views import *
 
 urlpatterns = [
-  
-#   path('payment/create/', create_payment, name='create_payment'),
-#     path('payment/execute/', execute_payment, name='execute_payment'),
+  path('', include('paypal.standard.ipn.urls')),
+  path('<int:address_id>', payments, name='payment'),
+  path('payment_successful/<int:payid>', payment_successful , name='payment_successful'),
+  path('payment_failed/<int:payid>  ', payment_failed , name='payment_failed'),
+    path('success/<int:address_id>/', handle_payment_success, name='handle_payment_success'),
+    path('paypal/', include('paypal.standard.ipn.urls')),  # Include PayPal IPN URLs
+     path('order/confirmation/<int:order_id>/', order_confirmation, name='order_confirmation'),
+
 ]

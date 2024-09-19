@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review and Pay</title>
+</head>
+<body>
+    <h2>Review Your Order</h2>
+    <div>
+        <h3>Shipping Address</h3>
+        <ul>
+            <li><strong>Name:</strong> {{ shipping_address.name }}</li>
+            <li><strong>Phone:</strong> {{ shipping_address.phone }}</li>
+            <li><strong>Address:</strong> {{ shipping_address.address }}</li>
+            <li><strong>City:</strong> {{ shipping_address.city }}</li>
+            <li><strong>Country:</strong> {{ shipping_address.country }}</li>
+        </ul>
+    </div>
+
+    <div>
+        <h3>Order Total</h3>
+        <p><strong>Total Amount:</strong> ${{ paypal_form.initial.amount }}</p>
+    </div>
+
+    <div>
+        <h3>Pay with PayPal</h3>
+        <!-- Render the PayPal payment form -->
+        <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post"> -->
+        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"> 
+            {{ paypal_form.render }}
+            <button type="submit">Pay Now with PayPal</button>
+        </form>
+    </div>
+</body>
+</html>

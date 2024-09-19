@@ -1,69 +1,97 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from django.http import HttpResponse
+from django.conf import settings
+from Cart.models import *
+import uuid
+from paypal.standard.forms import PayPalPaymentsForm
+
+paypal_email = settings.PAYPAL_RECEIVER_EMAIL
+
 # from paypalrestsdk import Payment
 # # Create your views here.
 
 
+def payments(req,address_id):
+    user = req.user
+    cart = Cart.objects.filter(user=user)
+    shipping_address = get_object_or_404(Shipping_address, id=address_id)
+
+    # Calculate total amount
+    total_amount = sum(float(item.price) * item.qty for item in cart)
+
+    if req.method == 'POST':
+    # Create the order
+        order = Order.objects.create(
+        user=user,
+        address=shipping_address,
+        total_amount=total_amount
+    )
+
+    # Add items to the order
+        for item in cart:
+            OrderItem.objects.create(
+            order=order,
+            product=item.product,
+            size=item.size,
+            color=item.color,
+            qty=item.qty,
+            price=item.price
+        )
+
+    # Clear the cart after placing the order
+            cart.delete()
+
+
+    # Prepare the context for the payment page
+    context = {
+        
+        'shipping_address': shipping_address,
+    }
+    return render(req, 'payments/payment.html', context)
+
+def payment_successful(req, payid):
+    return render(req, 'payments/payment_successful.html')
+
+def payment_failed(req, payid):
+    return render(req, 'payments/payment_failed.html')
 
 
 
 
+def handle_payment_success(req, address_id):
+    user = req.user
+    cart = Cart.objects.filter(user=user)
+    shipping_address = get_object_or_404(Shipping_address, id=address_id)
+
+    # Calculate total amount
+    total_amount = sum(float(item.price) * item.qty for item in cart)
+
+    # Create the order
+    order = Order.objects.create(
+        user=user,
+        address=shipping_address,
+        total_amount=total_amount
+    )
+
+    # Add items to the order
+    for item in cart:
+        OrderItem.objects.create(
+            order=order,
+            product=item.product,
+            size=item.size,
+            color=item.color,
+            qty=item.qty,
+            price=item.price
+        )
+
+    # Clear the cart after placing the order
+    cart.delete()
+
+    # Redirect to order confirmation page or another page
+    return redirect('order_confirmation', order_id=order.id)
 
 
-
-
-
-
-
-
-
-
-
-
-def create_payment(request):
-    # Create a new payment
-    payment = Payment({
-        "intent": "sale",
-        "payer": {
-            "payment_method": "paypal"
-        },
-        "redirect_urls": {
-            "return_url": "http://localhost:8000/payment/execute/",
-            "cancel_url": "http://localhost:8000/payment/cancel/"
-        },
-        "transactions": [{
-            "item_list": {
-                "items": [{
-                    "name": "item name",
-                    "sku": "item",
-                    "price": "10.00",
-                    "currency": "USD",
-                    "quantity": 1
-                }]
-            },
-            "amount": {
-                "total": "10.00",
-                "currency": "USD"
-            },
-            "description": "This is the payment transaction description."
-        }]
-    })
-
-    if payment.create():
-        for link in payment.links:
-            if link.rel == "approval_url":
-                # Redirect the user to this URL to approve the payment
-                return redirect(link.href)
-    else:
-        return render(request, 'payment/error.html', {'error': payment.error})
-
-def execute_payment(request):
-    payment_id = request.GET.get('paymentId')
-    payer_id = request.GET.get('PayerID')
-    
-    payment = Payment.find(payment_id)
-
-    if payment.execute({"payer_id": payer_id}):
-        return HttpResponse("Payment executed successfully")
-    else:
-        return HttpResponse(payment.error)
+def order_confirmation(req, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(req, 'orders/confirmation.html', {'order': order})

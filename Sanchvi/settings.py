@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-import paypalrestsdk
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -14,7 +14,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f$er8+uju1e2xm@p7u38^j@r##1(ftkao6#a75+71nr#9awin8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  
+# DEBUG = False
 
 ALLOWED_HOSTS = ['192.168.1.54','192.168.1.70','sanchvi.com', 'www.sanchvi.com', 'sanchvistudio.com', 'www.sanchvistudio.com','82.112.226.224','192.168.29.7','192.168.29.189','49.37.182.144','127.0.0.1','192.168.29.31']
 
@@ -150,12 +151,14 @@ AUTH_USER_MODEL = 'Accounts.MyUser'
 
 
 # PayPal settings
-PAYPAL_CLIENT_ID = 'AWHRoWBdw5fddjAw7g1ETCetpQD0tnPWNZXpzjVIGhOHDUzYE1KCbbMpYjqrSMROLFHNKiGt0abQOQzR'
-PAYPAL_CLIENT_SECRET = 'EBbpwbqpUg2GGVRnbdrpSvHgkprw7uoRL6gKt7UgrBb6VaOVTVDYSV4WQCDTTu6u2qouh_PvIc53ncNB'
-PAYPAL_MODE = 'sandbox'  # Change to 'live' for production
+# PAYPAL_CLIENT_ID = 'AWHRoWBdw5fddjAw7g1ETCetpQD0tnPWNZXpzjVIGhOHDUzYE1KCbbMpYjqrSMROLFHNKiGt0abQOQzR'
+# PAYPAL_CLIENT_SECRET = 'EBbpwbqpUg2GGVRnbdrpSvHgkprw7uoRL6gKt7UgrBb6VaOVTVDYSV4WQCDTTu6u2qouh_PvIc53ncNB'
+# PAYPAL_MODE = 'sandbox'  # Change to 'live' for production
 
 
 # # paypal new intrigation 
 
-PAYPAL_TEST = True
-# PAYPAL_RECEIVER_EMAIL= 'yuvrajsrivastava02@gmail.com' # this is sandbox account
+PAYPAL_TEST = False
+# PAYPAL_RECEIVER_EMAIL= 'sanchvi.sanjana19@gmail.com' # this is live account
+# PAYPAL_RECEIVER_EMAIL= 'sb-ra2tb14723963@business.example.com' # this is sandbox account
+PAYPAL_RECEIVER_EMAIL= 'yuvraj.yasir@gmail.com' # this is sandbox account
