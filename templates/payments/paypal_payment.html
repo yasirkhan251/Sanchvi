@@ -2,35 +2,120 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Viewport for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review and Pay</title>
+    <!-- Meta description for SEO -->
+    <meta name="description" content="Review your order and complete the payment securely using PayPal.">
+    <!-- Include a CSS stylesheet -->
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #fff;
+            color: #333;
+        }
+        h2, h3 {
+            color: #333;
+        }
+        a {
+            color: #0070ba;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container */
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Sections */
+        .section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Lists */
+        .section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .section li {
+            margin-bottom: 12px;
+        }
+        .section li strong {
+            display: inline-block;
+            width: 130px;
+            font-weight: bold;
+        }
+
+        /* Pay Button */
+        .pay-button {
+            background-color: #0070ba;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        .pay-button:hover {
+            background-color: #005c99;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .section li strong {
+                width: 100px;
+            }
+            .pay-button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Review Your Order</h2>
-    <div>
-        <h3>Shipping Address</h3>
-        <ul>
-            <li><strong>Name:</strong> {{ shipping_address.name }}</li>
-            <li><strong>Phone:</strong> {{ shipping_address.phone }}</li>
-            <li><strong>Address:</strong> {{ shipping_address.address }}</li>
-            <li><strong>City:</strong> {{ shipping_address.city }}</li>
-            <li><strong>Country:</strong> {{ shipping_address.country }}</li>
-        </ul>
-    </div>
-
-    <div>
-        <h3>Order Total</h3>
-        <p><strong>Total Amount:</strong> ${{ paypal_form.initial.amount }}</p>
-    </div>
-
-    <div>
-        <h3>Pay with PayPal</h3>
-        <!-- Render the PayPal payment form -->
-        <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post"> -->
-        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"> 
-            {{ paypal_form.render }}
-            <button type="submit">Pay Now with PayPal</button>
-        </form>
+    <div class="container">
+        <h2>Review Your Order</h2>
+        
+        <div class="section" aria-labelledby="shipping-address">
+            <h3 id="shipping-address">Shipping Address</h3>
+            <ul>
+                <li><strong>Name:</strong> {{ shipping_address.name }}</li>
+                <li><strong>Phone:</strong> {{ shipping_address.phone }}</li>
+                <li><strong>Address:</strong> {{ shipping_address.address }}</li>
+                <li><strong>City:</strong> {{ shipping_address.city }}</li>
+                <li><strong>Country:</strong> {{ shipping_address.country }}</li>
+            </ul>
+        </div>
+    
+        <div class="section" aria-labelledby="order-total">
+            <h3 id="order-total">Order Total</h3>
+            <p><strong>Total Amount:</strong> ${{ paypal_form.initial.amount }}</p>
+        </div>
+    
+        <div class="section" aria-labelledby="payment-method">
+           <center> <h3 id="payment-method">Pay with PayPal</h3></center>
+            <!-- PayPal Payment Form -->
+            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+              <center> {{ paypal_form.render }}</center> 
+                <!-- Include CSRF token if necessary -->
+                {% csrf_token %}
+                <!-- <button type="submit" class="pay-button" aria-label="Pay Now with PayPal">Pay Now with PayPal</button> -->
+            </form>
+        </div>
     </div>
 </body>
 </html>

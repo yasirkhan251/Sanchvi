@@ -185,33 +185,39 @@ def addtocart(req):
 #     return render(req, 'cart/order.html')
 
 from django.core.serializers import serialize
-
 @login_required
-
 def orders(request):
-    orders = Order.objects.filter(user=request.user)
-    # Serialize orders and related items
-    orders_data = []
-    for order in orders:
-        order_data = {
-            'order_id': str(order.order_id),
-            'total_amount': float(order.total_amount),
-            'created_at': order.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            'items': [
-                {
-                    'product_name': item.product.name,
-                    'qty': item.qty,
-                    'size': item.size,
-                    'color': item.color,
-                    'price': float(item.price),
-                    'image_url': item.product.img.url if item.product.img else ''  # Assuming product.image is the ImageField
-                } for item in order.items.all()
-            ]
-        }
-        orders_data.append(order_data)
+    orders = Order.objects.filter(user=request.user).select_related('address').prefetch_related('items__product')
     
-    # Pass orders_data as a JSON string to the template
-    return render(request, 'cart/orders.html', {'orders': json.dumps(orders_data)})
+    # Pass orders to the template
+    return render(request, 'orders/myorders.html', {'orders': orders})
+
+# @login_required
+
+# def orders(request):
+#     orders = Order.objects.filter(user=request.user)
+#     # Serialize orders and related items
+#     orders_data = []
+#     for order in orders:
+#         order_data = {
+#             'order_id': str(order.order_id),
+#             'total_amount': float(order.total_amount),
+#             'created_at': order.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+#             'items': [
+#                 {
+#                     'product_name': item.product.name,
+#                     'qty': item.qty,
+#                     'size': item.size,
+#                     'color': item.color,
+#                     'price': float(item.price),
+#                     'image_url': item.product.img.url if item.product.img else ''  # Assuming product.image is the ImageField
+#                 } for item in order.items.all()
+#             ]
+#         }
+#         orders_data.append(order_data)
+    
+#     # Pass orders_data as a JSON string to the template
+#     return render(request, 'orders/myorders.html', {'orders': json.dumps(orders_data)})
 
 @login_required
 def order_success(request, order_id):
