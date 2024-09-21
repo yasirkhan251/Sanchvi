@@ -191,3 +191,13 @@ PHONEPE_PAYMENT_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay"  # PhonePe
 PHONEPE_CALLBACK_URL = "http://127.0.0.1:8000/payments/phonepe/callback"
 
 
+
+
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-cache',
+    }
+}
