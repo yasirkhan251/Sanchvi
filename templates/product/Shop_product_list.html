@@ -176,8 +176,9 @@
         <div class="products">
             {% for x in product %}
             <div class="product">
+                
                 <a href="{% url 'productdetail' x.id %}"> 
-                <img src="{{ x.img.url }}" alt="{{ x.name }}">
+                <img loading="lazy" src="{{ x.img.url }}" alt="{{ x.name }}">
                 <div class="product-content">
                     <span class="icon"><i class="fas fa-heart"></i></span>
                     <h3>{{ x.name}}</h3>

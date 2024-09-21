@@ -122,18 +122,23 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body" style="color: black;">
-                                <p>Select preferred payment method</p>
-                                <div>
-                                    <input type="radio" name="paymentMethod" id="phonepe" value="phonepe" disabled>
-                                    <label for="phonepe">PhonePe (UPI) disabled</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="paymentMethod" id="paypal" value="paypal" checked>
-                                    <label for="paypal">PayPal</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="paymentMethod" id="creditDebit" value="creditDebit" disabled>
-                                    <label for="creditDebit">Credit/Debit Card disabled</label>
+                                <p>Select preferred payment method</p><br>
+                                <div style="display: flex; flex-direction: row; gap: 30px;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                        <img src="https://pbs.twimg.com/profile_images/1615271089705463811/v-emhrqu_400x400.png" width="50px" alt="">
+                                        <input type="radio" name="paymentMethod" id="phonepe" value="phonepe">
+                                        <label for="phonepe">PhonePe (UPI)</label>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 20px;"> <!-- Added margin-left here -->
+                                        <img src="https://w7.pngwing.com/pngs/720/939/png-transparent-paypal-computer-icons-logo-paypal-blue-angle-service-thumbnail.png" width="50px" alt="">
+                                        <input type="radio" name="paymentMethod" id="paypal" value="paypal" >
+                                        <label for="paypal">PayPal</label>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                        <img src="https://img.favpng.com/18/1/20/credit-card-debit-card-bank-sbi-cards-png-favpng-NDk8jXgaFfg0n5ypnDAFHZ9cA.jpg" width="75px" alt="">
+                                        <input type="radio" name="paymentMethod" id="creditDebit" value="creditDebit" disabled>
+                                        <label for="creditDebit">Credit/Debit Card disabled</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -143,6 +148,8 @@
                         </div>
                     </div>
                 </div>
+                
+                
             </form>
             
         </div>

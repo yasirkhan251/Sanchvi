@@ -9,6 +9,7 @@ urlpatterns = [
     path('checkout',checkout, name='checkout'),
     path('update_quantity/', update_quantity, name='update_quantity'),
      path('orders/', orders, name='orders'),
+     path('phonepe/callback/', phonepe_callback, name='phonepe_callback'),
     # Add the success page
     path('order-success/<str:order_id>/', order_success, name='order_success'),
 

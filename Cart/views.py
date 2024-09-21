@@ -1,3 +1,5 @@
+import hmac
+import time
 from django.shortcuts import *
 from django.http import JsonResponse
 from .models import *
@@ -7,14 +9,23 @@ from django.views.decorators.http import require_POST
 import json
 from django.contrib.auth.decorators import login_required
 import requests
+import hashlib
+import base64
 # paypal settings 
 import uuid
 from django.conf import settings
 from paypal.standard.forms import PayPalPaymentsForm
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
 
+
+def generate_checksum(merchant_id, transaction_id, amount, api_key):
+    """Generates checksum for secure transaction"""
+    payload = f"/v1/pay/{merchant_id}/{transaction_id}/{amount}/INR"
+    checksum = base64.b64encode(hashlib.sha256(f"{payload}{api_key}".encode()).digest()).decode('utf-8')
+    return checksum
 
 
 
@@ -88,9 +99,64 @@ def checkout(req):
             }
             return render(req, 'payments/paypal_payment.html', context)
 
-    # Convert total price for each item
-    for item in cart:
-        item.total_price = float(item.price) * item.qty
+        elif payment_method == 'phonepe':
+            # PhonePe integration
+            orderID = "pp-" + str(uuid.uuid4())
+            merchantTransactionID = "MT" + str(uuid.uuid4())
+
+            # Prepare the payload for PhonePe
+            payload = {
+                "merchantId": settings.PHONEPE_MERCHANT_ID,
+                "merchantTransactionId": merchantTransactionID,
+                "merchantUserId": str(user.id),
+                "amount": int(total_amount_inr * 100),  # INR to paise conversion (multiply by 100)
+                "redirectUrl": req.build_absolute_uri(reverse('handle_payment_success', kwargs={'address_id': shipping_address.id})),
+                "redirectMode": "REDIRECT",  # or "POST"
+                "callbackUrl": req.build_absolute_uri(reverse('phonepe_callback')),
+                "mobileNumber": phone,
+                "paymentInstrument": {
+                    "type": "PAY_PAGE"
+                }
+            }
+
+            # Convert payload to base64
+            payload_json = json.dumps(payload)
+            base64_request = base64.b64encode(payload_json.encode()).decode()
+
+            # Generate the X-VERIFY header
+            endpoint = "/pg/v1/pay"  # API endpoint for payment
+            combined_string = base64_request + endpoint + settings.PHONEPE_SALT_KEY
+            finalXHeader = hashlib.sha256(combined_string.encode()).hexdigest() + "###" + settings.PHONEPE_SALT_INDEX
+
+            # Prepare the headers
+            headers = {
+                "Content-Type": "application/json",
+                "X-VERIFY": finalXHeader
+            }
+
+            # Prepare the request body
+            req_body = {"request": base64_request}
+
+            # Send the POST request to the PhonePe sandbox URL
+            response = requests.post(settings.PHONEPE_PAYMENT_URL, headers=headers, json=req_body)
+
+            # Handle the response
+            if response.status_code == 200:
+                res_data = response.json()
+                if res_data.get('success'):
+                    # Extract the payment redirect URL
+                    payment_url = res_data["data"]["instrumentResponse"]["redirectInfo"]["url"]
+                    return redirect(payment_url)
+                else:
+                    # Handle error returned in the response
+                    print("PhonePe payment initiation failed:", res_data.get("message"))
+                    return JsonResponse({"error": res_data.get("message")}, status=400)
+            else:
+                # Handle HTTP errors
+                print("PhonePe payment initiation failed with HTTP status:", response.status_code)
+                print("Response text:", response.text)
+                return JsonResponse({"error": "PhonePe payment initiation failed."}, status=500)
+
 
     # Initial rendering to capture shipping details
     queryser = {'item': cart, 'total_amount': total_amount_inr}
@@ -103,8 +169,48 @@ def checkout(req):
 
 
 
+@csrf_exempt
+def phonepe_callback(request):
+    if request.method == "POST":
+        try:
+            # Parse the incoming JSON data
+            data = json.loads(request.body)
+            
+            # Extract necessary fields from the callback data
+            status = data.get('status')
+            transaction_id = data.get('transactionId')
+            amount = data.get('amount')
 
+            # Optional: Verify the signature (X-VERIFY header) to ensure the callback is authentic
+            x_verify = request.headers.get('X-VERIFY')
+            if x_verify:
+                # Recreate the signature using your secret key
+                payload = request.body.decode('utf-8')
+                expected_signature = hmac.new(
+                    settings.PHONEPE_SALT_KEY.encode(),
+                    (payload + '/pg/v1/pay' + settings.PHONEPE_SALT_KEY).encode(),
+                    hashlib.sha256
+                ).hexdigest() + "###" + settings.PHONEPE_SALT_INDEX
 
+                # Compare the signature
+                if x_verify != expected_signature:
+                    return JsonResponse({"error": "Invalid signature"}, status=403)
+
+            # Handle different payment statuses
+            if status == "SUCCESS":
+                # Handle successful payment (update order status, etc.)
+                # e.g., update_order_status(transaction_id, amount, status)
+                return JsonResponse({"message": "Payment processed successfully", "status": "success"}, status=200)
+            else:
+                # Handle payment failure or other statuses
+                return JsonResponse({"message": "Payment failed or is pending", "status": status}, status=400)
+
+        except json.JSONDecodeError:
+            # Handle JSON parsing errors
+            return JsonResponse({"error": "Invalid JSON data"}, status=400)
+    
+    # Return error if the request method is not POST
+    return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
 @require_POST
@@ -192,32 +298,6 @@ def orders(request):
     # Pass orders to the template
     return render(request, 'orders/myorders.html', {'orders': orders})
 
-# @login_required
-
-# def orders(request):
-#     orders = Order.objects.filter(user=request.user)
-#     # Serialize orders and related items
-#     orders_data = []
-#     for order in orders:
-#         order_data = {
-#             'order_id': str(order.order_id),
-#             'total_amount': float(order.total_amount),
-#             'created_at': order.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-#             'items': [
-#                 {
-#                     'product_name': item.product.name,
-#                     'qty': item.qty,
-#                     'size': item.size,
-#                     'color': item.color,
-#                     'price': float(item.price),
-#                     'image_url': item.product.img.url if item.product.img else ''  # Assuming product.image is the ImageField
-#                 } for item in order.items.all()
-#             ]
-#         }
-#         orders_data.append(order_data)
-    
-#     # Pass orders_data as a JSON string to the template
-#     return render(request, 'orders/myorders.html', {'orders': json.dumps(orders_data)})
 
 @login_required
 def order_success(request, order_id):

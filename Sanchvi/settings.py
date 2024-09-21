@@ -156,9 +156,38 @@ AUTH_USER_MODEL = 'Accounts.MyUser'
 # PAYPAL_MODE = 'sandbox'  # Change to 'live' for production
 
 
-# # paypal new intrigation 
+
+
+
+
+
+
+
+# paypal new intrigation 
 
 PAYPAL_TEST = False
 # PAYPAL_RECEIVER_EMAIL= 'sanchvi.sanjana19@gmail.com' # this is live account
 # PAYPAL_RECEIVER_EMAIL= 'sb-ra2tb14723963@business.example.com' # this is sandbox account
 PAYPAL_RECEIVER_EMAIL= 'yuvraj.yasir@gmail.com' # this is sandbox account
+
+
+
+# PhonePe Intigration 
+
+# PHONEPE_MERCHANT_ID = 'M11AOFE2DA7E'  # Your Merchant ID
+# PHONEPE_API_KEY = '3198c311-52bf-4697-8d98-b1c1489a804a'  # Your Security Key
+# PHONEPE_ENDPOINT = 'https://api.phonepe.com/apis/hermes/pg/v1/pay'  # Use the live endpoint when going live
+
+# PhonePe Integration Settings
+PHONEPE_MERCHANT_ID = "M1IAOFE2DA7E"  # Your merchant ID from PhonePe
+# PHONEPE_MERCHANT_ID = "PGTESTPAYUAT"  # Your merchant ID from PhonePe
+PHONEPE_SALT_KEY = "3198c311-52bf-4697-8d98-b1c1489a804a"  # Your PhonePe salt key (get this from the dashboard)
+# PHONEPE_SALT_KEY = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399"  # Your PhonePe salt key (get this from the dashboard)
+PHONEPE_SALT_INDEX = "1"  # Salt index (typically '1' but should match the one on your PhonePe dashboard)
+PHONEPE_PAYMENT_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay"  # PhonePe API endpoint for initiating payments
+# PHONEPE_PAYMENT_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay"  # PhonePe API endpoint for initiating payments
+# PHONEPE_PAYMENT_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox"  # PhonePe API endpoint for initiating payments
+
+PHONEPE_CALLBACK_URL = "http://127.0.0.1:8000/payments/phonepe/callback"
+
+

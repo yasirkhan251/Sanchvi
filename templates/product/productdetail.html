@@ -2,6 +2,45 @@
 {% block title %} Product Sanchvi {% endblock %}
 
 {% block content %}
+
+
+<div>
+    <button id="backButton">Back</button>
+    <button id="nextButton">Next</button>
+</div>
+
+<script>
+    // Function to handle page navigation
+    function navigatePage(increment) {
+        // Get the current URL
+        let currentUrl = window.location.href;
+
+        // Extract the product number from the URL (after the last '/')
+        let productNumber = parseInt(currentUrl.split("/").pop());
+
+        // Adjust the product number based on the button clicked
+        let newProductNumber = productNumber + increment;
+
+        // Replace the old product number with the new one in the URL
+        let newUrl = currentUrl.replace(productNumber, newProductNumber);
+
+        // Redirect to the new URL
+        window.location.href = newUrl;
+    }
+
+    // Event listener for the Next button
+    document.getElementById("nextButton").addEventListener("click", function() {
+        navigatePage(1); // Increment by 1
+    });
+
+    // Event listener for the Back button
+    document.getElementById("backButton").addEventListener("click", function() {
+        navigatePage(-1); // Decrement by 1
+    });
+</script>
+
+
+
 <form action="{%url 'addcart' %}" method="post">
     {% csrf_token %}
 <div id="imageModal" class="hidden">

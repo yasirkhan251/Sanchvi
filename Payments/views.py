@@ -59,7 +59,7 @@ def payment_failed(req, payid):
 
 
 
-def handle_payment_success(req, address_id):
+def handle_payment_success_PayPal(req, address_id):
     user = req.user
     cart = Cart.objects.filter(user=user)
     shipping_address = get_object_or_404(Shipping_address, id=address_id)
