@@ -39,24 +39,27 @@ def checkout(req):
     total_amount_inr = sum(float(item.price) * item.qty for item in cart)
 
     # Your API key for the ExchangeRatesAPI
-    api_key = '288aaa6e49d518c10249029d9ab6b8d2'
+    api_key = 'cur_live_bprsosYyOxTW4Tmt7gTzTibq9nogJDWsJszpMh1s'
 
-    # Fetch real-time conversion rate from INR to USD
+        # Fetch real-time conversion rate from INR to USD
     try:
-        response = requests.get(f'https://api.exchangeratesapi.io/v1/latest?access_key={api_key}&symbols=USD,INR')
-        data = response.json()
-        if response.status_code == 200 and 'rates' in data:
-            # Get conversion rate from INR to USD
-            inr_to_usd_rate = data['rates']['USD'] / data['rates']['INR']
-            total_amount_usd = total_amount_inr * inr_to_usd_rate
-        else:
-            # Handle the case where the API request was not successful
-            print('Error fetching conversion rate:', data.get('error', 'Unknown error'))
-            total_amount_usd = total_amount_inr  # Fallback to INR amount
+            # Correct CurrencyAPI URL
+            response = requests.get(f'https://api.currencyapi.com/v3/latest?apikey={api_key}&currencies=USD&base_currency=INR')
+            data = response.json()
+            if response.status_code == 200 and 'data' in data:
+                # Get conversion rate from INR to USD
+                inr_to_usd_rate = data['data']['USD']['value']
+                total_amount_usd = total_amount_inr * inr_to_usd_rate
+            else:
+                # Handle the case where the API request was not successful
+                print('Error fetching conversion rate:', data.get('error', 'Unknown error'))
+                total_amount_usd = total_amount_inr  # Fallback to INR amount if API fails
     except Exception as e:
-        # Handle any exceptions that occur during the API request
-        print('Exception during API request:', e)
-        total_amount_usd = total_amount_inr  # Fallback to INR amount
+            # Handle any exceptions that occur during the API request
+            print('Exception during API request:', e)
+            total_amount_usd = total_amount_inr  # Fallback to INR amount
+
+    
 
     if req.method == "POST":
         # Capture shipping address details
