@@ -4,7 +4,8 @@ from .views import *
 from django.conf.urls.static import static
 from django.conf import settings
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin_dev/', admin.site.urls),
+    path('admin/', include('Admin.urls')),
     path('', CategoryList.as_view(), name='index'),
     # path('', CategoryList.as_view(), name='index'),
     path('auth/', include('Accounts.urls')),

@@ -167,4 +167,5 @@ def product_detail(req, pid):
     return render(req, 'product/productdetail.html', queryset)
 
 
-
+def sizechart(req):
+    return render(req, 'sizechart.html')

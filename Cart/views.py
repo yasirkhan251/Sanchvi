@@ -79,7 +79,7 @@ def checkout(req):
     except Exception as e:
         # Handle any exceptions that occur during the API request
         print('Exception during API request:', e)
-        total_amount_usd = total_amount_inr   # Fallback to INR amount
+        total_amount_usd = total_amount_inr * 0.01198 # Fallback to INR amount
     
 
     if req.method == "POST":

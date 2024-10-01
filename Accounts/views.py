@@ -19,45 +19,46 @@ def generate_server_id():
     return server_id
 
 
-def user_login(request):
+def loginsystem(request):
     if request.method == "POST":
         req = 'login posted'
         print(req)
         username = request.POST['username']
         password = request.POST['password']
-        is_user = True
- 
+
+        try:
+            user_instance = MyUser.objects.get(username=username)
+        except MyUser.DoesNotExist:
+            messages.error(request, "Username does not exist. Please create a new one.")
+            return redirect(reverse('login'))
+
+        # Authenticate the user
+        user = authenticate(username=username, password=password)
         
-        if MyUser.objects.filter(username = username, is_user = is_user).exists():
-            user = authenticate(username = username, password = password )
-            if user is not None:
+        if user is not None:
+            # Check if the user is a regular user or admin
+            if user_instance.is_user:
                 login(request, user)
-                request.session['login_attempts'] = 0 
-                return redirect(reverse('index'))
+                request.session['login_attempts'] = 0
+                return redirect(reverse('index'))  # Redirect to user index
+            elif user_instance.is_admin:
+                login(request, user)
+                request.session['login_attempts'] = 0
+                return redirect(reverse('adminpanel'))  # Redirect to admin panel
+        else:
+            # Handle invalid password attempts
+            if 'login_attempts' not in request.session:
+                request.session['login_attempts'] = 0
+            request.session['login_attempts'] += 1
+
+            if request.session['login_attempts'] > 2:
+                messages.error(request, "Incorrect Password, please try again or reset your password.")
             else:
-                
-               
-                if 'login_attempts' not in request.session:
-                    request.session['login_attempts'] = 0
+                messages.error(request, "Incorrect Password, please try again.")
 
-                request.session['login_attempts'] += 1
+            return redirect(reverse('login'))
 
-                if request.session['login_attempts'] > 2:
-                    messages.error(request, "Incorrect Password, please Try Again! or Click forgot password")
-                else:
-                    messages.error(request, "Incorrect Password, please Try Again!")
-
-                    
-                return redirect(reverse('user_login') )
-                
-        else :
-                messages.error(request, "Username Does not Exist")
-                messages.error(request, "Please Create a new one")
-              
-                return redirect(reverse('user_login') )
-    return render(request, 'auth/credentials.html')
-
-        
+    return render(request, 'auth/credentials.html')  
 
 
 def user_signup(request):
@@ -107,15 +108,11 @@ def user_signup(request):
 
 def user_logout(request):
     logout(request)  # Log out the user
-    return redirect('user_login')
+    return redirect('login')
 
 
 
-def admin_login_page(req):
-    return render(req, 'admin/login.html')
 
-def admin_register_page(req):
-    return render(req, 'admin/register.html')
 
 
 
@@ -126,3 +123,9 @@ def settings_view(request):
 
 def profile(req):
     return render(req, 'profile/profile.html')
+
+
+
+
+
+

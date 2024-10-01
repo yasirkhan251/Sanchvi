@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Size Chart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #000;
+        }
+        th {
+            background-color: #ff66b2; /* Pink color */
+            color: white;
+        }
+        td {
+            background-color: #ffe6f2; /* Light pink color */
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Highlight the Age Group (size) */
+        td.age-group {
+            font-weight: bold;
+            font-size: 1.1em; /* Increase font size for better visibility */
+            background-color: #ffccdf; /* Highlighted background color */
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                margin-bottom: 15px;
+                border-bottom: 1px solid #ccc;
+            }
+
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align: center;">Size Chart</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>AGE GROUP</th>
+            <th>CHEST</th>
+            <th>FULL LENGTH (FROM SHOULDER)</th>
+            <th>KNEE LENGTH (FROM SHOULDER)</th>
+            <th>MID THIGH (FROM SHOULDER)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">0-6 M</td>
+            <td data-label="CHEST">17</td>
+            <td data-label="FULL LENGTH" >20</td>
+            <td data-label="KNEE LENGTH">16</td>
+            <td data-label="MID THIGH">14</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">6-12 M</td>
+            <td data-label="CHEST">19</td>
+            <td data-label="FULL LENGTH">20</td>
+            <td data-label="KNEE LENGTH">18</td>
+            <td data-label="MID THIGH">16</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">1-2 Y</td>
+            <td data-label="CHEST">20</td>
+            <td data-label="FULL LENGTH">22</td>
+            <td data-label="KNEE LENGTH">18</td>
+            <td data-label="MID THIGH">16</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">2-3 Y</td>
+            <td data-label="CHEST">21</td>
+            <td data-label="FULL LENGTH">27</td>
+            <td data-label="KNEE LENGTH">21</td>
+            <td data-label="MID THIGH">19</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">3-4 Y</td>
+            <td data-label="CHEST">22</td>
+            <td data-label="FULL LENGTH">32</td>
+            <td data-label="KNEE LENGTH">22</td>
+            <td data-label="MID THIGH">20</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">4-5 Y</td>
+            <td data-label="CHEST">22</td>
+            <td data-label="FULL LENGTH">34</td>
+            <td data-label="KNEE LENGTH">23</td>
+            <td data-label="MID THIGH">21</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">5-6 Y</td>
+            <td data-label="CHEST">23</td>
+            <td data-label="FULL LENGTH">36</td>
+            <td data-label="KNEE LENGTH">24.5</td>
+            <td data-label="MID THIGH">22.5</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">6-7 Y</td>
+            <td data-label="CHEST">23</td>
+            <td data-label="FULL LENGTH">38</td>
+            <td data-label="KNEE LENGTH">26</td>
+            <td data-label="MID THIGH">24</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">7-8 Y</td>
+            <td data-label="CHEST">24</td>
+            <td data-label="FULL LENGTH">40</td>
+            <td data-label="KNEE LENGTH">27</td>
+            <td data-label="MID THIGH">25</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">8-9 Y</td>
+            <td data-label="CHEST">26</td>
+            <td data-label="FULL LENGTH">42</td>
+            <td data-label="KNEE LENGTH">28</td>
+            <td data-label="MID THIGH">26</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">9-10 Y</td>
+            <td data-label="CHEST">26</td>
+            <td data-label="FULL LENGTH">44</td>
+            <td data-label="KNEE LENGTH">29.5</td>
+            <td data-label="MID THIGH">27.5</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">10-11 Y</td>
+            <td data-label="CHEST">28</td>
+            <td data-label="FULL LENGTH">47</td>
+            <td data-label="KNEE LENGTH">31</td>
+            <td data-label="MID THIGH">29</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">11-12 Y</td>
+            <td data-label="CHEST">28</td>
+            <td data-label="FULL LENGTH">48</td>
+            <td data-label="KNEE LENGTH">33</td>
+            <td data-label="MID THIGH">31</td>
+        </tr>
+        <tr>
+            <td data-label="AGE GROUP" class="age-group">12-13 Y</td>
+            <td data-label="CHEST">30</td>
+            <td data-label="FULL LENGTH">49.5</td>
+            <td data-label="KNEE LENGTH">34.5</td>
+            <td data-label="MID THIGH">32.5</td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
