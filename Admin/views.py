@@ -9,10 +9,10 @@ from django.contrib import messages
 
 
 def admin_panel(req):
-    
+
     return render(req, 'admindata/index.html')
 
 
 def admin(req):
     
-    return redirect(reverse('adminlogin'))
+    return redirect(reverse('login'))
