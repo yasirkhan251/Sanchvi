@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title%} {% endblock%}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&display=swap">
+<link rel="icon" href="/static/img/logo-removebg-preview2.png" type="image/x-icon">
+</head>
+<body >
+  <nav>
+   
+    <style>html{
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */}</style>
+    <ul >
+      <li class="flex items-center   "><a href="/">
+        <img class="adjust" width="70px" src="/static/img/logo-removebg-preview2.png" alt="Sanchvi logo">
+        <b>Sanchvi Studio</a></b>
+    </li>
+          <li class="hideOnMobile"><a href="/">Home</a></li>
+      <li class="dropdown">
+        <a href="/#shop" class="dropbtn">Shop</a>
+        <div class="dropdown-content">
+          {%for x in allcat%}
+          <a href="{% url 'product'  x.c_id x.id  %}">{{x.name}}</a>
+          {%endfor%}
+          <!-- <a href="#">Party Wear</a>
+          <a href="#">Ethnic</a>
+          <a href="#">Accessories</a>
+          <a href="#">Theme</a> -->
+        </div>
+      <li class="hideOnMobile"><a href="{% url 'contact_page'%}">Contact</a></li>
+      <li><a href="{% url 'studiospace' %}">Studio-Space</a></li>
+      <li class="hideOnMobile"><a href="{% url 'aboutus'%}">About Us</a></li>
+      <li class="hideOnMobile"><a href="{% url 'Terms&Condition' %}">Terms and Condition</a></li>
+      <li class="menu-button" onclick="showSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 96 960 960" width="26"><path d="M120 816v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg></a></li>
+         <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+
+      <!-- User Icon -->
+      <!-- <li class="ms-auto"><a href="#"><i class="fa-solid fa-user"></i></a></li> -->
+      {% if request.user.username  %}
+      <li class="profile-menu">
+        <a href="#" class="profile-link">
+          {% if request.user.profile %}
+          <img src="{{ request.user.profile.url }}" alt="User Image" class="profile-image">
+      {% else %}
+          <img src="https://t4.ftcdn.net/jpg/02/29/75/83/240_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="Default User Image" class="profile-image">
+      {% endif %}
+      {{ request.user }}
+  </a>
+        <ul class="profile-dropdown">
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'addtocart' %}">Add to Cart</a></li>
+            <li><a href="{% url 'orders' %}">Orders</a></li>
+            
+            <li><a href="{% url 'settings' %}">Settings</a></li>
+            <li><a href="{% url 'logout'%}">Logout</a></li>
+        </ul>
+    </li>
+    
+    
+    
+{% else %}
+    <li><a href="{%url 'login'%}"> Login</a></li>
+{% endif %}
+<style>.profile-menu {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle; /* Ensure proper alignment */
+}
+
+.profile-link {
+  text-decoration: none;
+  color: #333;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  position: relative; /* Ensure it acts as a reference for the dropdown */
+}
+
+.profile-image {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.profile-dropdown {
+  display: none;
+  position: absolute;
+  right: 10px;
+  /* margin-top: 2px; */
+  top: 100%; /* Ensures dropdown appears just below the link */
+  background-color: rgb(255, 255, 255);
+
+  width: 150px;
+  box-shadow: 0px 8px 16px 20px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 5px;
+  text-align: center;
+  overflow: hidden;
+  
+}
+
+.profile-dropdown li {
+  display: block;
+  
+  width: 100%; /* Ensure list items fill the width of the dropdown */
+  transition: .7s;
+}
+
+.profile-dropdown li a {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  width: 100%; /* Ensure links fill the width of the list item */
+  transition: .7s;
+}
+.profile-dropdown li a:hover{
+  
+  margin-left: -25px;/
+}
+.profile-dropdown li:hover {
+  background: linear-gradient(to bottom, #ecb3e7, #e8ed93);
+  /* width: 100%;  */
+  /* border-radius: 5px; */
+  
+ 
+}
+
+.profile-menu:hover .profile-dropdown {
+  display: block;
+  
+}
+</style>
+      <!-- <li class="menu-button" onclick="showSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 96 960 960" width="26"><path d="M120 816v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg></a></li> -->
+    </ul>
+  </nav>
+   
+    {% block content%}
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

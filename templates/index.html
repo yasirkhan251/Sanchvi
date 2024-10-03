@@ -1,159 +1,182 @@
+{%extends 'base.html'%}
+{%block title%}Studio {%endblock%}
+{%block content%}
+<!-- your frontend code should be starting here  -->
+<link rel="stylesheet" href="/static/css/new index.css">
 
-  {% extends 'base.html' %}
-  {% block title%} Sanchvi Studio {% endblock %}
-  
-  {% block content%}
-<meta name="description" content="The best Fashion brand for Kids duos">
-
+<!-- for video  -->
 <div class="vid">
 
-  <video src="/static/videos/video10.mp4" loop autoplay muted  ></video>
+    <video src="/static/videos/video10.mp4" loop autoplay muted  ></video>
+  </div>
+<!-- end video  -->
+
+  <!-- for shop categories  -->
+  <section id="shop" >
+    <div class="box-container">
+      {% for x in category %}
+      <div class="box-item">
+        <div class="flip-box medium">
+          <div class="flip-box-front text-center" style="background-image: url({{ x.image.url}});">
+            <div class="inner color-white">
+              <h3 class="flip-box-header">{{x.name}}</h3>
+              <p>{{x.detail}}</p>
+              <!-- <img src="" width="25px" height="25px" alt="" class="flip-box-img"> -->
+            </div>
+          </div>
+          
+          <div class="flip-box-back text-center" style="background-image: url({{ x.image.url}});">
+            <a class="anchor" href="{% url 'product'  x.c_id x.id  %}">
+            <div class="inner color-white">
+              <h3 class="flip-box-header">{{x.name}}</h3>
+              <p>{{x.detail}}</p>
+              
+              <button class="flip-box-button">Shop Now</button>
+            </div></a>
+          </div>
+        
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+
+<!-- end shop categories -->
+
+
+<!-- shop video cards links  -->
+<div class="video-section">
+  <div class="video-container">
+    <div class="video-item">
+      <video src="/static/videos/video11.mp4" autoplay loop muted></video>
+      <a href="{% url 'productdetail' 52 %}" class="buy-button">Buy Now</a>
+    </div>
+    <div class="video-item">
+      <video src="/static/videos/video12.mp4" autoplay loop muted></video>
+      <a href="{% url 'productdetail' 208 %}" class="buy-button">Buy Now</a>
+    </div>
+    <div class="video-item">
+      <video src="/static/videos/video16.mp4" autoplay loop muted></video>
+      <a href="{% url 'productdetail' 47 %}" class="buy-button">Buy Now</a>
+    </div>
+    <div class="video-item">
+      <video src="/static/videos/video14.mp4" autoplay loop muted></video>
+      <a href="{% url 'productdetail' 149 %}" class="buy-button">Buy Now</a>
+    </div>
+    <div class="video-item">
+      <video src="/static/videos/video15.mp4" autoplay loop muted></video>
+      <a href="{% url 'productdetail' 67 %}" class="buy-button">Buy Now</a>
+    </div>
+    <div class="video-item">
+      <video src="/static/videos/video17.mp4" autoplay loop muted></video>
+      <a href="{% url 'productdetail' 121 %}" class="buy-button">Buy Now</a>
+    </div>
+  </div>
+  <div class="view-more">
+    <a href="{% url 'all_products' %}">
+      <button type="button" class="view-more-button">View More &#9660;</button>
+    </a>
+  </div>
 </div>
 
-  <!-- Animatede card -->
-   <section id="shop" >
-  <div class="box-container">
-    {% for x in category %}
-    <div class="box-item">
-      <div class="flip-box medium">
-        <div class="flip-box-front text-center" style="background-image: url({{ x.image.url}});">
-          <div class="inner color-white">
-            <h3 class="flip-box-header">{{x.name}}</h3>
-            <p>{{x.detail}}</p>
-            <!-- <img src="" width="25px" height="25px" alt="" class="flip-box-img"> -->
-          </div>
-        </div>
-        <div class="flip-box-back text-center" style="background-image: url({{ x.image.url}});">
-          <div class="inner color-white">
-            <h3 class="flip-box-header">{{x.name}}</h3>
-            <p>{{x.detail}}</p>
-            <a href="{% url 'product'  x.c_id x.id  %}">
-            <button class="flip-box-button">Shop Now</button></a>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </section>
+ <!-- end shop videos  -->
+  <style>
+    .video-section {
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  </div>
- 
-      <!-- video cards  -->
- <div style="padding-top: 5%;">
-    <div style="display: flex; flex-direction: column; align-items: center;">
-      <div style="display: flex; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 5%;">
-        <div style="width: 100%; max-width: 400px; height: 610px; position: relative; flex: 1 1 300px;">
-          <video src="/static/videos/video11.mp4" autoplay loop muted
-            style="width: 100%; height: 100%; object-fit: cover;"></video>
-          <a href="{% url 'productdetail' 52%}">
-            <button
-              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; border: 2px solid #fff; border-radius: 5px; background-color: rgba(0, 0, 0, 0.5); color: #fff; font-size: 16px; text-align: center; cursor: pointer;">Buy
-              Now</button>
-          </a>
-        </div>
-        <div style="width: 100%; max-width: 400px; height: 610px; position: relative; flex: 1 1 300px;">
-          <video src="/static/videos/video12.mp4" autoplay loop muted
-            style="width: 100%; height: 100%; object-fit: cover;"></video>
-          <a href="{% url 'productdetail' 208%}">
-            <button
-              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; border: 2px solid #fff; border-radius: 5px; background-color: rgba(0, 0, 0, 0.5); color: #fff; font-size: 16px; text-align: center; cursor: pointer;">Buy
-              Now</button>
-          </a>
-        </div>
-        <div style="width: 100%; max-width: 400px; height: 610px; position: relative; flex: 1 1 300px;">
-          <video src="/static/videos/video16.mp4" autoplay loop muted
-            style="width: 100%; height: 100%; object-fit: cover;"></video>
-          <a href="{% url 'productdetail' 47%}">
-            <button
-              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; border: 2px solid #fff; border-radius: 5px; background-color: rgba(0, 0, 0, 0.5); color: #fff; font-size: 16px; text-align: center; cursor: pointer;">Buy
-              Now</button>
-          </a>
-        </div>
-      </div>
-      <div style="display: flex; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 5%;">
-        <div style="width: 100%; max-width: 400px; height: 610px; position: relative; flex: 1 1 300px;">
-          <video src="/static/videos/video14.mp4" autoplay loop muted
-            style="width: 100%; height: 100%; object-fit: cover;"></video>
-          <a href="{% url 'productdetail' 149%}">
-            <button
-              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; border: 2px solid #fff; border-radius: 5px; background-color: rgba(0, 0, 0, 0.5); color: #fff; font-size: 16px; text-align: center; cursor: pointer;">Buy
-              Now</button>
-          </a>
-        </div>
-        <div style="width: 100%; max-width: 400px; height: 610px; position: relative; flex: 1 1 300px;">
-          <video src="/static/videos/video15.mp4" autoplay loop muted
-            style="width: 100%; height: 100%; object-fit: cover;"></video>
-          <a href="{% url 'productdetail' 67%}">
-            <button
-              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; border: 2px solid #fff; border-radius: 5px; background-color: rgba(0, 0, 0, 0.5); color: #fff; font-size: 16px; text-align: center; cursor: pointer;">Buy
-              Now</button>
-          </a>
-        </div>
-        <div style="width: 100%; max-width: 400px; height: 610px; position: relative; flex: 1 1 300px;">
-          <video src="/static/videos/video17.mp4" autoplay loop muted
-            style="width: 100%; height: 100%; object-fit: cover;"></video>
-          <a href="{% url 'productdetail' 121%}">
-            <button
-              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; border: 2px solid #fff; border-radius: 5px; background-color: rgba(0, 0, 0, 0.5); color: #fff; font-size: 16px; text-align: center; cursor: pointer;">Buy
-              Now</button>
-          </a>
-        </div>
-      </div>
-      <div style="text-align: center; margin-top: 20px;">
-            <a href="{% url 'all_products'%}">
-              <button type="button" class="btn ">View More &#9660;</button>
-        
-            </a>
-        </div> 
-    </div>
-  </div> 
-<style>
-  .btn{
-    background-color: none;
-    padding: 20px;
+/* Video Container */
+.video-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Video Item */
+.video-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.video-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Buy Button */
+.buy-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 20px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.buy-button:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* View More Button */
+.view-more {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.view-more-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  /* background-color: #ff66b2; */
+  color: #000000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.view-more-button:hover {
+  background-color: #fff;
+  color: #ff66b2;
+  border: 1px solid #ff66b2;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .video-container {
+    gap: 15px;
   }
-  .btn:hover{
-    
-    color: rgb(156, 15, 133);
+
+  .buy-button {
+    font-size: 14px;
   }
-</style>
-
-  <footer>
-    <p>&copy; 2024 Sanchvi Studio. All rights reserved.</p>
-    <p><a href="{% url 'privacyandpolicy'%}">Privacy Policy</a> | <a href="{%url 'Terms&Condition'%}">Terms of Service</a></p>
-  </footer>
-  <style>footer {
-    background-color:  #ffffffc6; /* Light grey background */
-    text-align: center; /* Centered text */
-    padding: 20px; /* Padding around the text */
-    font-family: Arial, sans-serif; /* Font family */
-    font-size: 14px; /* Font size */
-    color: #333; /* Dark grey text color */
-    border-top: 1px solid #ccc; /* Light grey top border */
 }
 
-footer p {
-    margin: 10px 0; /* Margin for paragraphs */
-}
+@media (max-width: 480px) {
+  .video-container {
+    gap: 10px;
+  }
 
-footer a {
-    color: #007BFF; /* Link color */
-    text-decoration: none; /* No underline for links */
+  .buy-button {
+    font-size: 12px;
+  }
 }
+  </style>
 
-footer a:hover {
-    text-decoration: underline; /* Underline on hover */
-}
-</style>
-
-  <script>
-    function showSidebar(){
-      const sidebar = document.querySelector('.sidebar');
-      sidebar.style.display = 'flex';
-    }
-    function hideSidebar(){
-      const sidebar = document.querySelector('.sidebar');
-      sidebar.style.display = 'none';
-    }
-  </script>
-{% endblock %}
+{%endblock%}
