@@ -28,6 +28,9 @@ def basehtml(req):
 
 
 def contact_page(req):
+    quaryset = {
+        'allcat': cat,
+    }
     if req.method== 'POST':
         first_name = req.POST['first_name']
         last_name = req.POST['last_name']
@@ -46,7 +49,8 @@ def contact_page(req):
         contact.save()
         return render(req, 'contact/thankyou_for_contact.html')
     
-    return render(req, 'contact/contact_page.html')
+    
+    return render(req, 'contact/contact_page.html',quaryset)
 
 
 

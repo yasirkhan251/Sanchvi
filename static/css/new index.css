@@ -21,7 +21,7 @@ video {
 }
 
 .box-container {
-  
+  /* margin-top: 100px; */
     align-items: center;
     display: inline-flex;
     flex-direction: row;
@@ -277,6 +277,19 @@ video {
 }
 /* Media Query for Mobile Devices Only */
 @media (max-width: 768px) {
+
+.vid{
+  padding: 0;
+  margin: 10px 0px;
+  border-radius: 0%;
+  width: 100%;
+  
+}
+.vid video{
+  border-radius: 0px;
+  /* height: 300px; */
+}
+
   .box-item {
       width: calc(50% - 4px); /* Two items per row on mobile */
       margin-left: 0; /* Remove left margin for better spacing */

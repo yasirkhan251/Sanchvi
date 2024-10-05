@@ -2,7 +2,7 @@
 {% block title %} Add To Cart {% endblock %}
 
 {% block content %}
- 
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -10,37 +10,25 @@
     }
 
     .cart-container {
-        width: 80%;
-        margin: 40px auto;
+        width: 100%; /* Full width for phone view */
+        margin: 10px auto;
         background-color: #fff;
         border-radius: 10px;
-        padding: 20px;
-        max-height: 75vh; /* Set a maximum height for the cart */
-        overflow-y: auto; /* Enable vertical scrolling */
+        padding: 15px;
+        max-height: auto;
+        overflow-y: auto;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    
-    .cart-container1 {
-        width: 80%;
-        margin: 1px auto;
-        background-color: #fff;
-        border-radius: 10px;
-        margin-top: -3.7%;
-        padding: 5px;
-        max-height: 75vh; /* Set a maximum height for the cart */
-        overflow-y: auto; /* Enable vertical scrolling */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.0);
-    }
-
 
     h1 {
         text-align: center;
+        font-size: 1.8rem; /* Responsive heading size */
     }
 
     .cart-item {
         display: flex;
         align-items: center;
-        padding: 20px 0;
+        padding: 15px 0;
         border-bottom: 1px solid #ddd;
     }
 
@@ -49,9 +37,9 @@
     }
 
     .cart-item img {
-        width: 120px;
+        width: 80px; /* Smaller image for phone view */
         height: auto;
-        margin-right: 20px;
+        margin-right: 10px;
         border: 1px solid #ddd;
         border-radius: 10px;
     }
@@ -62,8 +50,7 @@
 
     .item-details h3 {
         margin: 0;
-        font-size: 20px;
-        padding-bottom: 10px;
+        font-size: 1rem; /* Smaller font for phone view */
     }
 
     .item-details p {
@@ -93,96 +80,105 @@
         padding: 8px 16px;
         border-radius: 5px;
         cursor: pointer;
+        margin-left: auto; /* Align remove button to the right */
     }
 
     .remove-btn:hover {
         background-color: #c82333;
     }
 
+    .checkout-btn,
+    .shopnow-btn {
+        display: block;
+        width: 90%; /* Full width with some margin for better look */
+        margin: 20px auto;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1rem; /* Adjusted for readability */
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        transition: color 0.7s ease-in-out;
+    }
+
     .checkout-btn {
-    display: block;
-    width: 80%;
-    margin-top: 20px;
-    padding: 5px;
-    background: linear-gradient(to left, #ecb3e7, #e8ed93);
-    color: rgb(40, 5, 83);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 18px;
-    text-align: center;
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-    transition: color 0.7s ease-in-out;
-}
+        background: linear-gradient(to left, #ecb3e7, #e8ed93);
+        color: rgb(40, 5, 83);
+    }
 
-.checkout-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right, #ecb3e7, #e8ed93);
-    z-index: -1;
-    transition: transform 0.7s ease-in-out;
-    transform: scaleX(0);
-    transform-origin: left;
-}
+    .checkout-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, #ecb3e7, #e8ed93);
+        z-index: -1;
+        transition: transform 0.7s ease-in-out;
+        transform: scaleX(0);
+        transform-origin: left;
+    }
 
-.checkout-btn:hover::before {
-    transform: scaleX(1);
-}
+    .checkout-btn:hover::before {
+        transform: scaleX(1);
+    }
 
-.checkout-btn:hover {
-    color: rgb(106, 0, 0);
-}
+    .checkout-btn:hover {
+        color: rgb(106, 0, 0);
+    }
 
-.shopnow-btn {
-    display: block;
-    width: 80%;
-    margin-top: 20px;
-    padding: 5px;
-    background: linear-gradient(to right, #eb06ef, #ffffff);
-    
-    color: rgb(40, 5, 83);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 18px;
-    text-align: center;
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-    transition: color 0.7s ease-in-out;
-}
+    .shopnow-btn {
+        background: linear-gradient(to right, #eb06ef, #ffffff);
+        color: rgb(40, 5, 83);
+    }
 
-.shopnow-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* background: linear-gradient(to right, #d5f600, #e75050); */
-    /* background: linear-gradient(to left, #d5f600, #ffffff); */
-    background: linear-gradient(to left, #eb06ef, #ffffff);
-    z-index: -1;
-    transition: transform 0.7s ease-in-out;
-    transform: scaleX(0);
-    transform-origin: left;
-}
+    .shopnow-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to left, #eb06ef, #ffffff);
+        z-index: -1;
+        transition: transform 0.7s ease-in-out;
+        transform: scaleX(0);
+        transform-origin: left;
+    }
 
-.shopnow-btn:hover::before {
-    transform: scaleX(1);
-}
+    .shopnow-btn:hover::before {
+        transform: scaleX(1);
+    }
 
-.shopnow-btn:hover {
-    color: rgb(106, 0, 0);
-}
+    .shopnow-btn:hover {
+        color: rgb(106, 0, 0);
+    }
 
+    @media (max-width: 600px) {
+        .cart-item {
+            flex-direction: row; /* Keep image and name in a single row */
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cart-item img {
+            width: 60px; /* Smaller image for phone view */
+            margin-right: 10px;
+        }
+
+        .remove-btn {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+        }
+    }
 </style>
+
+
+
 
 <div class="cart-container">
     <div style="padding: 20px; width: auto;">
@@ -215,7 +211,7 @@
 </div>
 {% if item %}
 <div class="cart-container1">
-   <center> <a href="{% url 'checkout' %}"><button class="checkout-btn">Proceed to checkout</button></a></center>
+   <center> <a href="{% url 'checkout' %}"><button class="checkout-btn">Proceed to Checkout</button></a></center>
 </div>
 {% endif %}
 

@@ -9,11 +9,12 @@
 
     <video src="/static/videos/video10.mp4" loop autoplay muted  ></video>
   </div>
-<!-- end video  -->
-
+<!-- end video  --><section id="shopnow" >
+<div >
+<h2>Categories</h2></div>
   <!-- for shop categories  -->
-  <section id="shop" >
-    <div class="box-container">
+
+    <div class="box-container" >
       {% for x in category %}
       <div class="box-item">
         <div class="flip-box medium">
@@ -170,11 +171,16 @@
 
 @media (max-width: 480px) {
   .video-container {
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr); /* Show two videos per row */
+    gap: 10px; /* Maintain spacing between videos */
+  }
+
+  .video-item video {
+    height: 450px; /* Set a shorter height for the video */
   }
 
   .buy-button {
-    font-size: 12px;
+    font-size: 10px;
   }
 }
   </style>

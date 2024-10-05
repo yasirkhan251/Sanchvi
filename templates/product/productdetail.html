@@ -4,6 +4,11 @@
 {% block content %}
 
 
+
+<style>#tablet{
+    height: 70px;
+}</style>
+    
 <!-- <div>
     <button id="backButton">Back</button>
     <button id="nextButton">Next</button>
@@ -111,9 +116,13 @@
                     </button>
                     
                     
-                    <a  target="_blank" href="{%url 'sizechart'%}"><button  type="button" class="custom-button px-2 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 flex items-center text-sm">
-                        <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"  fill="#dc3545"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M21 2h-7V1h7zm-7 21h7v-1h-7zm4-3.707V4.707l2.646 2.646.707-.707L17.5 2.793l-3.854 3.853.707.707L17 4.707v14.586l-2.646-2.646-.707.707 3.853 3.853 3.854-3.854-.707-.707zM12 3.891V6H9v17H8V6H7v17H6V6H3V3.89A2.894 2.894 0 0 1 5.89 1h3.22A2.894 2.894 0 0 1 12 3.89zm-1 0A1.893 1.893 0 0 0 9.11 2H5.89A1.893 1.893 0 0 0 4 3.89V5h7z"></path><path fill="none" d="M0 0h24v24H0z"></path></g></svg>Size Chart 
-                    </button></a> 
+                    <a target="_blank" href="{%url 'sizechart'%}">
+                        <button type="button" id="sizechart-button" class="custom-button px-2 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 flex items-center text-sm">
+                            <!-- SVG code --><svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"  fill="#dc3545"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M21 2h-7V1h7zm-7 21h7v-1h-7zm4-3.707V4.707l2.646 2.646.707-.707L17.5 2.793l-3.854 3.853.707.707L17 4.707v14.586l-2.646-2.646-.707.707 3.853 3.853 3.854-3.854-.707-.707zM12 3.891V6H9v17H8V6H7v17H6V6H3V3.89A2.894 2.894 0 0 1 5.89 1h3.22A2.894 2.894 0 0 1 12 3.89zm-1 0A1.893 1.893 0 0 0 9.11 2H5.89A1.893 1.893 0 0 0 4 3.89V5h7z"></path><path fill="none" d="M0 0h24v24H0z"></path></g></svg>
+                            Size Chart
+                        </button>
+                    </a>
+                    
                 </div>
                 
                 <!-- <p class="text-muted mt-2">Free shipping on orders over ₹10000</p> -->
@@ -129,8 +138,13 @@
     </div>
 </div>
 </form>
-<style>
+<style>#color,
+    #size {
+        width: 160px; /* Increase width for better visibility */
+    }
+    
     .custom-button {
+        
         background-color: white;
         color: black;
         border: 1px solid #e83e8c; /* Optional: add border color for a touch of pink */
@@ -146,10 +160,71 @@
         border: 1px solid #e83e8c; /* Optional: add border color for a touch of pink */
     }
 
+    #description {
+        width: 100%; /* Let the element take up the full width of the container */
+    max-width: 100%; /* Prevent overflow beyond the container width */
+    overflow-x: auto; /* Add horizontal scroll if content is too wide */
+    white-space: pre-wrap; /* Allow text to wrap and prevent long lines from overflowing */
+    word-break: break-word; /* Break long words to prevent overflow */
+    padding: 15px; /* Add padding for a better appearance */
+    box-sizing: border-box; /* Ensure padding is included within the width */
+    background-color: #f9f9f9; /* Optional: light background for better readability */
+    border-radius: 8px; /* Optional: rounded corners for better design */
+    font-family: 'Times New Roman', Times, serif; /* Keep the original font style */
+    }   
+
     .custom-button:hover {
         background-color: #f1f1f1; /* Light gray on hover */
     }
+    @media only screen and (max-width: 700px) {
+        .svg{
+        width: 20px;
+    }
+    /* Select Color and Select Size in the Same Row */
+    .mb-4.flex {
+        flex-direction: row; /* Arrange them in a row */
+        gap: 10px; /* Add space between them for better appearance */
+        justify-content: space-between;
+    }
+   
+    .mr-4 {
+        margin-right: 0; /* Remove margin to adjust spacing */
+    }
+
+    /* Add to Cart, WhatsApp Order, and Size Chart in the Same Row */
+    .flex.space-x-2 {
+        flex-direction: row; /* Arrange buttons in a row */
+        flex-wrap: nowrap; /* Ensure buttons stay in a single line */
+        justify-content: space-around; /* Distribute them evenly */
+        gap: 5px; /* Add a small gap between buttons */
+    }
+
+    .custom-button {
+        width: 90%; /* Make sure each button is small enough to fit in one line */
+    }
+
+    /* Specifically for the Size Chart button */
+    #sizechart-button {
+        width: 80px; /* Allow it to have a larger width if needed */
+        height: 70px;
+        flex-grow: 1; /* Let it take up more space if available */
+    }
+    #description {
+        width: 100%; /* Let the element take up the full width of the container */
+    max-width: 100%; /* Prevent overflow beyond the container width */
+    overflow-x: auto; /* Add horizontal scroll if content is too wide */
+    white-space: pre-wrap; /* Allow text to wrap and prevent long lines from overflowing */
+    word-break: break-word; /* Break long words to prevent overflow */
+    padding: 15px; /* Add padding for a better appearance */
+    box-sizing: border-box; /* Ensure padding is included within the width */
+    background-color: #f9f9f9; /* Optional: light background for better readability */
+    border-radius: 8px; /* Optional: rounded corners for better design */
+    font-family: 'Times New Roman', Times, serif; /* Keep the original font style */
+    }   
+}
+
 </style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const sizeSelect = document.getElementById('size');
@@ -445,5 +520,12 @@ pre{
         });
     });
 </script>
+    <style>html{
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */}</style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> -->
 
 {% endblock %}
+
+

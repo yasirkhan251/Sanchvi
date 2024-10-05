@@ -22,17 +22,17 @@ class CategoryList(ListView):
         return context
     
    
-   
+cat = Category.objects.all()
 # About session
 def studiospace(req):
-    cat = Category.objects.all()
+    
     return render(req, 'about/Studiospace.html',{'allcat':cat})
 def aboutus(req):
-    return render(req, 'about/aboutus.html')
+    return render(req, 'about/aboutus.html',{'allcat':cat})
 def termsandcondition(req):
-    return render(req, 'about/terms&condition.html')
+    return render(req, 'about/terms&condition.html',{'allcat':cat})
 def privacyandpolicy(req):
-    return render(req, 'about/privacyandpolicy.html')
+    return render(req, 'about/privacyandpolicy.html',{'allcat':cat})
 
 
 def custom_404_view(request, exception):

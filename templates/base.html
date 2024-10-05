@@ -6,7 +6,11 @@
   <title>Sanchvi {%block title%}  {%endblock%}</title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
   <link rel="icon" href="/static/img/logo fevicon.png" type="image/x-icon" />
-
+  
+<style>
+  
+  
+</style>
   <!-- Fonts and icons -->
   <script src="/static/admin_assets_gui/js/plugin/webfont/webfont.min.js"></script>
   <script>
@@ -38,12 +42,12 @@
 <header>
   <div class="wrapper">
     <!-- Sidebar -->
-    <div class="sidebar" data-background-color="dark">
+    <div class="sidebar"  style="background: linear-gradient(to bottom, #ff9ff7, #e8ed9350);">
       <div class="sidebar-logo">
         <!-- Logo Header -->
-        <div class="logo-header" data-background-color="dark">
+        <div class="logo-header" style="color: #333;">
           <a href="/" class="logo">
-            <img src="/static/img/SANCHVI-removebg-preview.png" alt="Sanchvi" class="navbar-brand" height="70" />
+            <img id="tablet" src="/static/img/SANCHVI (1).png" alt="Sanchvi" class="navbar-brand" height="70" />
           </a>
           <div class="nav-toggle">
             <button class="btn btn-toggle toggle-sidebar">
@@ -62,252 +66,107 @@
       <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
-            <li class="nav-item active">
-              <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
-                <i class="fas fa-home"></i>
-                <p>Dashboard</p>
+      
+            <!-- Sanchvi Studio Logo -->
+         <style>
+         li p ,span{
+            color: black  ;
+          }
+         </style>
+      
+            <!-- Home Link -->
+            <li class="nav-item">
+              <a href="/">
+                <i class="fas fa-home "></i>
+                <p>Home</p>
+              </a>
+            </li>
+            
+      
+            <!-- Shop with Nested Categories -->
+            <li class="nav-item">
+              <a data-bs-toggle="collapse" href="#shop">
+                <i class="fas fa-shopping-bag"></i>
+                <p>Categories</p>
                 <span class="caret"></span>
               </a>
-              <div class="collapse" id="dashboard">
+              <div class="collapse" id="shop">
                 <ul class="nav nav-collapse">
+                  {% for x in allcat %}
                   <li>
-                    <a href="../demo1/index.html">
-                      <span class="sub-item">Dashboard 1</span>
+                    <a href="{% url 'product' x.c_id x.id %}">
+                      <span class="sub-item">{{ x.name }}</span>
                     </a>
                   </li>
+                  {% endfor %}
                 </ul>
               </div>
-            </li>
-            <li class="nav-section">
-              <span class="sidebar-mini-icon">
-                <i class="fa fa-ellipsis-h"></i>
-              </span>
-              <h4 class="text-section">Components</h4>
-            </li>
+            </li><script>
+              document.addEventListener('DOMContentLoaded', function() {
+                // Get the current URL path
+                const currentPath = window.location.pathname;
+            
+                // Use Django template tag to generate a partial product URL pattern
+                const productUrlPattern = "{% url 'product' 0 0 %}".replace("0", "\\d+").replace("0", "\\d+"); 
+            
+                // Construct a regular expression using the generated pattern
+                const productPagePattern = new RegExp(productUrlPattern);
+                
+                // If the current path matches the product URL pattern
+                if (productPagePattern.test(currentPath)) {
+                  const categoriesLink = document.querySelector('[data-bs-toggle="collapse"][href="#shop"]');
+                  if (categoriesLink) {
+                    categoriesLink.click();  // Simulate a click on the "Categories" link to expand the dropdown
+                  }
+                }
+              });
+            </script>
+            
+      
+            <!-- Contact Link -->
             <li class="nav-item">
-              <a data-bs-toggle="collapse" href="#base">
-                <i class="fas fa-layer-group"></i>
-                <p>Base</p>
-                <span class="caret"></span>
-              </a>
-              <div class="collapse" id="base">
-                <ul class="nav nav-collapse">
-                  <li>
-                    <a href="components/avatars.html">
-                      <span class="sub-item">Avatars</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="components/buttons.html">
-                      <span class="sub-item">Buttons</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="components/gridsystem.html">
-                      <span class="sub-item">Grid System</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="components/panels.html">
-                      <span class="sub-item">Panels</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="components/notifications.html">
-                      <span class="sub-item">Notifications</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="components/sweetalert.html">
-                      <span class="sub-item">Sweet Alert</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="components/font-awesome-icons.html">
-                      <span class="sub-item">Font Awesome Icons</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="components/simple-line-icons.html">
-                      <span class="sub-item">Simple Line Icons</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="components/typography.html">
-                      <span class="sub-item">Typography</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                <i class="fas fa-th-list"></i>
-                <p>Sidebar Layouts</p>
-                <span class="caret"></span>
-              </a>
-              <div class="collapse" id="sidebarLayouts">
-                <ul class="nav nav-collapse">
-                  <li>
-                    <a href="sidebar-style-2.html">
-                      <span class="sub-item">Sidebar Style 2</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="icon-menu.html">
-                      <span class="sub-item">Icon Menu</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a data-bs-toggle="collapse" href="#forms">
-                <i class="fas fa-pen-square"></i>
-                <p>Forms</p>
-                <span class="caret"></span>
-              </a>
-              <div class="collapse" id="forms">
-                <ul class="nav nav-collapse">
-                  <li>
-                    <a href="forms/forms.html">
-                      <span class="sub-item">Basic Form</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a data-bs-toggle="collapse" href="#tables">
-                <i class="fas fa-table"></i>
-                <p>Tables</p>
-                <span class="caret"></span>
-              </a>
-              <div class="collapse" id="tables">
-                <ul class="nav nav-collapse">
-                  <li>
-                    <a href="tables/tables.html">
-                      <span class="sub-item">Basic Table</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="tables/datatables.html">
-                      <span class="sub-item">Datatables</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a data-bs-toggle="collapse" href="#maps">
-                <i class="fas fa-map-marker-alt"></i>
-                <p>Maps</p>
-                <span class="caret"></span>
-              </a>
-              <div class="collapse" id="maps">
-                <ul class="nav nav-collapse">
-                  <li>
-                    <a href="maps/googlemaps.html">
-                      <span class="sub-item">Google Maps</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="maps/jsvectormap.html">
-                      <span class="sub-item">Jsvectormap</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a data-bs-toggle="collapse" href="#charts">
-                <i class="far fa-chart-bar"></i>
-                <p>Charts</p>
-                <span class="caret"></span>
-              </a>
-              <div class="collapse" id="charts">
-                <ul class="nav nav-collapse">
-                  <li>
-                    <a href="charts/charts.html">
-                      <span class="sub-item">Chart Js</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="charts/sparkline.html">
-                      <span class="sub-item">Sparkline</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a href="widgets.html">
-                <i class="fas fa-desktop"></i>
-                <p>Widgets</p>
-                <span class="badge badge-success">4</span>
+              <a href="{% url 'contact_page' %}">
+                <i class="fas fa-address-book"></i>
+                <p>Contact</p>
               </a>
             </li>
+      
+            <!-- Studio Space Link -->
             <li class="nav-item">
-              <a href="../../documentation/index.html">
-                <i class="fas fa-file"></i>
-                <p>Documentation</p>
-                <span class="badge badge-secondary">1</span>
+              <a href="{% url 'studiospace' %}">
+                <i class="fas fa-paint-brush"></i>
+                <p>Studio Space</p>
               </a>
             </li>
+      
+            <!-- About Us Link -->
             <li class="nav-item">
-              <a data-bs-toggle="collapse" href="#submenu">
-                <i class="fas fa-bars"></i>
-                <p>Menu Levels</p>
-                <span class="caret"></span>
+              <a href="{% url 'aboutus' %}">
+                <i class="fas fa-info-circle"></i>
+                <p>About Us</p>
               </a>
-              <div class="collapse" id="submenu">
-                <ul class="nav nav-collapse">
-                  <li>
-                    <a data-bs-toggle="collapse" href="#subnav1">
-                      <span class="sub-item">Level 1</span>
-                      <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="subnav1">
-                      <ul class="nav nav-collapse subnav">
-                        <li>
-                          <a href="#">
-                            <span class="sub-item">Level 2</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <span class="sub-item">Level 2</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li>
-                    <a data-bs-toggle="collapse" href="#subnav2">
-                      <span class="sub-item">Level 1</span>
-                      <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="subnav2">
-                      <ul class="nav nav-collapse subnav">
-                        <li>
-                          <a href="#">
-                            <span class="sub-item">Level 2</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <span class="sub-item">Level 1</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
             </li>
+      
+            <!-- Terms & Condition Link -->
+            <li class="nav-item">
+              <a href="{% url 'Terms&Condition' %}">
+                <i class="fas fa-file-contract"></i>
+                <p>Terms & Condition</p>
+              </a>
+            </li>
+      
+            <!-- Privacy & Policy Link -->
+            <li class="nav-item">
+              <a href="{% url 'privacyandpolicy' %}">
+                <i class="fas fa-user-shield"></i>
+                <p>Privacy & Policy</p>
+              </a>
+            </li>
+      
           </ul>
         </div>
       </div>
+      
     </div>
     <!-- End Sidebar -->
 
@@ -315,7 +174,7 @@
       <div class="main-header">
         <div class="main-header-logo">
           <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark">
+          <div class="logo-header" style="background: linear-gradient(to top, #ecb3e7, #e8ed93);">
             <a href="index.html" class="logo">
               <img src="/static/admin_assets_gui/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
                 height="20" />
@@ -335,8 +194,8 @@
           <!-- End Logo Header -->
         </div>
         <!-- Navbar Header -->
-        <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
-          <div class="container-fluid">
+        <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom" style="background-color: rgb(248, 183, 226);">
+          <div class="container-fluid" >
             <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"></nav>
 
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
@@ -495,12 +354,12 @@
                   <div class="quick-actions-scroll scrollbar-outer">
                     <div class="quick-actions-items">
                       <div class="row m-0">
-                        <a class="col-6 col-md-4 p-0" href="#">
+                        <a class="col-6 col-md-4 p-0" href="/#shopnow">
                           <div class="quick-actions-item">
                             <div class="avatar-item bg-danger rounded-circle">
-                              <i class="far fa-calendar-alt"></i>
+                              <i class="fas fa-shopping-bag"></i>
                             </div>
-                            <span class="text">Calendar</span>
+                            <span class="text">Shop</span>
                           </div>
                         </a>
                         <a class="col-6 col-md-4 p-0" href="#">
@@ -610,7 +469,7 @@
           <nav class="pull-left"></nav>
           <div class="copyright">
             © <span id="year"></span> . All rights
-            reserved. Visit <a href="https://www.sanchvi.com">Sanchvi.com</a>
+            reserved. Visit <a href="https://www.sanchvistudio.com">sanchvistudio.com</a>
           </div>
 
           <script>
@@ -624,7 +483,7 @@
     </div>
 
     <!-- Custom template | don't include it in your project! -->
-    <div class="custom-template">
+    <!-- <div class="custom-template">
       <div class="title">Settings</div>
       <div class="custom-content">
         <div class="switcher">
@@ -683,7 +542,7 @@
       <div class="custom-toggle">
         <i class="icon-settings"></i>
       </div>
-    </div>
+    </div> -->
     <!-- End Custom template -->
   </div>
   <!--   Core JS Files   -->
@@ -751,5 +610,11 @@
     });
   </script>
 </header>
-
+<style>.container {
+  background: linear-gradient(to bottom, #ecb3e7, #e8ed93);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* Ensure the gradient covers the full viewport height */
+}
+</style>
 </html>
