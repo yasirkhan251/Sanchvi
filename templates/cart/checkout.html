@@ -1,66 +1,36 @@
-
 {% extends 'base.html' %}
-{% block title %} Add To Cart {% endblock %}
+{% block title %} Checkout {% endblock %}
 
 {% block content %}
 
+<link rel="stylesheet" href="/static/css/checkout.css">
 
-    <link rel="stylesheet" href="/static/css/checkout.css">
-
-    
-<div class="container " style=" background: rgba(255, 255, 255, 0.625);    min-width: 100%; ">
+<div class="container checkout-container" style="background: rgba(255, 255, 255, 0.625);">
     <div class="checkoutLayout">
-
-        
-        <div class="returnCart" style="  font-family: monospace;
-        overflow-x: hidden;
-        font-synthesis: 15px; ">
-            <a href="/"> <p style='font-size: larger;'>Keep Shopping</p></a>
-            <center><a href="{%url 'addtocart'%}"><button style="color: rgb(246, 0, 0);">Need to change?</button></a></center>
+        <div class="returnCart">
+            <a href="/"> <p class="keep-shopping">Keep Shopping</p></a>
+            <center><a href="{% url 'addtocart' %}"><button class="change-button">Need to change?</button></a></center>
             <h1>List Product in Cart</h1>
-            
             <div class="list">
                 {% for x in item %}
                 <div class="item">
-                    <img src="{{ x.product.img.url }}" alt="{{ x.product.name }}">
+                    <img src="{{ x.product.img.url }}" alt="{{ x.product.name }}" class="product-image">
                     <div class="info">
                         <div class="name">{{ x.product }}</div>
-                        <div class="price">₹<span class="item-price">{{ x.price }}</span></div>
+                        <div class="price">₹<span class="item-price" data-price="{{ x.price }}" data-qty="{{ x.qty }}">{{ x.price }}</span></div>
                     </div>
-                    <div class="quantity">{{ x.qty }}</div>
-                    <div class="returnPrice">₹<span class="total-price" data-price="{{ x.price }}" data-qty="{{ x.qty }}"></span></div>
+                    <div class="quantity">Qty: {{ x.qty }}</div>
+                    <div class="returnPrice">₹<span class="total-price"></span></div>
                 </div>
-                {%empty%}
+                {% empty %}
                 <div class="info">You haven't added any items</div>
-              <button style="background-color: yellow; color: black;"  class="buttonCheckout"><a href="/#shop">Shop here</a></button>
-            {% endfor %}
-            
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    // Select all elements with the class 'total-price'
-                    const totalPrices = document.querySelectorAll('.total-price');
-                    
-                    totalPrices.forEach(function (element) {
-                        // Get the price and quantity from the data attributes
-                        const price = parseFloat(element.getAttribute('data-price'));
-                        const qty = parseInt(element.getAttribute('data-qty'));
-            
-                        // Calculate the total price
-                        const totalPrice = price * qty;
-            
-                        // Display the total price
-                        element.textContent = totalPrice.toFixed(2);
-                    });
-                });
-            </script>
-            
+                <button class="buttonCheckout shop-now"><a href="/#shop">Shop here</a></button>
+                {% endfor %}
             </div>
-           
         </div>
 
-
-        <div class="right" style='color: #000;' >
-            <center><h1 style="font-weight: 700;">Checkout</h1></center>
+        <div class="right">
+            <center><h1 class="checkout-title">Checkout</h1></center>
             <form method="post" action="{% url 'checkout' %}">
                 {% csrf_token %}
                 <div class="form">
@@ -68,17 +38,17 @@
                         <label for="name">Full Name</label>
                         <input type="text" name="name" required id="name">
                     </div>
-            
+
                     <div class="group">
                         <label for="phone">Phone Number</label>
                         <input type="text" name="phone" required id="phone">
                     </div>
-            
+
                     <div class="group">
                         <label for="address">Address</label>
                         <input type="text" name="address" required id="address">
                     </div>
-            
+
                     <div class="group">
                         <label for="country">Country</label>
                         <select name="country" required id="country">
@@ -86,7 +56,7 @@
                             <option value="India">India</option>
                         </select>
                     </div>
-            
+
                     <div class="group">
                         <label for="city">City</label>
                         <select name="city" required id="city">
@@ -95,7 +65,7 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="return">
                     <div class="row">
                         <div>Total Quantity</div>
@@ -106,36 +76,36 @@
                         <div id="totalPrice">₹0</div>
                     </div>
                 </div>
-            
+
                 <center>
                     <button type="button" class="btn btn-primary buttonCheckout" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Checkout
                     </button>
                 </center>
-            
+
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 style="color: black;" class="modal-title fs-5" id="exampleModalLabel">Payment Options</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Payment Options</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body" style="color: black;">
+                            <div class="modal-body">
                                 <p>Select preferred payment method</p><br>
-                                <div style="display: flex; flex-direction: row; gap: 30px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                        <img src="https://pbs.twimg.com/profile_images/1615271089705463811/v-emhrqu_400x400.png" width="50px" alt="">
+                                <div class="payment-options">
+                                    <div class="payment-method">
+                                        <img src="https://pbs.twimg.com/profile_images/1615271089705463811/v-emhrqu_400x400.png" width="50px" alt="PhonePe">
                                         <input type="radio" name="paymentMethod" id="phonepe" value="phonepe">
                                         <label for="phonepe">PhonePe (UPI)</label>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 20px;"> <!-- Added margin-left here -->
-                                        <img src="https://w7.pngwing.com/pngs/720/939/png-transparent-paypal-computer-icons-logo-paypal-blue-angle-service-thumbnail.png" width="50px" alt="">
-                                        <input type="radio" name="paymentMethod" id="paypal" value="paypal" >
+                                    <div class="payment-method">
+                                        <img src="https://w7.pngwing.com/pngs/720/939/png-transparent-paypal-computer-icons-logo-paypal-blue-angle-service-thumbnail.png" width="50px" alt="PayPal">
+                                        <input type="radio" name="paymentMethod" id="paypal" value="paypal">
                                         <label for="paypal">PayPal</label>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                        <img src="https://img.favpng.com/18/1/20/credit-card-debit-card-bank-sbi-cards-png-favpng-NDk8jXgaFfg0n5ypnDAFHZ9cA.jpg" width="75px" alt="">
+                                    <div class="payment-method">
+                                        <img src="https://img.favpng.com/18/1/20/credit-card-debit-card-bank-sbi-cards-png-favpng-NDk8jXgaFfg0n5ypnDAFHZ9cA.jpg" width="75px" alt="Credit/Debit Card">
                                         <input type="radio" name="paymentMethod" id="creditDebit" value="creditDebit" disabled>
                                         <label for="creditDebit">Credit/Debit Card disabled</label>
                                     </div>
@@ -148,19 +118,10 @@
                         </div>
                     </div>
                 </div>
-                
-                
             </form>
-            
         </div>
-    
-        
-            </div>
-          </div>
-            </div>
     </div>
 </div>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -171,11 +132,14 @@
             let totalPrice = 0;
 
             items.forEach(function (item) {
-                const price = parseFloat(item.querySelector('.item-price').textContent);
-                const quantity = parseInt(item.querySelector('.quantity').textContent);
+                const price = parseFloat(item.querySelector('.item-price').getAttribute('data-price'));
+                const quantity = parseInt(item.querySelector('.item-price').getAttribute('data-qty'));
 
                 totalQuantity += quantity;
-                totalPrice += price * quantity;
+                const itemTotalPrice = price * quantity;
+                totalPrice += itemTotalPrice;
+
+                item.querySelector('.total-price').textContent = itemTotalPrice.toFixed(2);
             });
 
             // Update the total quantity and price in the UI
@@ -202,8 +166,109 @@
         });
     });
 </script>
-<style>input{
-    color: black;
-}</style>
+
+<style>
+    .checkout-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .checkoutLayout {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .returnCart, .right {
+        flex: 1;
+        min-width: 300px;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .returnCart {
+        order: 1;
+    }
+
+    .right {
+        order: 2;
+    }
+
+    .item {
+        display: grid;
+        grid-template-columns: 100px 1fr 50px 80px;
+        align-items: center;
+        gap: 15px;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .item img.product-image {
+        width: 100%;
+        height: 100px;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    .info {
+        flex-grow: 1;
+    }
+
+    .payment-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .payment-method {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .checkoutLayout {
+            flex-direction: column;
+        }
+
+        .returnCart, .right {
+            margin-bottom: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .item img.product-image {
+            width: 100%;
+            height: auto;
+        }
+
+        .item .info, .item .quantity, .item .returnPrice {
+            font-size: 0.9rem;
+        }
+
+        .checkout-title {
+            font-size: 1.5rem;
+        }
+
+        .returnCart, .right {
+            padding: 15px;
+        }
+
+        .buttonCheckout {
+            width: 100%;
+        }
+    }
+</style>
 
 {% endblock %}

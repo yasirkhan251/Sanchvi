@@ -42,7 +42,7 @@
 <header>
   <div class="wrapper">
     <!-- Sidebar -->
-    <div class="sidebar"  style="background: linear-gradient(to bottom, #ff9ff7, #e8ed9350);">
+    <div class="sidebar"  style="background: linear-gradient(to bottom, #f8b7e2, #e8ed9350);" >
       <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" style="color: #333;">
@@ -50,7 +50,7 @@
             <img id="tablet" src="/static/img/SANCHVI (1).png" alt="Sanchvi" class="navbar-brand" height="70" />
           </a>
           <div class="nav-toggle">
-            <button class="btn btn-toggle toggle-sidebar">
+            <button class="btn btn-toggle toggle-sidebar" style="pointer-events: fill;">
               <i class="gg-menu-right"></i>
             </button>
             <button class="btn btn-toggle sidenav-toggler">
@@ -174,7 +174,7 @@
       <div class="main-header">
         <div class="main-header-logo">
           <!-- Logo Header -->
-          <div class="logo-header" style="background: linear-gradient(to top, #ecb3e7, #e8ed93);">
+          <div class="logo-header" style="background: linear-gradient(to top, #f8b7e2, #e8ed93);">
             <a href="index.html" class="logo">
               <img src="/static/admin_assets_gui/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
                 height="20" />
@@ -346,8 +346,10 @@
                 <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                   <i class="fas fa-layer-group"></i>
                 </a>
-                <div class="dropdown-menu quick-actions animated fadeIn">
-                  <div class="quick-actions-header">
+
+
+                <div class="dropdown-menu quick-actions animated fadeIn" >
+                  <div class="quick-actions-header" style="background: linear-gradient(to bottom, #f8b7e2, #e8ed9350);">
                     <span class="title mb-1">Quick Actions</span>
                     <span class="subtitle op-7">Shortcuts</span>
                   </div>
@@ -356,50 +358,62 @@
                       <div class="row m-0">
                         <a class="col-6 col-md-4 p-0" href="/#shopnow">
                           <div class="quick-actions-item">
-                            <div class="avatar-item bg-danger rounded-circle">
+                            <div class="avatar-item bg-warning rounded-circle">
                               <i class="fas fa-shopping-bag"></i>
                             </div>
-                            <span class="text">Shop</span>
+                            <span class="text">Shopping</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0" href="{% url 'addtocart' %}">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item  rounded-circle" style="background-color: chocolate;">
+                              <i class="fas fa-cart-plus"></i>
+
+                            </div>
+                            <span class="text">My Cart</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0" href="{% url 'orders' %}">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item  rounded-circle" style="background-color: #42a710;">
+                              <i class="fas fa-box"></i>
+
+                            </div>
+                            <span class="text">My Orders</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0" href="{%url 'sizechart'%}">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item  rounded-circle" style="background-color: #ee0b48;">
+                              <!-- <i class="fas fa-ruler-combined"></i> -->
+                              <svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 30px;"  fill="white"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M21 2h-7V1h7zm-7 21h7v-1h-7zm4-3.707V4.707l2.646 2.646.707-.707L17.5 2.793l-3.854 3.853.707.707L17 4.707v14.586l-2.646-2.646-.707.707 3.853 3.853 3.854-3.854-.707-.707zM12 3.891V6H9v17H8V6H7v17H6V6H3V3.89A2.894 2.894 0 0 1 5.89 1h3.22A2.894 2.894 0 0 1 12 3.89zm-1 0A1.893 1.893 0 0 0 9.11 2H5.89A1.893 1.893 0 0 0 4 3.89V5h7z"></path><path fill="none" d="M0 0h24v24H0z"></path></g></svg>
+                            </div>
+                            <span class="text">Size Chart</span>
                           </div>
                         </a>
                         <a class="col-6 col-md-4 p-0" href="#">
                           <div class="quick-actions-item">
-                            <div class="avatar-item bg-warning rounded-circle">
-                              <i class="fas fa-map"></i>
+                            <div class="avatar-item rounded-circle" style="background-color: #0818cf;">
+                              <i class="fas fa-address-book"></i>
+
+
                             </div>
-                            <span class="text">Maps</span>
+                            <span class="text">Contact Us</span>
                           </div>
                         </a>
-                        <a class="col-6 col-md-4 p-0" href="#">
+                        <a class="col-6 col-md-4 p-0" href="{%url 'profile'%}">
                           <div class="quick-actions-item">
-                            <div class="avatar-item bg-info rounded-circle">
-                              <i class="fas fa-file-excel"></i>
+                            <div class="avatar-item bg-default rounded-circle">
+                             
+                               {%if request.user.profile %}
+                               <img class="img" src="{{request.user.profile.url}}" alt="{{request.user}}">
+                               {%else%}
+                                <i class="fas fa-user"></i>
+                               {%endif%}
+
                             </div>
-                            <span class="text">Reports</span>
-                          </div>
-                        </a>
-                        <a class="col-6 col-md-4 p-0" href="#">
-                          <div class="quick-actions-item">
-                            <div class="avatar-item bg-success rounded-circle">
-                              <i class="fas fa-envelope"></i>
-                            </div>
-                            <span class="text">Emails</span>
-                          </div>
-                        </a>
-                        <a class="col-6 col-md-4 p-0" href="#">
-                          <div class="quick-actions-item">
-                            <div class="avatar-item bg-primary rounded-circle">
-                              <i class="fas fa-file-invoice-dollar"></i>
-                            </div>
-                            <span class="text">Invoice</span>
-                          </div>
-                        </a>
-                        <a class="col-6 col-md-4 p-0" href="#">
-                          <div class="quick-actions-item">
-                            <div class="avatar-item bg-secondary rounded-circle">
-                              <i class="fas fa-credit-card"></i>
-                            </div>
-                            <span class="text">Payments</span>
+                            <span class="text">{{request.user}}</span>
+                            
                           </div>
                         </a>
                       </div>
@@ -439,19 +453,20 @@
                         <div class="u-text">
                           <h4>{{request.user.username}}</h4>
                           <p class="text-muted">{{request.user.email}}</p>
-                          <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                          <a href="{% url 'profile' %}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                         </div>
                       </div>
                     </li>
                     <li>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">My Profile</a>
-                      <a class="dropdown-item" href="#">My Balance</a>
-                      <a class="dropdown-item" href="/admin_dev">Developer</a>
+                      <a class="dropdown-item" href="{%url 'profile'%}">My Profile</a>
+                      <a class="dropdown-item" href="{% url 'addtocart' %}">Add to Cart</a>
+                      <a class="dropdown-item" href="{% url 'orders' %}">My Orders</a>
+                      
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Account Setting</a>
+                      <a class="dropdown-item" href="{% url 'settings' %}">Account Setting</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Logout</a>
+                      <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
                     </li>
                   </div>
                 </ul>
@@ -611,10 +626,15 @@
   </script>
 </header>
 <style>.container {
-  background: linear-gradient(to bottom, #ecb3e7, #e8ed93);
+  background: linear-gradient(to bottom, #f8b7e2, #e8ed93);
   margin: 0;
   padding: 0;
   min-height: 100vh; /* Ensure the gradient covers the full viewport height */
+}
+.img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 </style>
 </html>
