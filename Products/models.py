@@ -80,5 +80,6 @@ class ContactMe(models.Model):
     email = models.EmailField()
     mobile = models.BigIntegerField()
     message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     def __str__(self):
-        return f"{self.first_name} {self.last_name} : {self.email} / {self.mobile}"
+        return f"{self.first_name} {self.last_name} : {self.email} / {self.mobile} - {self.created_at}"
