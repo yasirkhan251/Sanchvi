@@ -4,243 +4,355 @@
 {% block content %}
   <title>Studio Space Rent</title>
 
-  <style>
-    /* General Styles */
+  <style>/* General Styles *//* General Styles */
     .slider-container {
       width: 100%;
-      height: 100vh;
-      background: linear-gradient(to bottom right, #ecb3e7, #f8ffae); /* Linear gradient background */
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
+      background: linear-gradient(to bottom right, #ecb3e7, #f8ffae);
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .slider-images {
-      display: flex;
-      align-items: center;
-      gap: 21px;
-    }
-
-    .slider-img {
-      width: 100px;  /* Adjusted size */
-      height: 365px; /* Adjusted size */
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      transition: 0.7s ease;
-    }
-
-    .slider-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 6px;
-    }
-
-    h1 {
-      font-family: "Jost", sans-serif;
-      font-size: 26px; /* Adjusted size */
-      font-weight: 700;
-      text-align: left;
-      text-transform: uppercase;
-      color: #fff;
-      position: absolute;
-      top: 50%;
-      left: -10%;
-      transform: rotate(270deg);
-      transition: 0.7s ease;
-    }
-
-    .details {
-      position: absolute;
-      bottom: 25px; /* Adjusted size */
-      left: 25px;  /* Adjusted size */
-    }
-
-    .details h2 {
-      font-family: "Jost", sans-serif;
-      font-size: 18px; /* Adjusted size */
-      font-weight: 700;
-      text-align: left;
-      line-height: 24px; /* Adjusted size */
-      color: #fff;
-      text-transform: uppercase;
-      transition: 0.7s ease;
-      display: none;
-    }
-
-    .details p {
-      font-family: "Jost", sans-serif;
-      font-size: 14px; /* Adjusted size */
-      font-weight: 700;
-      text-align: left;
-      line-height: 20px; /* Adjusted size */
-      color: #fff;
-      text-transform: uppercase;
-      transition: 0.7s ease;
-      display: none;
-    }
-
-    .slider-img.active {
-      width: 498px !important; /* Adjusted size */
-      height: 488px !important; /* Adjusted size */
-    }
-
-    .slider-img.active h1 {
-      display: none;
-    }
-
-    .slider-img.active .details p, 
-    .slider-img.active .details h2 {
-      display: block;
-    }
-
-    /* Contact Us Button */
-    .contact-us-container {
-      display: flex;
-      justify-content: center;
-      margin: 20px 0;
+      flex-direction: column;
+      padding: 20px;
     }
     
-    .contact-us-button {
-      background-color: #ee7fd0; /* Pink background */
-      color: #fff; /* White text */
-      padding: 10px 20px;
-      text-align: center;
+    .slider-images {
+      display: flex;
+      flex-wrap: wrap; /* Allow wrapping to the next line */
+      justify-content: center;
+      gap: 20px;
+    }
+    
+    .slider-img {
+      width: calc(25% - 20px); /* 25% of container width minus the gap */
+      max-width: 250px; /* Optional: limit the maximum width */
+      height: auto;
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    
+    .slider-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .slider-img h1 {
+      display: none; /* Hide h1 in grid layout */
+    }
+    
+    .slider-img .details {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      color: #fff;
+      text-align: left;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .slider-img .details h2,
+    .slider-img .details p {
+      margin: 0;
+      font-family: "Jost", sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    }
+    
+    .slider-img .contact-us-container {
+      margin-top: 5px;
+    }
+    
+    .slider-img .contact-us-button {
+      background-color: #ee7fd0;
+      color: #fff;
+      padding: 8px 16px;
       text-decoration: none;
       border-radius: 5px;
-      font-size: 16px;
+      font-size: 14px;
       transition: background-color 0.3s ease;
     }
     
-    .contact-us-button:hover {
-      background-color: #ff69b4; /* Lighter Pink background on hover */
-      color: #ebf7a6; /* Change text color */
+    .slider-img .contact-us-button:hover {
+      background-color: #ff69b4;
+      color: #ebf7a6;
     }
-
-    /* MOBILE VIEW STYLES */
-    @media screen and (max-width: 768px) {
-      .slider-container {
-        flex-direction: column; /* Stack images vertically */
-        height: auto; /* Adjust height to fit content */
-        padding: 20px; /* Add padding for better spacing */
-      }
-
-      .slider-images {
-        flex-direction: row; /* Scroll horizontally on mobile */
-        gap: 10px; /* Reduce gap between images */
-        overflow-x: auto; /* Enable horizontal scroll */
-      }
-
-      .slider-img {
-        width: 80%; /* Make images fill most of the screen */
-        height: auto; /* Adjust height for aspect ratio */
-        flex: 0 0 auto; /* Prevent the image from stretching */
-        margin: 0 10px;
-      }
-
-      .slider-img img {
-        width: 100%;
-        height: auto; /* Maintain aspect ratio */
-      }
-
-      .details h2,
-      .details p {
-        font-size: 16px; /* Larger text for readability */
-      }
-
-      h1 {
-        font-size: 20px; /* Adjust the title font size */
-        top: 45%;
-        left: 10px;
-      }
+    
+    .slider-img:hover .details {
+      opacity: 1;
     }
-  </style>
+    
+    .slider-nav {
+      display: none; /* Hide navigation arrows in grid layout */
+    }
+    
 
-  <section class="slider-container">
-    <div class="slider-images">
-      <div class="slider-img">
-        <img src="/static/Images/S1.jpg" alt="1" />
-        <h1>Boho setup</h1>
-        <div class="details">
-          <h2>Boho setup</h2>
-          <p>RS-1800/+</p>
-        </div>
-      </div>
-      <div class="slider-img">
-        <img src="/static/Images/S2.jpg" alt="2" />
-        <h1>Dark grey roll</h1>
-        <div class="details">
-          <h2>Dark grey roll</h2>
-          <p>RS-500/-</p>
-        </div>
-      </div>
-      <div class="slider-img">
-        <img src="/static/Images/S3.jpg" alt="3" />
-        <h1>Swing with fairy drape</h1>
-        <div class="details">
-          <h2>Swing with fairy drape</h2>
-          <p>RS-1200/-</p>
-        </div>
-      </div>
-      <div class="slider-img active">
-        <img src="/static/Images/S4.jpg" alt="4" />
-        <h1>Golden mirror</h1>
-        <div class="details">
-          <h2>Golden mirror</h2>
-          <p>RS-500/-</p>
-        </div>
-      </div>
-      <div class="slider-img">
-        <img src="/static/Images/S5.jpg" alt="5" />
-        <h1>Sheer love</h1>
-        <div class="details">
-          <h2>Sheer love</h2>
-          <p>RS-500/-</p>
-        </div>
-      </div>
-      <div class="slider-img">
-        <img src="/static/Images/S6.jpg" alt="6" />
-        <h1>Vintage wall + Mauve sofa</h1>
-        <div class="details">
-          <h2>Vintage wall + Mauve sofa</h2>
-          <p>RS-1200/-</p>
-        </div>
-      </div>
-      <div class="slider-img">
-        <img src="/static/Images/S7.jpg" alt="7" />
-        <h1>Vintage wall</h1>
-        <div class="details">
-          <h2>Vintage wal</h2>
-          <p>RS-1000/-</p>
-        </div>
-      </div>
-      <div class="slider-img">
-        <img src="/static/Images/S8.jpg" alt="8" />
-        <h1>Purple punch</h1>
-        <div class="details">
-          <h2>Purple punch</h2>
-          <p>RS-1200</p>
+/* Mobile View Styles */
+@media screen and (max-width: 768px) {
+  /* Existing mobile styles remain unchanged */
+  .slider-container {
+    height: auto;
+    padding: 20px;
+  }
+  slider-images {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .slider-img {
+    width: 100%;
+    max-width: 100%;
+  }
+
+
+  .slider-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+  }
+
+  /* Hide the rotated h1 on mobile */
+  .slider-img h1 {
+    display: none;
+  }
+
+  /* Position details inside the image */
+  .details {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    text-align: left;
+    color: #fff;
+  }
+
+  .details h2,
+  .details p {
+    display: block;
+    font-size: 16px;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Adjust active state */
+  .slider-img.active {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .slider-img.active h1 {
+    display: none;
+  }
+
+  .slider-img.active .details h2,
+  .slider-img.active .details p {
+    display: block;
+  }
+
+  /* Hide navigation arrows on mobile */
+  .slider-nav {
+    display: none;
+  }
+}
+/* Existing styles remain the same */
+
+/* Specific styles for the landscape image */
+.slider-img.landscape {
+  /* Adjust the height to match other images */
+  height: auto; /* Let the height adjust automatically */
+  overflow: hidden; /* Hide any overflow */
+}
+
+.slider-img.landscape img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the container */
+  object-position: center; /* Center the image */
+}
+
+</style>
+
+<section class="slider-container">
+  <div class="slider-images">
+    <!-- Image 1 -->
+    <div class="slider-img landscape">
+      <img src="/static/Images/S1.jpg" alt="Boho setup" />
+      <h1>Boho setup</h1>
+      <div class="details">
+        <h2>Boho setup</h2>
+        <p>RS-1800/+</p>
+        <div class="contact-us-container">
+          <a
+            href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20am%20interested%20in%20the%20Boho%20setup%20priced%20at%20RS-1800%2F%2B.%20Please%20provide%20more%20details."
+            target="_blank"
+            class="contact-us-button"
+          >WhatsApp Us</a>
         </div>
       </div>
     </div>
-<br>
-  </section>
 
-  <!-- Contact Us Button -->
+    <!-- Image 2 -->
+    <div class="slider-img landscape">
+      <img src="/static/Images/S2.jpg" alt="Dark grey roll" />
+      <h1>Dark grey roll</h1>
+      <div class="details">
+        <h2>Dark grey roll</h2>
+        <p>RS-500/-</p>
+        <div class="contact-us-container">
+          <a
+            href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20am%20interested%20in%20the%20Dark%20grey%20roll%20priced%20at%20RS-500%2F-.%20Please%20provide%20more%20details."
+            target="_blank"
+            class="contact-us-button"
+          >WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image 3 -->
+    <div class="slider-img landscape">
+      <img src="/static/Images/S3.jpg" alt="Swing with fairy drape" />
+      <h1>Swing with fairy drape</h1>
+      <div class="details">
+        <h2>Swing with fairy drape</h2>
+        <p>RS-1200/-</p>
+        <div class="contact-us-container">
+          <a
+            href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20am%20interested%20in%20the%20Swing%20with%20fairy%20drape%20priced%20at%20RS-1200%2F-.%20Please%20provide%20more%20details."
+            target="_blank"
+            class="contact-us-button"
+          >WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image 4 -->
+    <div class="slider-img active landscape">
+      <img src="/static/Images/S4.jpg" alt="Golden mirror" />
+      <h1>Golden mirror</h1>
+      <div class="details">
+        <h2>Golden mirror</h2>
+        <p>RS-500/-</p>
+        <div class="contact-us-container">
+          <a
+            href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20am%20interested%20in%20the%20Golden%20mirror%20priced%20at%20RS-500%2F-.%20Please%20provide%20more%20details."
+            target="_blank"
+            class="contact-us-button"
+          >WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image 5 -->
+    <div class="slider-img landscape">
+      <img src="/static/Images/S5.jpg" alt="Sheer love" />
+      <h1>Sheer love</h1>
+      <div class="details">
+        <h2>Sheer love</h2>
+        <p>RS-500/-</p>
+        <div class="contact-us-container">
+          <a
+            href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20am%20interested%20in%20the%20Sheer%20love%20priced%20at%20RS-500%2F-.%20Please%20provide%20more%20details."
+            target="_blank"
+            class="contact-us-button"
+          >WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image 6 -->
+    <div class="slider-img landscape">
+      <img src="/static/Images/S6.jpg" alt="Vintage wall + Mauve sofa" />
+      <h1>Vintage wall + Mauve sofa</h1>
+      <div class="details">
+        <h2>Vintage wall + Mauve sofa</h2>
+        <p>RS-1200/-</p>
+        <div class="contact-us-container">
+          <a
+            href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20am%20interested%20in%20the%20Vintage%20wall%20%2B%20Mauve%20sofa%20priced%20at%20RS-1200%2F-.%20Please%20provide%20more%20details."
+            target="_blank"
+            class="contact-us-button"
+          >WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image 7 -->
+    <div class="slider-img landscape">
+      <img src="/static/Images/S7.jpg" alt="Vintage wall" />
+      <h1>Vintage wall</h1>
+      <div class="details">
+        <h2>Vintage wall</h2>
+        <p>RS-1000/-</p>
+        <div class="contact-us-container">
+          <a
+            href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20am%20interested%20in%20the%20Vintage%20wall%20priced%20at%20RS-1000%2F-.%20Please%20provide%20more%20details."
+            target="_blank"
+            class="contact-us-button"
+          >WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image 8 -->
+    <div class="slider-img landscape">
+      <img src="/static/Images/S8.jpg" alt="Purple punch" />
+      <h1>Purple punch</h1>
+      <div class="details">
+        <h2>Purple punch</h2>
+        <p>RS-1200</p>
+        <div class="contact-us-container">
+          <a
+            href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20am%20interested%20in%20the%20Purple%20punch%20priced%20at%20RS-1200.%20Please%20provide%20more%20details."
+            target="_blank"
+            class="contact-us-button"
+          >WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="slider-nav">
+    <button id="prevBtn">&#10094;</button>
+    <button id="nextBtn">&#10095;</button>
+  </div>
   <div class="contact-us-container">
     <a href="https://api.whatsapp.com/send?phone=919844702429&text=Hello%2C%20I%20hope%20you%27re%20doing%20well%21%20I%27m%20interested%20in%20learning%20more%20about%20the%20Studio%20Space%20you%20offer.%20Could%20you%20please%20provide%20me%20with%20more%20details%20regarding%20availability%2C%20pricing%2C%20and%20any%20specific%20requirements%3F%20I%20look%20forward%20to%20your%20response.%20Thank%20you%21" target="_blank"  class="contact-us-button">WhatsApp Us</a> 
-  </div>
+  </div></section>
+
+
+  <!-- Contact Us Button -->
+ 
 
   <script src="/static/js/jQuerystudio.js"></script>
   <script>
-    jQuery(document).ready(function ($) {
-      $(".slider-img").on("click", function () {
-        $(".slider-img").removeClass("active");
-        $(this).addClass("active");
+     jQuery(document).ready(function ($) {
+      let currentIndex = $('.slider-img.active').index();
+      const totalItems = $('.slider-img').length;
+
+      function showSlide(index) {
+        if (index >= totalItems) index = 0;
+        if (index < 0) index = totalItems - 1;
+        $('.slider-img').removeClass('active');
+        $('.slider-img').eq(index).addClass('active');
+      }
+
+      $('#nextBtn').click(function () {
+        currentIndex++;
+        showSlide(currentIndex);
+      });
+
+      $('#prevBtn').click(function () {
+        currentIndex--;
+        showSlide(currentIndex);
+      });
+
+      $('.slider-img').on('click', function () {
+        currentIndex = $(this).index();
+        showSlide(currentIndex);
       });
     });
   </script>

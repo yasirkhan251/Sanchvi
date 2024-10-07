@@ -1,117 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders</title>
-    <style>
-        .order-container {
-            display: flex;
-            flex-direction: column;
-            margin: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-            width: 80%;
-            margin: 20px auto;
-            cursor: pointer;
-        }
-        /* Popup styles */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <h1>My Orders</h1>
-    <div>
+{% extends 'base.html' %}
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="/static/css/orders.css">
+
+<div class="container orders-container">
+    <h1 class="orders-title">My Orders</h1>
+    {% if orders %}
         {% for order in orders %}
-        <div class="order-container" onclick="showOrderDetails('{{ order.order_id }}')">
-            <h3>Order ID: {{ order.order_id }}</h3>
-            <p>Total Amount: ${{ order.total_amount }}</p>
-            <p>Created At: {{ order.created_at }}</p>
-        </div>
-        {% endfor %}
-    </div>
-
-    <!-- Popup Modal -->
-    <div id="orderModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="orderDetails">
-                <!-- Order details will be injected here by JavaScript -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Include the serialized data as a script -->
-    <script>
-        const ordersData = {{ orders | safe}};
-        
-        // Function to show the order details in a popup
-        function showOrderDetails(orderId) {
-            const order = ordersData.find(o => o.order_id === orderId);
-
-            if (order) {
-                let orderDetailsHtml = `
-                
-                    <h2>Order ${order.order_id} Details</h2>
-                    <p>Total Amount: ₹${order.total_amount}</p>
-                    <p>Created At: ${order.created_at}</p>
+            <div class="order-card">
+                <div class="order-header">
+                    <h2>Order ID: {{ order.order_id }}</h2>
+                    <p>Ordered on: {{ order.created_at|date:"F d, Y H:i" }}</p>
+                    <p>Total Amount: ₹{{ order.total_amount }}</p>
+                </div>
+                <div class="shipping-info">
+                    <h3>Shipping Address:</h3>
+                    <p>{{ order.address.name }}</p>
+                    <p>{{ order.address.phone }}</p>
+                    <p>{{ order.address.address }}, {{ order.address.city }}, {{ order.address.country }}</p>
+                </div>
+                <div class="order-items">
                     <h3>Items:</h3>
-                    <ul>
-                `;
-                
-                order.items.forEach(item => {
-                    orderDetailsHtml += `
-                        <li>
-                            <strong>Product Name:</strong> ${item.product_name}<br>
-                            <strong>Quantity:</strong> ${item.qty}<br>
-                            <strong>Size:</strong> ${item.size}<br>
-                            <strong>Color:</strong> ${item.color}<br>
-                            <strong>Price:</strong> $${item.price}
-                        </li>
-                    `;
-                });
-                
-                orderDetailsHtml += '</ul>';
-                document.getElementById('orderDetails').innerHTML = orderDetailsHtml;
-            }
-            
-            document.getElementById('orderModal').style.display = 'block';
-        }
+                    {% for item in order.items.all %}
+                        <div class="order-item">
+                            <img src="{{ item.product.img.url }}" alt="{{ item.product.name }}" class="product-image">
+                            <div class="item-details">
+                                <p class="product-name">{{ item.product.name }}</p>
+                                <p>Size: {{ item.size }}</p>
+                                <p>Color: {{ item.color }}</p>
+                                <p>Quantity: {{ item.qty }}</p>
+                                <p>Price: ₹{{ item.price }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have no orders yet.</p>
+    {% endif %}
+</div>
 
-        // Function to close the modal
-        function closeModal() {
-            document.getElementById('orderModal').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
+{% endblock %}
