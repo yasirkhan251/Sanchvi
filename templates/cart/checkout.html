@@ -14,7 +14,7 @@
            <center> <h1>Products in Cart</h1></center>
 
             <!-- Toggle Button for Small Devices -->
-            <button class="toggle-cart-items">View Cart Items</button>
+            <button type="button" class="toggle-cart-items">View Cart Items</button>
 
             <!-- Product List Container -->
             <div class="list product-list">
@@ -84,20 +84,54 @@
                     </div>
                 </div>
 
-                <center>
-                    <button type="button" class="btn btn-primary buttonCheckout" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                        Checkout
-                    </button>
-                </center>
+<!-- Button to Trigger Modal -->
+<center>
+    <button type="button" class="btn btn-primary buttonCheckout" data-toggle="modal" data-target="#exampleModalCenter">
+        Checkout
+    </button>
+</center>
 
-                <!-- Payment Modal -->
-                <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <!-- ... Modal content remains the same ... -->
-                        </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="color: black;" class="modal-title" id="exampleModalCenterTitle">Payment Options</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="color: black;">
+                <p>Select preferred payment method</p><br>
+                <div style="display: flex; flex-direction: row; gap: 30px;">
+                    <!-- Payment Method: PhonePe -->
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://pbs.twimg.com/profile_images/1615271089705463811/v-emhrqu_400x400.png" width="50px" alt="PhonePe">
+                        <input type="radio" name="paymentMethod" id="phonepe" value="phonepe">
+                        <label for="phonepe">PhonePe (UPI)</label>
+                    </div>
+                    <!-- Payment Method: PayPal -->
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 20px;">
+                        <img src="https://w7.pngwing.com/pngs/720/939/png-transparent-paypal-computer-icons-logo-paypal-blue-angle-service-thumbnail.png" width="50px" alt="PayPal">
+                        <input type="radio" name="paymentMethod" id="paypal" value="paypal">
+                        <label for="paypal">PayPal</label>
+                    </div>
+                    <!-- Payment Method: Credit/Debit Card (Disabled) -->
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://img.favpng.com/18/1/20/credit-card-debit-card-bank-sbi-cards-png-favpng-NDk8jXgaFfg0n5ypnDAFHZ9cA.jpg" width="75px" alt="Credit/Debit">
+                        <input type="radio" name="paymentMethod" id="creditDebit" value="creditDebit" disabled>
+                        <label for="creditDebit">Credit/Debit Card disabled</label>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Pay Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
                 <!-- End of Modal -->
             </form>
         </div>
@@ -174,5 +208,10 @@
         }
     });
 </script>
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
 {% endblock %}

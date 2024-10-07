@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="/static/admin_assets_gui/css/kaiadmin.min.css" />
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link rel="stylesheet" href="/static/admin_assets_gui/css/demo.css" />
+  <!-- <link rel="stylesheet" href="/static/admin_assets_gui/css/demo.css" /> -->
 </head>
 <header>
   <div class="wrapper">
@@ -175,10 +175,7 @@
         <div class="main-header-logo">
           <!-- Logo Header -->
           <div class="logo-header" style="background: linear-gradient(to top, #f8b7e2, #e8ed93);">
-            <a href="index.html" class="logo">
-              <img src="/static/admin_assets_gui/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
-                height="20" />
-            </a>
+            
             <div class="nav-toggle">
               <button class="btn btn-toggle toggle-sidebar">
                 <i class="gg-menu-right"></i>
@@ -227,7 +224,7 @@
                   <li>
                     <div class="message-notif-scroll scrollbar-outer">
                       <div class="notif-center">
-                        <a href="#">
+                        <!-- <a href="#">
                           <div class="notif-img">
                             <img src="/static/admin_assets_gui/img/jm_denis.jpg" alt="Img Profile" />
                           </div>
@@ -236,39 +233,8 @@
                             <span class="block"> How are you ? </span>
                             <span class="time">5 minutes ago</span>
                           </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-img">
-                            <img src="/static/admin_assets_gui/img/chadengle.jpg" alt="Img Profile" />
-                          </div>
-                          <div class="notif-content">
-                            <span class="subject">Chad</span>
-                            <span class="block"> Ok, Thanks ! </span>
-                            <span class="time">12 minutes ago</span>
-                          </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-img">
-                            <img src="/static/admin_assets_gui/img/mlane.jpg" alt="Img Profile" />
-                          </div>
-                          <div class="notif-content">
-                            <span class="subject">Jhon Doe</span>
-                            <span class="block">
-                              Ready for the meeting today...
-                            </span>
-                            <span class="time">12 minutes ago</span>
-                          </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-img">
-                            <img src="/static/admin_assets_gui/img/talha.jpg" alt="Img Profile" />
-                          </div>
-                          <div class="notif-content">
-                            <span class="subject">Talha</span>
-                            <span class="block"> Hi, Apa Kabar ? </span>
-                            <span class="time">17 minutes ago</span>
-                          </div>
-                        </a>
+                        </a> -->
+
                       </div>
                     </div>
                   </li>
@@ -293,7 +259,7 @@
                   <li>
                     <div class="notif-scroll scrollbar-outer">
                       <div class="notif-center">
-                        <a href="#">
+                        <!-- <a href="#">
                           <div class="notif-icon notif-primary">
                             <i class="fa fa-user-plus"></i>
                           </div>
@@ -301,38 +267,8 @@
                             <span class="block"> New user registered </span>
                             <span class="time">5 minutes ago</span>
                           </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-icon notif-success">
-                            <i class="fa fa-comment"></i>
-                          </div>
-                          <div class="notif-content">
-                            <span class="block">
-                              Rahmad commented on Admin
-                            </span>
-                            <span class="time">12 minutes ago</span>
-                          </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-img">
-                            <img src="/static/admin_assets_gui/img/profile2.jpg" alt="Img Profile" />
-                          </div>
-                          <div class="notif-content">
-                            <span class="block">
-                              Reza send messages to you
-                            </span>
-                            <span class="time">12 minutes ago</span>
-                          </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-icon notif-danger">
-                            <i class="fa fa-heart"></i>
-                          </div>
-                          <div class="notif-content">
-                            <span class="block"> Farrah liked Admin </span>
-                            <span class="time">17 minutes ago</span>
-                          </div>
-                        </a>
+                        </a> -->
+
                       </div>
                     </div>
                   </li>
@@ -423,6 +359,7 @@
               </li>
 
               <li class="nav-item topbar-user dropdown hidden-caret">
+                {%if request.user.username  %}
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                   <div class="avatar-sm">
                     {% if request.user.profile %}
@@ -437,6 +374,23 @@
                     <span class="fw-bold">{{request.user.username}}</span>
                   </span>
                 </a>
+                {%else%}
+                 <a class="dropdown-toggle profile-pic" href="{%url 'login' %}" >
+                  <div class="avatar-sm">
+                    {% if request.user.profile %}
+                    <img src="{{request.user.profile.url }}" alt="..." class="avatar-img rounded-circle" />
+                    {% else %}
+                    <img src="https://t4.ftcdn.net/jpg/02/27/45/09/360_F_227450952_KQCMShHPOPebUXklULsKsROk5AvN6H1H.jpg"
+                      alt="..." class="avatar-img rounded-circle" />
+                    {% endif %}
+                  </div>
+                  <span class="profile-username">
+                    <span class="op-7">Hi,</span>
+                    <span class="fw-bold">{{request.user.username}}</span>
+                  </span>
+                </a>
+                {%endif%}
+
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
                   <div class="dropdown-user-scroll scrollbar-outer">
                     <li>
@@ -465,6 +419,9 @@
                       
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="{% url 'settings' %}">Account Setting</a>
+                      {%if request.user.is_admin%}
+                      <a class="dropdown-item" href="{% url 'adminpanel' %}">Admin Panel</a>
+                      {%endif%}
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
                     </li>
@@ -595,7 +552,7 @@
 
   <!-- Kaiadmin DEMO methods, don't include it in your project! -->
   <script src="/static/admin_assets_gui/js/setting-demo.js"></script>
-  <script src="/static/admin_assets_gui/js/demo.js"></script>
+  <!-- <script src="/static/admin_assets_gui/js/demo.js"></script> -->
   <script>
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
       type: "line",
