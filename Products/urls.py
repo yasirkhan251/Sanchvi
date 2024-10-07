@@ -10,6 +10,7 @@ urlpatterns =[
     
 
     path('contact_page', contact_page, name='contact_page'),
+    path('contactusup', contactusup, name='contactusup'),
    
     path('size_chart/', sizechart, name='sizechart'),
     path('add-product/', add_product, name='add_product'),# to be added the products for adminpanel
