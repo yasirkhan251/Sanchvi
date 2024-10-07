@@ -1,90 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/maintainance.png" type="image/x-icon" />
+
     <title>Sanchvi Studio - Maintenance</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background: linear-gradient(to bottom, #f8b7e2, #e8ed9350);
-            color: #ffffff;
+            color: #333;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            text-align: center;
+            min-height: 100vh;
+            overflow: hidden;
         }
+
         .container {
-            max-width: 600px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
+            max-width: 450px;
+            width: 100%;
+            padding: 30px;
+            background: #ffffff;
             border-radius: 15px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards;
         }
+
         .logo {
-            width: 180px;
+            width: 120px;
             margin-bottom: 20px;
-            border-radius: 50%; /* Makes the image circular */
-            transition: transform 0.3s;
+            border-radius: 50%;
+            transition: transform 0.5s ease;
         }
+
         .logo:hover {
             transform: scale(1.1);
         }
+
         h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            color: #FFD700; /* Gold color for contrast */
+            font-size: 26px;
+            color: #ff69b4;
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.5s;
         }
+
         p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: #d3d3d3; /* Light grey for readability */
+            font-size: 16px;
+            color: #666;
             line-height: 1.6;
-        }
-        .countdown {
-            font-size: 24px;
             margin-bottom: 20px;
-            color: #FFD700;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1s;
         }
+
+        .countdown {
+            font-size: 20px;
+            margin: 20px 0;
+            color: #ff69b4;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1.5s;
+        }
+
         .button {
             display: inline-block;
-            margin-top: 20px;
             padding: 10px 20px;
-            background-color: #FFD700;
-            color: #282c34;
+            font-size: 16px;
+            background-color: #ff69b4;
+            color: #fff;
             text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: background-color 0.3s, box-shadow 0.3s;
+            border-radius: 50px;
+            transition: all 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2s;
         }
+
         .button:hover {
-            background-color: #ffa500; /* Darker gold on hover */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background-color: #ff1493;
+            box-shadow: 0 4px 10px rgba(255, 20, 147, 0.4);
+            transform: scale(1.05);
         }
+
         footer {
-            margin-top: 30px;
+            margin-top: 25px;
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.5);
+            color: #999;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2.5s;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        a{
+            text-decoration: none;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Logo -->
         <img src="/static/img/logo.png" alt="Sanchvi Studio Logo" class="logo">
-        
-        <h1>We Are Updating!</h1>
-        <p>Our website is currently undergoing scheduled maintenance to serve you better.<br>
-        Please check back soon. Thank you for your patience.</p>
 
-        <div class="countdown" id="countdown-timer"></div>
-
-        <a href="{%url 'contactusup'%}" class="button">Contact Us</a>
+        <h1>We Are Coming Back Soon!</h1>
+        <p>We're working hard to improve our website and will be ready shortly.<br>
+            Thank you for your patience!</p>
+            <a href="{%url 'index'  %}">
+        <div class="countdown" id="countdown-timer">00d 00h 00m 00s</div>
+    </a>
+        <a href="{% url 'contactusup' %}" class="button">Contact Us</a>
 
         <footer>&copy; {{ current_year }} Sanchvi Studio. All rights reserved.</footer>
     </div>
@@ -103,11 +159,11 @@
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                document.getElementById("countdown-timer").innerHTML = 
-                    days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-
                 if (distance < 0) {
-                    document.getElementById("countdown-timer").innerHTML = "We're back!";
+                    document.getElementById("countdown-timer").innerHTML = "Hold on, great things are on their way!";
+                } else {
+                    document.getElementById("countdown-timer").innerHTML =
+                        days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
                 }
             }
 
@@ -118,4 +174,5 @@
         countdown();
     </script>
 </body>
+
 </html>

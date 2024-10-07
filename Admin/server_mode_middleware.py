@@ -15,6 +15,7 @@ class ServerModeMiddleware:
         excluded_paths = [
             reverse('admin:index'),  # Django Admin URL
             '/admin/',  # Your custom admin URL
+            '/in/contactusup',
             '/admin/settings/',  # Another custom admin URL
             # Add more paths as needed
         ]

@@ -1,43 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>thankyou</title>
-</head>
-<body>
+    <title>Thank You</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            /* display: flex; */
-            
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #f8b7e2, #e8ed9350);
+            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
         }
+
         .thank-you-container {
-            margin: 100px auto;
+            max-width: 400px;
+            width: 90%;
+            padding: 40px 20px;
             background-color: #fff;
-            padding: 200px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
+            animation: fadeIn 1s ease-in-out;
         }
+
         .thank-you-container h1 {
-            color: #333;
+            color: #663399; /* Replaced with a rich color */
+            margin-bottom: 20px;
         }
+
         .thank-you-container p {
             color: #555;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #663399;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 51, 153, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #5a2f85;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .thank-you-container {
+                padding: 20px 15px;
+            }
+
+            .thank-you-container h1 {
+                font-size: 24px;
+            }
+
+            .thank-you-container p {
+                font-size: 14px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
         }
     </style>
+</head>
+
+<body>
 
     <div class="thank-you-container">
         <h1>Thank You!</h1>
         <p>Thank you for your valuable feedback. Our team will reach out to you soon.</p>
-            <a href="{% url 'index'%}"><button style="background-color: mediumorchid; padding: 10px; border-radius: 10px;"> Back to Home</button></a>
+        <a href="{% url 'index' %}">
+            <button class="button">Back to Home</button>
+        </a>
     </div>
 
 </body>
+
 </html>
