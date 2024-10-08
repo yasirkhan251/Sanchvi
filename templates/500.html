@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="error">
+            <h1>500</h1>
+            <p>SORRY!</p>
+            <p>Internal server error!</p>
+            <button onclick="location.reload()">Refresh Page</button>
+
+            <a href="/" class="home-button">Take Me Home</a>
+        </div>
+    </div>
+    <style>
+        /* styles.css */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* background: linear-gradient(135deg, #f8f9fa, #e0e0e0); */
+            overflow: hidden;
+        }
+        
+        .container {
+            margin: 5% auto;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+        
+        .error h1 {
+            font-size: 12rem;
+            margin: 0;
+            color: #be0072;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .error p {
+            font-size: 1.8rem;
+            color: #333;
+            margin: 20px 0;
+        }
+        
+        .home-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #be0072;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .home-button:hover {
+            background-color: #ff4c4c;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 76, 76, 0.4);
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+{% endblock %}
