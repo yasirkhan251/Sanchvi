@@ -19,10 +19,9 @@ def index(request):
         'current_year': timezone.now().year,
         'countdown_end_time': countdown_end_time.isoformat(),  # Convert to ISO format for JavaScript
     }
-    if server.servermode == True:
-        return render(request, 'index.html', context)
-    elif server.servermode == False:
-        return render(request, 'serverundermaintainance.html',context)
+    
+    return render(request, 'index.html', context)
+   
 
 
 
@@ -58,6 +57,6 @@ def privacyandpolicy(req):
 
 
 def custom_404_view(request, exception):
-    return render(request, '404.html', status=404)
+    return render(request, 'assets/404.html', status=404)
 def custom_500_view(request):
-    return render(request, '500.html', status=500)
+    return render(request, 'assets/500.html', status=500)

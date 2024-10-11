@@ -5,6 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Sanchvi {%block title%}  {%endblock%}</title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
   <link rel="icon" href="/static/img/logo fevicon.png" type="image/x-icon" />
   
 <style>
@@ -91,7 +93,7 @@
                 <span class="caret"></span>
               </a>
               <div class="collapse" id="shop">
-                <ul class="nav nav-collapse">
+                <ul class="nav nav-collapses">
                   {% for x in allcat %}
                   <li>
                     <a href="{% url 'product' x.c_id x.id %}">

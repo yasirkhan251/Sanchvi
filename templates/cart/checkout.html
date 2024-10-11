@@ -3,6 +3,8 @@
 
 {% block content %}
 
+
+
 <link rel="stylesheet" href="/static/css/checkout.css">
 
 <div class="container checkout-container">
@@ -107,13 +109,13 @@
                     <!-- Payment Method: PhonePe -->
                     <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                         <img src="https://pbs.twimg.com/profile_images/1615271089705463811/v-emhrqu_400x400.png" width="50px" alt="PhonePe">
-                        <input type="radio" name="paymentMethod" id="phonepe" value="phonepe">
+                        <input type="radio" name="paymentMethod" id="phonepe" value="phonepe"  onclick="invokePhonePePayment()">
                         <label for="phonepe">PhonePe (UPI)</label>
                     </div>
                     <!-- Payment Method: PayPal -->
                     <div style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 20px;">
                         <img src="https://w7.pngwing.com/pngs/720/939/png-transparent-paypal-computer-icons-logo-paypal-blue-angle-service-thumbnail.png" width="50px" alt="PayPal">
-                        <input type="radio" name="paymentMethod" id="paypal" value="paypal">
+                        <input type="radio" name="paymentMethod" id="paypal" value="paypal" >
                         <label for="paypal">PayPal</label>
                     </div>
                     <!-- Payment Method: Credit/Debit Card (Disabled) -->
@@ -128,6 +130,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Pay Now</button>
             </div>
+  
         </div>
     </div>
 </div>
@@ -140,6 +143,33 @@
 
 <!-- JavaScript to Calculate Totals and Toggle Product List with Animation -->
 <script>
+
+function invokePhonePePayment() {
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        if (paymentMethod === "phonepe") {
+            const phonePeUrl = "{{ phonepe_url }}";  // Get the URL from the backend
+            if (phonePeUrl) {
+                window.PhonePeCheckout.transact({
+                    tokenUrl: phonePeUrl,
+                    type: "IFRAME",
+                    callback: function (response) {
+                        if (response === 'USER_CANCEL') {
+                            alert('Transaction cancelled by user.');
+                        } else if (response === 'CONCLUDED') {
+                            alert('Transaction completed successfully.');
+                        }
+                    }
+                });
+            }
+        } else {
+            alert('Please select PhonePe to proceed with the payment.');
+        }
+    }
+
+
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
         // Calculate total quantity and price
         function calculateTotal() {

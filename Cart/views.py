@@ -27,7 +27,7 @@ def generate_checksum(merchant_id, transaction_id, amount, api_key):
     checksum = base64.b64encode(hashlib.sha256(f"{payload}{api_key}".encode()).digest()).decode('utf-8')
     return checksum
 
-
+cat = Category.objects.all()
 
 
 @login_required
@@ -142,6 +142,20 @@ def checkout(req):
                     "type": "PAY_PAGE"
                 }
             }
+#             payload = {
+#     "merchantId": settings.PHONEPE_MERCHANT_ID,
+#     "merchantTransactionId": merchantTransactionID,
+#     "merchantUserId": str(user.id),
+#     "amount": int(total_amount_inr * 100),  # INR to paise conversion
+#     "redirectUrl": req.build_absolute_uri(reverse('handle_payment_success', kwargs={'address_id': shipping_address.id})),
+#     "redirectMode": "IFRAME",  # Use IFRAME instead of REDIRECT
+#     "callbackUrl": req.build_absolute_uri(reverse('phonepe_callback')),
+#     "mobileNumber": phone,
+#     "paymentInstrument": {
+#         "type": "PAY_PAGE"
+#     }
+# }
+
 
             # Convert payload to base64
             payload_json = json.dumps(payload)
@@ -183,7 +197,11 @@ def checkout(req):
 
 
     # Initial rendering to capture shipping details
-    queryser = {'item': cart, 'total_amount': total_amount_inr}
+    phonepe_url = "https://phonepe.com/payment-page-url" 
+    queryser = {'item': cart, 'total_amount': total_amount_inr,'phonepe_url': phonepe_url, 'allcat':cat}
+
+    
+    
     return render(req, 'cart/checkout.html', queryser)
 
 
@@ -307,6 +325,7 @@ def addtocart(req):
     
     queryser= {
         'item': cart
+        , 'allcat':cat
     }
     return render(req, 'cart/addtocart.html',queryser)
 
@@ -320,7 +339,7 @@ def orders(request):
     orders = Order.objects.filter(user=request.user).select_related('address').prefetch_related('items__product')
     
     # Pass orders to the template
-    return render(request, 'orders/myorders.html', {'orders': orders})
+    return render(request, 'orders/myorders.html', {'orders': orders , 'allcat':cat})
 
 
 @login_required

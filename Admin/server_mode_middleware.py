@@ -39,7 +39,7 @@ class ServerModeMiddleware:
                     'current_year': timezone.now().year,
                     'countdown_end_time': countdown_end_time.isoformat() if countdown_end_time else None,
                 }
-                return render(request, 'serverundermaintainance.html', context)
+                return render(request, 'assets/serverundermaintainance.html', context)
         except Server.DoesNotExist:
             # If no server instance exists, allow the request to proceed normally
             logger.error("[Middleware] Server instance does not exist.")

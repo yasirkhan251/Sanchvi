@@ -192,4 +192,4 @@ def product_detail(req, pid):
 
 
 def sizechart(req):
-    return render(req, 'sizechart.html')
+    return render(req, 'assets/sizechart.html')
