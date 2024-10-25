@@ -38,10 +38,15 @@ EXT = [
     'Cart',
     'paypal.standard.ipn',
     'Admin',
+    
 
 ]
 
 INSTALLED_APPS += EXT
+
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,10 +56,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'Admin.server_mode_middleware.ServerModeMiddleware', 
+    
 ]
 
+MIDWare  = [
+            'Admin.server_mode_middleware.ServerModeMiddleware',
+            'Accounts.middleware.LogUserVisitMiddleware', 
+            ]
 
+MIDDLEWARE += MIDWare
 
 
 ROOT_URLCONF = 'Sanchvi.urls'
@@ -87,6 +97,18 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'sanchvi',   # Ensure this matches exactly with the database name in MySQL
+#         'USER': 'root',      # The default user for XAMPP is 'root'
+#         'PASSWORD': '',      # The default password for root is empty in XAMPP
+#         'HOST': '127.0.0.1', # Use '127.0.0.1' or 'localhost'
+#         'PORT': '3307',      # Default MySQL port
+#     }
+# } 
+
 
 
 # Password validation

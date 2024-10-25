@@ -132,12 +132,12 @@
 <body>
     <div class="container">
         <!-- Logo -->
-        <img src="/static/img/logo.png" alt="Sanchvi Studio Logo" class="logo">
+       <a href="{% url 'index'%}"> <img src="/static/img/logo.png" alt="Sanchvi Studio Logo" class="logo"></a>
 
-        <h1>We Are Coming Back Soon!</h1>
-        <p>We're working hard to improve our website and will be ready shortly.<br>
-            Thank you for your patience!</p>
-            <a href="{%url 'index'  %}">
+      <a href="{% url 'index'%}"> <h1>We Are Coming Back Soon!</h1></a> 
+        <a href="{% url 'index'%}#shop"> <p>We're working hard to improve our website and will be ready shortly.<br>
+            Thank you for your patience!</p></a>
+            <a href="{%url 'login'  %}">
         <div class="countdown" id="countdown-timer">00d 00h 00m 00s</div>
     </a>
         <a href="{% url 'contactusup' %}" class="button">Contact Us</a>

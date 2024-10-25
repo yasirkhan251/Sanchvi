@@ -76,21 +76,3 @@ class ProductImage(models.Model):
 
 
 
-class ContactMe(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email = models.EmailField()
-    mobile = models.BigIntegerField()
-    message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-
-    def __str__(self):
-        if self.created_at:
-            # Convert to IST
-            ist = pytz.timezone('Asia/Kolkata')
-            created_at_ist = self.created_at.astimezone(ist)
-            formatted_time = created_at_ist.strftime('%Y-%m-%d %I:%M:%S %p %Z')
-        else:
-            formatted_time = 'No time available'
-            
-        return f"{self.first_name} {self.last_name} : {self.email} / {self.mobile} - {formatted_time}"

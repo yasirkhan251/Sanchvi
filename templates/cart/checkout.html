@@ -6,8 +6,14 @@
 
 
 <link rel="stylesheet" href="/static/css/checkout.css">
+<style>
+    .container{
+        display: flex;
+        justify-content: center;
+    }
+</style>
 
-<div class="container checkout-container">
+<div class="container checkout-container" >
     <div class="checkoutLayout">
         <!-- Left Side: Cart Items -->
         <div class="returnCart">
@@ -52,6 +58,7 @@
                         <label for="phone">Phone Number</label>
                         <input type="text" name="phone" required id="phone">
                     </div>
+                    
 
                     <div class="group">
                         <label for="address">Address</label>
@@ -60,20 +67,42 @@
 
                     <div class="group">
                         <label for="country">Country</label>
-                        <select name="country" required id="country">
+                        <select name="country" id="country" onchange="fetchStates()" required>
                             <option value="">Choose...</option>
-                            <option value="India">India</option>
+                            {% for country in countries %}
+                                <option value="{{ country.id }}">{{ country.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
-
+                
+                    <div class="group">
+                        <label for="state">State</label>
+                        <select name="state" id="state" onchange="fetchCities()" required>
+                            <option value="">Choose...</option>
+                        </select>
+                    </div>
+                
                     <div class="group">
                         <label for="city">City</label>
-                        <select name="city" required id="city">
+                        <select name="city" id="city" onchange="fetchAreas()" required>
                             <option value="">Choose...</option>
-                            <option value="Bangalore">Bangalore</option>
                         </select>
                     </div>
+                    <div class="group">
+                        <label for="area">Area</label>
+                        <select name="area" id="area" onchange="displayZipcode()" required>
+                            <option value="">Choose...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="group">
+                        <label for="zipcode">Zipcode</label>
+                        <input type="text" name="zipcode" required id="zipcode" disabled>
+                    </div>
+                    
                 </div>
+                
+                
 
                 <div class="return">
                     <div class="row">
@@ -85,7 +114,83 @@
                         <div id="totalPrice">₹0</div>
                     </div>
                 </div>
+                <script>
+  function fetchStates() {
+    var countryId = document.getElementById('country').value;
+    var stateSelect = document.getElementById('state');
+    
+    stateSelect.innerHTML = '<option value="">Choose...</option>'; // Clear states list
 
+    if (countryId) {
+        fetch(`/cart/fetch-states/?country_id=${countryId}`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(state => {
+                    var option = document.createElement('option');
+                    option.value = state.id;
+                    option.text = state.name;
+                    stateSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching states:', error));
+    }
+}
+
+                    function fetchCities() {
+                        var stateId = document.getElementById('state').value;
+                        var citySelect = document.getElementById('city');
+                        var areaSelect = document.getElementById('area');
+                
+                        citySelect.innerHTML = '<option value="">Choose...</option>';
+                        areaSelect.innerHTML = '<option value="">Choose...</option>';
+                
+                        if (stateId) {
+                            fetch(`/cart/fetch-cities/?state_id=${stateId}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    data.forEach(city => {
+                                        var option = document.createElement('option');
+                                        option.value = city.id;
+                                        option.text = city.name;
+                                        citySelect.appendChild(option);
+                                    });
+                                });
+                        }
+                    }
+                
+                    function fetchAreas() {
+    var cityId = document.getElementById('city').value;
+    var areaSelect = document.getElementById('area');
+    var zipcodeInput = document.getElementById('zipcode');
+
+    areaSelect.innerHTML = '<option value="">Choose...</option>'; // Clear previous area options
+    zipcodeInput.value = ''; // Clear the zipcode input
+
+    if (cityId) {
+        fetch(`/fetch-areas/?city_id=${cityId}`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(area => {
+                    var option = document.createElement('option');
+                    option.value = area.id;  // Store area id
+                    option.text = area.name; // Display area name
+                    option.setAttribute('data-zipcode', area.zipcode); // Store the zipcode in the option
+                    areaSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching areas:', error));
+    }
+}
+
+// Function to display the selected area's zipcode
+function displayZipcode() {
+    var areaSelect = document.getElementById('area');
+    var selectedOption = areaSelect.options[areaSelect.selectedIndex];
+    var zipcode = selectedOption.getAttribute('data-zipcode'); // Retrieve the zipcode from the selected option
+
+    document.getElementById('zipcode').value = zipcode; // Display the zipcode in the input field
+}
+                </script>
 <!-- Button to Trigger Modal -->
 <center>
     <button type="button" class="btn btn-primary buttonCheckout" data-toggle="modal" data-target="#exampleModalCenter">

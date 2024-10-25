@@ -17,6 +17,7 @@ class ServerModeMiddleware:
             '/admin/',  # Your custom admin URL
             '/in/contactusup',
             '/admin/settings/',  # Another custom admin URL
+            '/auth/login',
             # Add more paths as needed
         ]
 

@@ -16,6 +16,8 @@ import uuid
 from django.conf import settings
 from paypal.standard.forms import PayPalPaymentsForm
 from django.views.decorators.csrf import csrf_exempt
+from Admin.models import *
+
 
 # Create your views here.
 
@@ -198,14 +200,37 @@ def checkout(req):
 
     # Initial rendering to capture shipping details
     phonepe_url = "https://phonepe.com/payment-page-url" 
-    queryser = {'item': cart, 'total_amount': total_amount_inr,'phonepe_url': phonepe_url, 'allcat':cat}
+
+    countries = Country.objects.all()
+    queryser = {'item': cart, 'total_amount': total_amount_inr,'phonepe_url': phonepe_url, 'allcat':cat, 'countries':countries}
 
     
     
     return render(req, 'cart/checkout.html', queryser)
 
 
+def fetch_states(request):
+    country_id = request.GET.get('country_id')
+    if country_id:
+        states = State.objects.filter(country_id=country_id).values('id', 'name')
+        return JsonResponse(list(states), safe=False)
+    return JsonResponse({'error': 'Invalid country'}, status=400)
 
+def fetch_cities(request):
+    state_id = request.GET.get('state_id')
+    if state_id:
+        # Use 'state' instead of 'state_id' because the field in your model is likely 'state'
+        cities = City.objects.filter(state_id=state_id).values('id', 'name')  # Corrected query
+        return JsonResponse(list(cities), safe=False)
+    return JsonResponse({'error': 'Invalid state'}, status=400)
+
+
+def fetch_areas(request):
+    city_id = request.GET.get('city_id')
+    if city_id:
+        areas = Area.objects.filter(city_id=city_id).values('id', 'name', 'zipcode')
+        return JsonResponse(list(areas), safe=False)
+    return JsonResponse({'error': 'Invalid city'}, status=400)
 
 
 

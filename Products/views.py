@@ -3,6 +3,7 @@ from .models import *
 from django.views.generic import *
 from django.urls import reverse
 from .forms import *
+from Admin.models import *
 
 cat = Category.objects.all()
 # Create your views here.
@@ -32,7 +33,7 @@ def contactusup(req):
         mobile = req.POST['mobile']
         message = req.POST['message']
 
-        contact = ContactMe.objects.create(
+        contact = Feedback.objects.create(
             first_name = first_name,
             last_name = last_name,
             email =email,
@@ -45,32 +46,6 @@ def contactusup(req):
 
 
     return render(req, 'contact/contactusout.html') 
-
-
-def contact_page(req):
-    quaryset = {
-        'allcat': cat,
-    }
-    if req.method== 'POST':
-        first_name = req.POST['first_name']
-        last_name = req.POST['last_name']
-        email = req.POST['email']
-        mobile = req.POST['mobile']
-        message = req.POST['message']
-
-        contact = ContactMe.objects.create(
-            first_name = first_name,
-            last_name = last_name,
-            email =email,
-            mobile = mobile,
-            message = message
-        )
-
-        contact.save()
-        return render(req, 'contact/thankyou_for_contact.html')
-    
-    
-    return render(req, 'contact/contact_page.html',quaryset)
 
 
 

@@ -1,0 +1,148 @@
+{% extends 'adminbase.html' %}
+{% block title %} User Lists    {% endblock %}
+{% block content %}
+<div class="container-table">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Hoverable Table</div>
+        </div>
+        <div class="card-body">
+            <!-- Table View -->
+            <table class="table table-hover table-view" id="tableView">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Username</th>
+                        <!-- <th scope="col">Full Name</th> -->
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users reversed %}
+                    <tr>
+                        <td>{{ forloop.revcounter  }}</td>
+                        <td>{%if user.profile%}
+                            <img class="profileimage" src="{{user.profile.url}}" alt="{{ user.username }}">
+                            {%else%}
+                            <img class="profileimage" style="border-radius: 0%;"  src="/static/img/user.png"/>
+                            {%endif%}
+
+                        </td>
+                        <td>{{ user.username }}</td>
+                        <!-- <td>
+                            {%if user.first_name or user.last_name %}
+                            {{ user.first_name }} {{ user.last_name }}
+                            {%else%}
+                            {{ user.username }}
+                            {%endif%}
+                        </td> -->
+                        <td>{{user.email}}</td>
+                        
+                        <td>{%if user.phone%}
+                            {{user.phone}}
+                            {%else%}
+                            -----
+                            {%endif%}
+                        </td>
+                        
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Grid View -->
+    <div class="grid-view" id="gridView" style="display: none;">
+        <div class="grid-container">
+            {% for user in users %}
+            <div class="grid-item">
+                <div class="card">
+                    <div class="card-body center">
+                        {%if user.profile%}
+                            <img class="profileimage" src="{{user.profile.url}}" alt="{{ user.username }}">
+                            {%else%}
+                            <img class="profileimage" style="border-radius: 0%;"  src="/static/img/user.png"/>
+                            {%endif%}
+                        <h5 class="card-title">{{ user.username }} </h5>
+                        <p class="card-text">Email: {{ user.email }}</p>
+                        <!-- <p class="card-text">Email: {{ user.email }}</p> -->
+                        <p class="card-text">Phone: {{ user.phone }}</p>
+                        <!-- <p class="card-text">Address: {{ user.address }}</p> -->
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Toggle Button -->
+    <button class="toggle-button" onclick="toggleView()" style="position: fixed; bottom: 20px; right: 20px;">Switch to Grid View</button>
+</div>
+
+<script>
+    function toggleView() {
+        var tableView = document.getElementById("tableView");
+        var gridView = document.getElementById("gridView");
+        var toggleButton = document.querySelector(".toggle-button");
+
+        if (tableView.style.display === "none") {
+            tableView.style.display = "table";
+            gridView.style.display = "none";
+            toggleButton.textContent = "Switch to Grid View";
+        } else {
+            tableView.style.display = "none";
+            gridView.style.display = "grid";
+            toggleButton.textContent = "Switch to Table View";
+        }
+    }
+</script>
+
+<style>
+    .center{
+        display: unset;
+        justify-content: center;    
+        align-items: center;
+        text-align: center;
+    }
+    .profileimage{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+    }
+
+    .grid-item {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        
+    }
+
+    .toggle-button {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .toggle-button:hover {
+        background-color: #0056b3;
+    }
+    footer{
+display: none;
+    }
+</style>
+
+
+{% endblock %}

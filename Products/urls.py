@@ -9,7 +9,7 @@ urlpatterns =[
     path('basehtml', basehtml, name='basehtml'),
     
 
-    path('contact_page', contact_page, name='contact_page'),
+    
     path('contactusup', contactusup, name='contactusup'),
    
     path('size_chart/', sizechart, name='sizechart'),

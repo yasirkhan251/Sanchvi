@@ -1,0 +1,97 @@
+
+{% extends 'adminbase.html' %}
+{% block title %} Feedback Panel {% endblock %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+      <div class="card-title">Responsive Table</div>
+    </div>
+    <div class="card-body">
+      <div class="card-sub">
+        To check the Feedback mailbox Refresh the page by
+        <a style="text-decoration: none;" href="{% url 'feedback' %}"> <code class="highlighter-rouge">clicking here</code></a>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Feedback</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for x in feedback reversed %}
+            <tr>
+              <th scope="row">{{ forloop.revcounter }}</th>
+              
+              <td><a href="#" data-bs-toggle="modal" data-bs-target="#messageModal{{ x.id }}" id="feedback-link-{{ x.id }}">{{ x.first_name }} {{ x.last_name }}</a></td>
+              <td><a href="mailto:{{ x.email }}">{{ x.email }}</a></td>
+              <td><a href="tel:{{ x.mobile }}">{{ x.mobile }}</a></td>
+              <td>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#messageModal{{ x.id }}" id="feedback-link-{{ x.id }}">
+                  {{ x.message|slice:":30" }}{% if x.message|length > 30 %} ... {% endif %}
+                </a>
+              </td>
+              <td>{{ x.created_at }}</td>
+            </tr>
+            <div class="modal fade" id="messageModal{{ x.id }}" tabindex="-1" aria-labelledby="messageModalLabel{{ x.id }}" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel{{ x.id }}">Full Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Name:</strong> {{ x.first_name }} {{ x.last_name }}</p>
+                    <p><strong>Email:</strong> <a href="mailto:{{ x.email }}">{{ x.email }}</a></p>
+                    <p><strong>Mobile:</strong> <a href="tel:{{ x.mobile }}">{{ x.mobile }}</a></p>
+                    <p><strong>Message:</strong> {{ x.message }}</p>
+                    <p><strong>Created At:</strong> {{ x.created_at }}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+
+<script>
+  // Function to get query parameter
+  function getQueryParam(param) {
+    let urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  // Automatically trigger the modal based on feedback_id from query parameters
+  document.addEventListener("DOMContentLoaded", function () {
+    let feedbackId = getQueryParam('feedback_id');
+    if (feedbackId) {
+      // Show the modal related to the feedback_id
+      let modalTrigger = document.getElementById('feedback-link-' + feedbackId);
+      if (modalTrigger) {
+        modalTrigger.click();  // Programmatically trigger the modal
+      }
+    }
+  });
+</script>
+
+{% endblock %}
+```
+
+### Explanation:
+1. **Anchor Tag and Modal Update**: Updated the anchor tag to use `{{ x.id }}` for `data-bs-target` and `id` attributes to uniquely identify each feedback item and modal.
+2. **JavaScript for Auto-Triggering Modal**: The JavaScript code checks for the `feedback_id` parameter in the URL and simulates a click on the link to open the correct modal automatically when the page loads.
+
+This approach will allow the modal to automatically open when redirected from another page with the appropriate `feedback_id` in the query string.
+

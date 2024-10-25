@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Sanchvi {%block title%}  {%endblock%}</title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+  <!-- <meta http-equiv="refresh" content="0; url=https://sanchvistudio.com"> -->
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <link rel="icon" href="/static/img/logo fevicon.png" type="image/x-icon" />
@@ -95,11 +96,13 @@
               <div class="collapse" id="shop">
                 <ul class="nav nav-collapses">
                   {% for x in allcat %}
+                  <ul style="color: black; margin: 10px;">
                   <li>
                     <a href="{% url 'product' x.c_id x.id %}">
                       <span class="sub-item">{{ x.name }}</span>
                     </a>
                   </li>
+                </ul>
                   {% endfor %}
                 </ul>
               </div>
@@ -250,7 +253,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   <i class="fa fa-bell"></i>
-                  <span class="notification">4</span>
+                  <!-- <span class="notification">4</span> -->
                 </a>
                 <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                   <li>
@@ -452,7 +455,7 @@
               new Date().getFullYear();
           </script>
 
-          <div><a target="_blank" href="https://themewagon.com/"></a>.</div>
+          <div><a target="_blank" href="{%url 'frontendlicense'%}">...</a></div>
         </div>
       </footer>
     </div>
