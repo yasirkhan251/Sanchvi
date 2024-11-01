@@ -201,12 +201,13 @@ AUTH_USER_MODEL = 'Accounts.MyUser'
 
 
 
-PAYPAL_TEST = True
-PAYPAL_RECEIVER_EMAIL= 'sanchvi.sanjana19@gmail.com' # this is live account
 
 # PAYPAL_TEST = False
+# PAYPAL_RECEIVER_EMAIL= 'sanchvi.sanjana19@gmail.com' # this is live account
+
+PAYPAL_TEST = True
 # PAYPAL_RECEIVER_EMAIL= 'sb-ra2tb14723963@business.example.com' # this is sandbox account
-# PAYPAL_RECEIVER_EMAIL= 'yuvraj.yasir@gmail.com' # this is sandbox account
+PAYPAL_RECEIVER_EMAIL= 'yuvraj.yasir@gmail.com' # this is sandbox account
 
 
 

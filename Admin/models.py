@@ -10,19 +10,23 @@ class Server(models.Model):
 
 class Country(models.Model):
     name = models.CharField(max_length=100,unique=True)
+    def __str__(self):
+        return self.name
 
 class State(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100,unique=True)
-
-class City(models.Model):
-    state = models.ForeignKey(State, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
 
-class Area(models.Model):
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    zipcode = models.IntegerField()
+# class City(models.Model):
+#     state = models.ForeignKey(State, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=100)
+
+# class Area(models.Model):
+#     city = models.ForeignKey(City, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=100)
+#     zipcode = models.IntegerField()
 
 
 
@@ -48,6 +52,3 @@ class Feedback(models.Model):
     
 
 
-# class Adminsettings(models.Model):
-#     user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-#     toggle_gt_view = models.CharField(max_length=10, choices=[('table', 'Table'), ('grid', 'Grid')], default='table')

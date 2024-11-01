@@ -15,18 +15,18 @@ class StateAdmin(admin.ModelAdmin):
         return obj.country.name
     get_country_name.short_description = 'Country'
 
-@admin.register(City)
-class CityAdmin(admin.ModelAdmin):
-    list_display = ( 'name', 'get_state_name','id')  # Displays ID, name, and related state name for City
+# @admin.register(City)
+# class CityAdmin(admin.ModelAdmin):
+#     list_display = ( 'name', 'get_state_name','id')  # Displays ID, name, and related state name for City
 
-    # Method to display the state name instead of the foreign key ID
-    def get_state_name(self, obj):
-        return obj.country.name
-    get_state_name.short_description = 'State'
+#     # Method to display the state name instead of the foreign key ID
+#     def get_state_name(self, obj):
+#         return obj.country.name
+#     get_state_name.short_description = 'State'
 
-@admin.register(Area)
-class AreaAdmin(admin.ModelAdmin):
-    list_display = ( 'name', 'get_city_name', 'zipcode','id')  # Displays ID, name, related city name, and zipcode for Area
+# @admin.register(Area)
+# class AreaAdmin(admin.ModelAdmin):
+#     list_display = ( 'name', 'get_city_name', 'zipcode','id')  # Displays ID, name, related city name, and zipcode for Area
 
     # Method to display the city name instead of the foreign key ID
     def get_city_name(self, obj):
@@ -41,3 +41,5 @@ class ServerAdmin(admin.ModelAdmin):
 @admin.register(Feedback)
 class ContactmeAdmin(admin.ModelAdmin):
     list_display = ('email', 'mobile','first_name','last_name','message','created_at')
+
+

@@ -14,8 +14,7 @@ urlpatterns = [
     # Add the success page
     path('order-success/<str:order_id>/', order_success, name='order_success'),
      path('fetch-states/', views.fetch_states, name='fetch_states'),  # URL for fetching states
-    path('fetch-cities/', views.fetch_cities, name='fetch_cities'),  # URL for fetching cities
-    path('fetch-areas/', views.fetch_areas, name='fetch_areas'),  
+ 
     # path('fetch-countries/', views.fetch_countries, name='fetch_countries'),
   
 

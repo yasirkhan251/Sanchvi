@@ -88,17 +88,28 @@ def checkout(req):
         # Capture shipping address details
         name = req.POST['name']
         phone = req.POST['phone']
-        address = req.POST['address']
-        country = req.POST['country']
+        address1 = req.POST['address1']
+        address2 = req.POST['address2']
+        country_id = req.POST['country']
+        state_id = req.POST['state']
         city = req.POST['city']
+        zipcode = req.POST['zipcode']
+
+        country_fetch = Country.objects.get(id = country_id)
+        country = country_fetch.name
+        state_fetch = State.objects.get(id=state_id)
+        state = state_fetch.name
 
         # Create a new shipping address
         shipping_address = Shipping_address.objects.create(
             name=name,
             phone=phone,
-            address=address,
+            address1=address1,
+            address2=address2,
             country=country,
+            state =state,
             city=city,
+            zipcode = zipcode,
         )
         shipping_address.save()
         
@@ -131,33 +142,33 @@ def checkout(req):
             merchantTransactionID = "MT" + str(uuid.uuid4())
 
             # Prepare the payload for PhonePe
+            # payload = {
+            #     "merchantId": settings.PHONEPE_MERCHANT_ID,
+            #     "merchantTransactionId": merchantTransactionID,
+            #     "merchantUserId": str(user.id),
+            #     "amount": int(total_amount_inr * 100),  # INR to paise conversion (multiply by 100)
+            #     "redirectUrl": req.build_absolute_uri(reverse('handle_payment_success_phonepe', kwargs={'address_id': shipping_address.id})),
+            #     "redirectMode": "REDIRECT",  # or "POST"
+            #     "callbackUrl": req.build_absolute_uri(reverse('payment_fail')),
+            #     "mobileNumber": phone,
+            #     "paymentInstrument": {
+            #         "type": "PAY_PAGE"
+            #     }
+            # }
             payload = {
-                "merchantId": settings.PHONEPE_MERCHANT_ID,
-                "merchantTransactionId": merchantTransactionID,
-                "merchantUserId": str(user.id),
-                "amount": int(total_amount_inr * 100),  # INR to paise conversion (multiply by 100)
-                "redirectUrl": req.build_absolute_uri(reverse('handle_payment_success', kwargs={'address_id': shipping_address.id})),
-                "redirectMode": "REDIRECT",  # or "POST"
-                "callbackUrl": req.build_absolute_uri(reverse('phonepe_callback')),
-                "mobileNumber": phone,
-                "paymentInstrument": {
-                    "type": "PAY_PAGE"
-                }
-            }
-#             payload = {
-#     "merchantId": settings.PHONEPE_MERCHANT_ID,
-#     "merchantTransactionId": merchantTransactionID,
-#     "merchantUserId": str(user.id),
-#     "amount": int(total_amount_inr * 100),  # INR to paise conversion
-#     "redirectUrl": req.build_absolute_uri(reverse('handle_payment_success', kwargs={'address_id': shipping_address.id})),
-#     "redirectMode": "IFRAME",  # Use IFRAME instead of REDIRECT
-#     "callbackUrl": req.build_absolute_uri(reverse('phonepe_callback')),
-#     "mobileNumber": phone,
-#     "paymentInstrument": {
-#         "type": "PAY_PAGE"
-#     }
-# }
-
+        "merchantId": settings.PHONEPE_MERCHANT_ID,
+        "merchantTransactionId": merchantTransactionID,
+        "merchantUserId": str(user.id),
+        "amount": int(total_amount_inr * 100),  # INR to paise conversion (multiply by 100)
+        "redirectUrl": req.build_absolute_uri(reverse('handle_payment_success_phonepe', kwargs={'address_id': shipping_address.id})),
+        "cancelUrl": req.build_absolute_uri(reverse('payment_fail')),  # Redirect to Payment Failed page if canceled
+        "redirectMode": "REDIRECT",  # or "POST"
+        "callbackUrl": req.build_absolute_uri(reverse('phonepe_callback')),
+        "mobileNumber": phone,
+        "paymentInstrument": {
+            "type": "PAY_PAGE"
+        }
+    }
 
             # Convert payload to base64
             payload_json = json.dumps(payload)
@@ -190,12 +201,14 @@ def checkout(req):
                 else:
                     # Handle error returned in the response
                     print("PhonePe payment initiation failed:", res_data.get("message"))
-                    return JsonResponse({"error": res_data.get("message")}, status=400)
+                    return redirect(reverse('payment_fail'))
+                    # return JsonResponse({"error": res_data.get("message")}, status=400)
             else:
                 # Handle HTTP errors
-                print("PhonePe payment initiation failed with HTTP status:", response.status_code)
-                print("Response text:", response.text)
-                return JsonResponse({"error": "PhonePe payment initiation failed."}, status=500)
+                # print("PhonePe payment initiation failed with HTTP status:", response.status_code)    
+                # print("Response text:", response.text)
+                # return JsonResponse({"error": "PhonePe payment initiation failed."}, status=500)
+                 return redirect(reverse('payment_fail'))   
 
 
     # Initial rendering to capture shipping details
@@ -216,69 +229,90 @@ def fetch_states(request):
         return JsonResponse(list(states), safe=False)
     return JsonResponse({'error': 'Invalid country'}, status=400)
 
-def fetch_cities(request):
-    state_id = request.GET.get('state_id')
-    if state_id:
-        # Use 'state' instead of 'state_id' because the field in your model is likely 'state'
-        cities = City.objects.filter(state_id=state_id).values('id', 'name')  # Corrected query
-        return JsonResponse(list(cities), safe=False)
-    return JsonResponse({'error': 'Invalid state'}, status=400)
-
-
-def fetch_areas(request):
-    city_id = request.GET.get('city_id')
-    if city_id:
-        areas = Area.objects.filter(city_id=city_id).values('id', 'name', 'zipcode')
-        return JsonResponse(list(areas), safe=False)
-    return JsonResponse({'error': 'Invalid city'}, status=400)
 
 
 
+
+
+
+
+
+# def phonepe_callback(request):
+#     if request.method == "POST":
+#         try:
+#             # Parse the incoming JSON data
+#             data = json.loads(request.body)
+            
+#             # Extract necessary fields from the callback data
+#             status = data.get('status')
+#             transaction_id = data.get('transactionId')
+#             amount = data.get('amount')
+
+#             # Optional: Verify the signature (X-VERIFY header) to ensure the callback is authentic
+#             x_verify = request.headers.get('X-VERIFY')
+#             if x_verify:
+#                 # Recreate the signature using your secret key
+#                 payload = request.body.decode('utf-8')
+#                 expected_signature = hmac.new(
+#                     settings.PHONEPE_SALT_KEY.encode(),
+#                     (payload + '/pg/v1/pay' + settings.PHONEPE_SALT_KEY).encode(),
+#                     hashlib.sha256
+#                 ).hexdigest() + "###" + settings.PHONEPE_SALT_INDEX
+
+#                 # Compare the signature
+#                 if x_verify != expected_signature:
+#                     return JsonResponse({"error": "Invalid signature"}, status=403)
+
+#             # Handle different payment statuses
+#             if status == "SUCCESS":
+#                 # Handle successful payment (update order status, etc.)
+#                 # e.g., update_order_status(transaction_id, amount, status)
+#                 return JsonResponse({"message": "Payment processed successfully", "status": "success"}, status=200)
+#             else:
+#                 # Handle payment failure or other statuses
+#                 return JsonResponse({"message": "Payment failed or is pending", "status": status}, status=400)
+
+#         except json.JSONDecodeError:
+#             # Handle JSON parsing errors
+#             return JsonResponse({"error": "Invalid JSON data"}, status=400)
+    
+#     # Return error if the request method is not POST
+#     return JsonResponse({"error": "Invalid request method"}, status=400)
+import logging
+logger = logging.getLogger(__name__)
 
 
 @csrf_exempt
 def phonepe_callback(request):
     if request.method == "POST":
         try:
-            # Parse the incoming JSON data
             data = json.loads(request.body)
-            
-            # Extract necessary fields from the callback data
             status = data.get('status')
             transaction_id = data.get('transactionId')
-            amount = data.get('amount')
+            order_id = data.get('merchantTransactionId')
 
-            # Optional: Verify the signature (X-VERIFY header) to ensure the callback is authentic
-            x_verify = request.headers.get('X-VERIFY')
-            if x_verify:
-                # Recreate the signature using your secret key
-                payload = request.body.decode('utf-8')
-                expected_signature = hmac.new(
-                    settings.PHONEPE_SALT_KEY.encode(),
-                    (payload + '/pg/v1/pay' + settings.PHONEPE_SALT_KEY).encode(),
-                    hashlib.sha256
-                ).hexdigest() + "###" + settings.PHONEPE_SALT_INDEX
+            # Fetch the order and log status for verification
+            order = get_object_or_404(Order, transaction_id=order_id)
+            logger.info(f"Order fetched with status: {order.status}")
 
-                # Compare the signature
-                if x_verify != expected_signature:
-                    return JsonResponse({"error": "Invalid signature"}, status=403)
-
-            # Handle different payment statuses
             if status == "SUCCESS":
-                # Handle successful payment (update order status, etc.)
-                # e.g., update_order_status(transaction_id, amount, status)
-                return JsonResponse({"message": "Payment processed successfully", "status": "success"}, status=200)
+                order.status = "Paid"
             else:
-                # Handle payment failure or other statuses
-                return JsonResponse({"message": "Payment failed or is pending", "status": status}, status=400)
+                order.status = "Failed"
 
-        except json.JSONDecodeError:
-            # Handle JSON parsing errors
-            return JsonResponse({"error": "Invalid JSON data"}, status=400)
-    
-    # Return error if the request method is not POST
+            order.save()
+            logger.info(f"Order status updated to: {order.status}")
+            
+            return JsonResponse({"message": "Processed", "status": status}, status=200)
+
+        except Order.DoesNotExist:
+            logger.error("Order not found for transaction ID: %s", order_id)
+            return JsonResponse({"error": "Order not found"}, status=404)
+        except Exception as e:
+            logger.error(f"Error processing callback: {str(e)}")
+            return JsonResponse({"error": "Server error"}, status=500)
+
     return JsonResponse({"error": "Invalid request method"}, status=400)
-
 
 @require_POST
 def update_quantity(request):
