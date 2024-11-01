@@ -8,7 +8,7 @@ from Products.models import *
 # Create your models here.
 
 
-class Cart(models.Model):
+class Cart(models.Model): 
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     productid = models.CharField(max_length=100)

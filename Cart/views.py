@@ -36,6 +36,19 @@ cat = Category.objects.all()
 def checkout(req):
     user = req.user
     cart = Cart.objects.filter(user=user)
+    for x in cart:
+        products = Product.objects.filter(id = x.productid)
+        
+
+        for y in products:
+            productprice = Productprice.objects.filter(product = y.id , size =x.size)
+
+             
+            
+
+    shippingRate = ShippingRate.objects.all()
+
+
    
     # Calculate total amount in INR
     total_amount_inr = sum(float(item.price) * item.qty for item in cart)
@@ -215,6 +228,9 @@ def checkout(req):
     phonepe_url = "https://phonepe.com/payment-page-url" 
 
     countries = Country.objects.all()
+    
+
+
     queryser = {'item': cart, 'total_amount': total_amount_inr,'phonepe_url': phonepe_url, 'allcat':cat, 'countries':countries}
 
     
