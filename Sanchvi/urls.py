@@ -16,6 +16,11 @@ urlpatterns = [
     path('Terms&Condition/', termsandcondition, name='Terms&Condition'),
     path('About_Us/', aboutus, name='aboutus'),
     path('Privacy&Policy/' , privacyandpolicy, name='privacyandpolicy'),
+    path('License/' , frontendlicense, name='frontendlicense'),
+    path('contact_page', contact_page, name='contact_page'),
+    path('test/', testingpage, name='test'),
+    
+
     
 
 

@@ -1,5 +1,48 @@
-{%extends 'admindata/adminbase.html'%}
-{%block title%} Admin-Panel {%endblock%}
-{%block content%}
+{% extends 'adminbase.html' %}
+{% block title %} Panel    {% endblock %}
+{% block content %}
+<div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Users</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table
+            id="multi-filter-select"
+            class="display table table-striped table-hover"
+          >
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Join Date</th>
+                <th>Orders</th>
+              </tr>
+            </thead>
+ 
+            <tbody>
+                {%for x in orders%}
+               <tr>
+                <td><img width="20px" src="{{x.profile.url}}" alt=""></td>
+                <td>{{x.username}}</td>
+                <td>{{x.email}}</td>
+                <td>{{x.phone}}</td>
+                
+            
+              </tr>
+              {%empty%}
+              <tr>
+              <td>No users listed</td></tr>
+              {%endfor%}
 
-{%endblock%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

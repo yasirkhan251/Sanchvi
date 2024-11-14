@@ -1,93 +1,110 @@
-{% extends 'base.html'%}
-{%block title%}Privacy & Policy {%endblock%}
-{%block content %}
+{% extends 'base.html' %}
+{% block title %}Privacy Policy{% endblock %}
+{% block content %}
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        .container {
-            background-color: white;
-            width: 80%;
-            margin: 0 auto;
-            padding: 50px;
-        }
-        h1 {
+        
+        .containers {
+            
+            padding: 40px;
+            /* border-radius: 15px; */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 100%;
+            width: 100%;
             text-align: center;
+        }
+
+        h1 {
+            color: #222;
+            font-size: 2em;
             margin-bottom: 20px;
         }
-        .policy-section {
-            margin: 15px 0;
-        }
-        .policy-section h2 {
+
+        h2 {
+            color: #444;
+            margin-top: 20px;
             font-size: 1.5em;
-            color: #d63c7b;
         }
-        .policy-section p {
-            font-size: 1em;
+
+        p {
             color: #555;
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.3em;
+            }
+
+            p {
+                font-size: 1em;
+            }
         }
     </style>
 
+    <div class="containers" style="background-color: white;">
+        <div class="privacy-policy-container">
+            <section class="policy-section">
+                <h1>Privacy & Policy</h1>
+                <p>Welcome to Sanchvi Studio's Privacy Policy. We are committed to protecting your personal information and maintaining transparency in our data handling practices. By using our services, you agree to the practices outlined here.</p>
+            </section>
 
-    <div class="container">
-        <h1>Privacy & Cookies Policy</h1>
+            <section class="policy-section">
+                <h2>1. Information Collection</h2>
+                <p>We collect information you provide directly to us, such as when you create an account, place an order, or communicate with us. This may include your name, email address, phone number, and shipping details. We also collect data automatically when you interact with our website, such as IP addresses, browsing history, and cookies, for analytics purposes.</p>
+            </section>
 
-        <div class="policy-section">
-            <h2>1. Introduction:</h2>
-            <p>Welcome to our Privacy Policy. Your privacy is critically important to us.</p>
-        </div>
+            <section class="policy-section">
+                <h2>2. Use of Collected Information</h2>
+                <p>The information we collect is used to fulfill orders, personalize user experiences, and improve our products and services. Your data may also be used for customer support, responding to inquiries, or processing payments. We will not sell your personal data to third parties.</p>
+            </section>
 
-        <div class="policy-section">
-            <h2>2. Applicability:</h2>
-            <p>This privacy policy applies to all users who browse our website and interact with our services.</p>
-        </div>
+            <section class="policy-section">
+                <h2>3. Sharing of Information</h2>
+                <p>We may share your information with trusted third-party partners to perform essential business services (such as payment processing and order delivery). We ensure that these partners comply with strict data protection policies to maintain your privacy.</p>
+            </section>
 
-        <div class="policy-section">
-            <h2>3. Collection of Information:</h2>
-            <p>We collect various types of information including personal data, browsing behavior, and IP addresses for site performance.</p>
-        </div>
+            <section class="policy-section">
+                <h2>4. Security Measures</h2>
+                <p>Your data is secured through industry-standard measures, including encryption and secure servers. We strive to protect your information against unauthorized access and regularly review our security practices.</p>
+            </section>
 
-        <div class="policy-section">
-            <h2>4. Use of Information:</h2>
-            <p>Your data is used to improve our services, process transactions, and for customer support purposes.</p>
-        </div>
+            <section class="policy-section">
+                <h2>5. Cookies and Tracking Technologies</h2>
+                <p>Our website uses cookies to enhance your experience by remembering your preferences and tracking website usage. You can control the use of cookies through your browser settings. Please note that disabling cookies may affect some functionalities of the website.</p>
+            </section>
 
-        <div class="policy-section">
-            <h2>5. Data Deletion Process:</h2>
-            <p>You may request deletion of your personal data by contacting our support team.</p>
-        </div>
+            <section class="policy-section">
+                <h2>6. Children's Privacy</h2>
+                <p>Our services are not intended for children under the age of 13. We do not knowingly collect personal information from children without parental consent. If you believe your child has provided us with personal information, please contact us for removal.</p>
+            </section>
 
-        <div class="policy-section">
-            <h2>6. Cookies and Other Codes:</h2>
-            <p>We use cookies to personalize your experience and analyze website traffic. You can manage cookie preferences through your browser settings.</p>
-        </div>
+            <section class="policy-section">
+                <h2>7. Data Deletion Request</h2>
+                <p>If you wish to delete your personal data, please reach out to our support team at <strong>sanchvi.sanjana19@gmail.com</strong>. We will process your request within 30 business days, subject to legal or compliance obligations.</p>
+            </section>
 
-        <div class="policy-section">
-            <h2>7. Security:</h2>
-            <p>Your information is protected using industry-standard encryption and security practices.</p>
-        </div>
+            <section class="policy-section">
+                <h2>8. Changes to This Policy</h2>
+                <p>We may update this policy from time to time to reflect changes in our services or legal obligations. The updated version will be posted on our website, and the "Last updated" date will be modified accordingly.</p>
+                <p><strong>Last updated:</strong> 7 / 10 / 2024</p>
+            </section>
 
-        <div class="policy-section">
-            <h2>8. Children's Privacy:</h2>
-            <p>We do not knowingly collect personal information from children under 13 without parental consent.</p>
-        </div>
-
-        <div class="policy-section">
-            <h2>9. Applicable Law and Jurisdiction:</h2>
-            <p>This policy is governed by the laws of [Your Country/State], and any disputes shall be resolved under its jurisdiction.</p>
-        </div>
-
-        <div class="policy-section">
-            <h2>10. Grievances:</h2>
-            <p>If you have any grievances, please contact our support team at [Email Address].</p>
-        </div>
-
-        <div class="policy-section">
-            <h2>11. Miscellaneous:</h2>
-            <p>We may update this policy periodically. Please review it from time to time for any changes.</p>
+            <section class="policy-section">
+                <h2>9. Contact Us</h2>
+                <p>If you have any questions about our privacy practices, please contact us via email at <strong>sanchvi.sanjana19@gmail.com</strong> or by visiting our <a href="{% url 'contact_page' %}">CONTACT US</a> page. We are available to assist you and address your concerns.</p>
+            </section>
         </div>
     </div>
-
 {% endblock %}

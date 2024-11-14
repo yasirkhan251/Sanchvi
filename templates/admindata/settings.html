@@ -1,0 +1,222 @@
+{% extends 'adminbase.html' %}
+{% block title %} Server    {% endblock %}
+{% block content %}
+
+
+<hr>
+<div class="server">
+<h2>Server Mode</h2>
+
+
+<form id="serverModeForm">
+    <label class="switch">
+        <input type="checkbox" id="serverModeToggle">
+        <span class="slider round"></span>
+    </label>
+</form>
+
+<!-- Input for setting countdown time -->
+<!-- HTML: datetime-local input with custom styling -->
+<p>Set Countdown Time:</p>
+<div class="datetime-wrapper">
+    <input type="datetime-local" id="countdownTimeInput" class="custom-datetime-input">
+</div>
+</div>
+<hr>
+<!-- Custom Styles for datetime-local input -->
+<style>
+/* General wrapper for positioning */
+.server{
+    margin: 20px ;
+}
+.datetime-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px 0;
+}
+
+/* Styling the datetime-local input */
+.custom-datetime-input {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for the input */
+.custom-datetime-input:hover {
+    border-color: #4a90e2;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus effect for the input */
+.custom-datetime-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0px 2px 8px rgba(74, 144, 226, 0.5);
+}
+
+/* Add some placeholder styling (optional, based on browser support) */
+.custom-datetime-input::placeholder {
+    color: #888;
+    font-style: italic;
+}
+</style>
+
+<p id="liveUpdateNotification" style="display: none; color: green;">Server mode or countdown time updated live!</p>
+
+<script>
+window.onload = function() {
+    // Fetch the current server mode and countdown time from the backend on page load
+    fetch("{% url 'get_server_mode' %}")
+        .then(response => response.json())
+        .then(data => {
+            // Set the toggle switch and countdown time based on the fetched values
+            document.getElementById('serverModeToggle').checked = data.servermode;
+            if (data.countdowntime) {
+                document.getElementById('countdownTimeInput').value = new Date(data.countdowntime).toISOString().slice(0,16);  // Format for datetime-local input
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching server mode and countdown time:', error);
+        });
+};
+
+// Event listener for toggle switch changes
+document.getElementById('serverModeToggle').addEventListener('change', function() {
+    const servermode = this.checked;  // Get the status of the toggle switch (true or false)
+    
+    // Send the updated servermode to the backend via AJAX
+    fetch("{% url 'toggle_server_mode' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',  // Add CSRF token for security
+        },
+        body: JSON.stringify({
+            'servermode': servermode
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        showLiveUpdateNotification();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+// Event listener for countdown time changes
+document.getElementById('countdownTimeInput').addEventListener('change', function() {
+    const countdownTime = this.value;  // Get the selected date-time value
+
+    // Send the updated countdown time to the backend via AJAX
+    fetch("{% url 'toggle_server_mode' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',  // Add CSRF token for security
+        },
+        body: JSON.stringify({
+            'countdowntime': countdownTime  // Send countdown time in ISO format
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        showLiveUpdateNotification();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+// WebSocket connection for real-time updates (Optional for live sync)
+let serverModeSocket = new WebSocket('ws://' + window.location.host + '/ws/servermode/');
+
+// On receiving a message from WebSocket, update the toggle switch and countdown time
+serverModeSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    document.getElementById('serverModeToggle').checked = data.servermode;
+    if (data.countdowntime) {
+        document.getElementById('countdownTimeInput').value = new Date(data.countdowntime).toISOString().slice(0,16);
+    }
+};
+
+// Function to show the live update notification
+function showLiveUpdateNotification() {
+    const notification = document.getElementById('liveUpdateNotification');
+    notification.style.display = 'block';
+    notification.textContent = 'Server mode or countdown time updated live!';
+
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+</script>
+
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+#liveUpdateNotification {
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+</style>
+{% endblock %}

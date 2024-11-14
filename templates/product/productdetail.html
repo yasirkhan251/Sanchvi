@@ -1,8 +1,33 @@
 {% extends 'base.html' %}
 {% block title %} Product {% endblock %}
 
+{%block catagories%}
+<li class="nav-item">
+    <a href="#shop" class="toggle-dropdown">
+        <i class="fas fa-shopping-bag"></i>
+        <p>Categories</p>
+        <span class="caret"></span>
+    </a>
+    <div class="dropdown-menu hidden" id="shop">
+        <ul class="nav nav-collapses">
+            {% for x in allcat %}
+            {% if x.c_id != "Md" %}
+            <li>
+                <a href="{% url 'product' x.c_id x.id %}">
+                    <span class="sub-item">{{ x.name }}</span>
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</li>
+
+{%endblock%}
+
 {% block content %}
 <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script src="/static/js/tailwind.js"></script>
 
 
 <style>#tablet{
@@ -10,8 +35,8 @@
 }</style>
     
 <!-- <div>
-    <button id="backButton">Back</button>
-    <button id="nextButton">Next</button>
+    <button id="backButton"><span style="font-size: larger;">Back</span></button>
+    <button id="nextButton"><span  style="font-size: larger;">Next</span></button>
 </div> -->
 
 <script>
@@ -66,11 +91,13 @@
                 </div>
             </div>
             <div class="flex flex-col justify-center">
+                <!-- {{product.id}} -->
                 <h1 class="text-2xl font-extrabold mb-2 ">{{ product.name }}</h1>
                
                 <input type="text" name="product" value="{{ product.name }}" hidden>
                 <input type="text" name="productid" value="{{ product.id }}" hidden>
                 <input type="text" name="price" id="priceInput" hidden>
+                <input type="text" name="box_size" id="boxSize" hidden>
 
                 <div class="mb-4 flex">
                     <div class="mr-4">
@@ -91,15 +118,28 @@
                     </div>
                     <div>
                         <label for="size" class="text-secondary">Select Size:</label>
-                        <select required id="size" name="size"  class="mt-1 block w-32 border border-border rounded-lg p-2">
+                        <select required id="size" name="size"  onchange="updateProductDetails()" class="mt-1 block w-32 border border-border rounded-lg p-2">
                             <!-- <option value=""  data-price="0">--select--</option> -->
                             {% for price in prices %}
-                                <option value="{{ price.size }}" data-price="{{ price.price }}">{{ price.size }}</option>
+                                <option value="{{ price.size }}" data-price="{{ price.price }}"  data-shipping-box="{{ price.shipping_box }}">{{ price.size }}</option>
                             {% endfor %}
                         </select>
                     </div>
                 </div>
+<script>function updateProductDetails() {
+    const sizeSelect = document.getElementById("size");
+    const selectedOption = sizeSelect.options[sizeSelect.selectedIndex];
 
+    // Get the shipping box from the selected size option
+    const shippingBox = selectedOption.dataset.shippingBox;
+
+    // Update the hidden input for box size
+    document.getElementById("boxSize").value = shippingBox;
+}
+
+// Trigger the update on page load to set initial values if needed
+document.addEventListener('DOMContentLoaded', updateProductDetails);
+</script>
                 <div class="flex items-center mb-2">
                     <p id="currentPrice" class=" font-bold text-2xl mr-2">₹NaN</p>
                     <p id="originalPrice" class="text-muted line-through">₹NaN</p>
@@ -283,6 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentPrice = document.getElementById('currentPrice');
     const originalPrice = document.getElementById('originalPrice');
     const priceInput = document.getElementById('priceInput'); // Get the price input field
+    const boxSize = document.getElementById('boxSize')
 
     sizeSelect.addEventListener('change', function() {
         const selectedOption = sizeSelect.options[sizeSelect.selectedIndex];
@@ -536,3 +577,29 @@ pre{
 {% endblock %}
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const toggleDropdown = document.querySelector('.toggle-dropdown');
+    const dropdownMenu = document.getElementById('shop');
+
+    toggleDropdown.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        dropdownMenu.classList.toggle('hidden'); // Toggle visibility
+    });
+});
+
+</script>
+
+<style>
+    .hidden {
+    display: none;
+}
+.dropdown-menu {
+    display: block; /* Ensure dropdown displays correctly */
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+</style>

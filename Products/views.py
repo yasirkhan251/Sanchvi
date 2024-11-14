@@ -3,6 +3,7 @@ from .models import *
 from django.views.generic import *
 from django.urls import reverse
 from .forms import *
+from Admin.models import *
 
 cat = Category.objects.all()
 # Create your views here.
@@ -32,7 +33,7 @@ def contactusup(req):
         mobile = req.POST['mobile']
         message = req.POST['message']
 
-        contact = ContactMe.objects.create(
+        contact = Feedback.objects.create(
             first_name = first_name,
             last_name = last_name,
             email =email,
@@ -45,32 +46,6 @@ def contactusup(req):
 
 
     return render(req, 'contact/contactusout.html') 
-
-
-def contact_page(req):
-    quaryset = {
-        'allcat': cat,
-    }
-    if req.method== 'POST':
-        first_name = req.POST['first_name']
-        last_name = req.POST['last_name']
-        email = req.POST['email']
-        mobile = req.POST['mobile']
-        message = req.POST['message']
-
-        contact = ContactMe.objects.create(
-            first_name = first_name,
-            last_name = last_name,
-            email =email,
-            mobile = mobile,
-            message = message
-        )
-
-        contact.save()
-        return render(req, 'contact/thankyou_for_contact.html')
-    
-    
-    return render(req, 'contact/contact_page.html',quaryset)
 
 
 
@@ -138,26 +113,128 @@ def add_product(request):
 def all_video(req):
     return render(req, 'product/all_videos.html')
 
-def product_landing(req,c_id, id):
-    category= get_object_or_404(Category, c_id = c_id)
-    products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('prices', 'images')
-    prices = Productprice.objects.filter(product__in=products)
+# def product_landing(req,c_id, id):
+    
+#     category= get_object_or_404(Category, c_id = c_id)
+#     products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('prices', 'images')
+#     prices = Productprice.objects.filter(product__in=products)
 
-    # category= Category.objects.filter(c_id = c_id)
+#     # category= Category.objects.filter(c_id = c_id)
     
   
-    # products = Product.objects.filter(category = id)
+#     # products = Product.objects.filter(category = id)
     
 
+#     img = ProductImage.objects.all()
+#     queryset = {
+#         'product':products,
+#         'catogery':category,
+#         'allcat':cat,
+#         'imgs':img,
+#         'prices':prices,
+#     }
+#     return render(req, 'product/Shop_product_list.html' , queryset)
+
+# def product_landing(req, c_id, id):
+#     category = get_object_or_404(Category, c_id=c_id)
+#     sort = req.GET.get('sort', None)
+
+#     # Sort products based on the related price field
+#     if sort == 'low_to_high':
+#         products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('prices', 'images').order_by('prices__price')
+#     elif sort == 'high_to_low':
+#         products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('prices', 'images').order_by('-prices__price')
+#     else:
+#         products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('prices', 'images')
+
+#     img = ProductImage.objects.all()
+
+#     queryset = {
+#         'product': products,
+#         'catogery': category,
+#         'allcat': cat,
+#         'imgs': img,
+#     }
+#     return render(req, 'product/Shop_product_list.html', queryset)
+
+from django.db.models import Min, Max
+
+def product_landing(req, c_id, id):
+    category = get_object_or_404(Category, c_id=c_id)
+    sort = req.GET.get('sort', None)
+
+    # Annotate products with their minimum or maximum price
+    if sort == 'low_to_high':
+        products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('images').annotate(min_price=Min('prices__price')).order_by('min_price')
+    elif sort == 'high_to_low':
+        products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('images').annotate(max_price=Max('prices__price')).order_by('-max_price')
+    else:
+        products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('images')
+
     img = ProductImage.objects.all()
+
     queryset = {
-        'product':products,
-        'catogery':category,
-        'allcat':cat,
-        'imgs':img,
-        'prices':prices,
+        
+        'product': products,
+        'catogery': category,
+        'allcat': cat,
+        'imgs': img,
     }
-    return render(req, 'product/Shop_product_list.html' , queryset)
+    return render(req, 'product/Shop_product_list.html', queryset)
+
+from django.http import JsonResponse
+def searchall(request):
+    print("searchall view accessed")
+    query = request.GET.get('search', '').lower()
+    products = Product.objects.filter(name__icontains=query).prefetch_related('prices')
+    print("Search query:", query)
+    
+    matching_products = []
+    added_product_names = set()
+
+    for product in products:
+        if product.name not in added_product_names:
+            matching_products.append({
+                'id': product.id,
+                'name': product.name,
+                'img_url': product.img.url if product.img else '',
+                'price': product.prices.first().price if product.prices.exists() else None,
+            })
+            added_product_names.add(product.name)
+    
+    return JsonResponse({'products': matching_products})
+
+
+
+
+def search(req, pid=None, cid=None):
+    if req.method == "POST":
+        searchproduct = req.POST['search'].lower()
+
+        # Perform a case-insensitive search for products containing the search term
+        products = Product.objects.filter(name__icontains=searchproduct).prefetch_related('prices')
+
+        # List to store matching products with additional details
+        matching_products = []
+        
+        # Set to track unique product names
+        added_product_names = set()
+        filter = 0
+
+        # Populate the list with product details, avoiding duplicates
+        for product in products:
+            if product.name not in added_product_names:
+                matching_products.append(product)  # Add full product object (Django ORM instance)
+                added_product_names.add(product.name)  # Mark this product name as added
+
+        # Check if we found any matching products and render the template
+        if matching_products:
+            return render(req, 'product/Shop_product_list.html', {'product': matching_products, 'filtered' : filter, 'allcat': cat  })
+        else:
+             return render(req, 'product/Shop_product_list.html', {'product': matching_products, 'filtered' : filter, 'allcat': cat})
+
+    return HttpResponse("Invalid request method")
+
 
 def product_detail(req, pid):
     # Try to get the product by ID, if it doesn't exist, show a friendly message
@@ -174,22 +251,25 @@ def product_detail(req, pid):
         # return HttpResponse("Product not found", status=404)
 
     # If the product exists, proceed with rendering the detail page
+
+
     img = product.images.all()
     prices = Productprice.objects.filter(product=product)
     colorpalet =  Productcolorpalet.objects.filter(Product=product)
     # Assuming 'cat' is fetched somewhere; if it's missing, you should add its logic.
     # cat = Category.objects.all() # You might want to include this or modify as needed
-
+    productdetail = 0
     queryset = {
         'product': product,
         'imgs': img,
         'allcat': cat,  # Make sure 'cat' is defined somewhere in your code
         'prices': prices,
-        'color':colorpalet
+        'color':colorpalet,
+        'productedetail' : productdetail 
     }
 
     return render(req, 'product/productdetail.html', queryset)
 
 
 def sizechart(req):
-    return render(req, 'sizechart.html')
+    return render(req, 'assets/sizechart.html')

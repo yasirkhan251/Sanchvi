@@ -3,9 +3,28 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="/static/css/checkout.css">
 
-<div class="container checkout-container">
+
+
+<link rel="stylesheet" href="/static/css/checkout.css">
+<style>
+    .container{
+        display: flex;
+        justify-content: center;
+    }
+    #hideone{
+    display: none;
+        border: none;
+        background-color: none;
+        text-decoration: none;
+    }
+    #showme{
+        display: none;
+    }
+    
+</style>
+
+<div class="container checkout-container" >
     <div class="checkoutLayout">
         <!-- Left Side: Cart Items -->
         <div class="returnCart">
@@ -14,7 +33,7 @@
            <center> <h1>Products in Cart</h1></center>
 
             <!-- Toggle Button for Small Devices -->
-            <button class="toggle-cart-items">View Cart Items</button>
+            <button type="button" class="toggle-cart-items">View Cart Items</button>
 
             <!-- Product List Container -->
             <div class="list product-list">
@@ -36,7 +55,32 @@
         </div>
 
         <!-- Right Side: Checkout Form -->
+        {% if messages %}
+        <div id="message-container" style="position: fixed; top: 10%; right: 20px; z-index: 1050;">
+            {% for message in messages %}
+                <div class="alert alert-warning" role="alert" style="margin-bottom: 10px;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <script>
+        // JavaScript to make the messages disappear after 10 seconds
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                const messageContainer = document.getElementById('message-container');
+                if (messageContainer) {
+                    messageContainer.style.transition = 'opacity 1s';
+                    messageContainer.style.opacity = '0';
+                    setTimeout(() => messageContainer.remove(), 1000); // Remove from DOM after fade out
+                }
+            }, 10000); // 10 seconds delay
+        });
+    </script>
+    
         <div class="right">
+            
             <center><h1 class="checkout-title">Checkout</h1></center>
             <form method="post" action="{% url 'checkout' %}" id="checkoutForm">
                 {% csrf_token %}
@@ -50,54 +94,132 @@
                         <label for="phone">Phone Number</label>
                         <input type="text" name="phone" required id="phone">
                     </div>
-
                     <div class="group">
-                        <label for="address">Address</label>
-                        <input type="text" name="address" required id="address">
+                        <label for="address1">Address 1 </label>
+                        <input type="text" name="address1" required id="address1" placeholder="Flat/Apartment, Street ... No. ">
                     </div>
+                    <div class="group">
+                        <label for="address2">Address 2</label>
+                       <input type="text" name="address2" id="address2" placeholder="Area / Landmark " required>
+                    </div>
+                
 
+                   
                     <div class="group">
                         <label for="country">Country</label>
-                        <select name="country" required id="country">
+                        <select name="country" id="country" onchange="fetchStatesAndShippingRate()" required>
                             <option value="">Choose...</option>
-                            <option value="India">India</option>
+                            {% for country in countries %}
+                                <option value="{{ country.id }}">{{ country.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
-
+                    <div class="group">
+                        <label for="state">State</label>
+                        <select name="state" id="state" required>
+                            <option value="">Choose...</option>
+                        </select>
+                    </div>
+                
+                    
+                
                     <div class="group">
                         <label for="city">City</label>
-                        <select name="city" required id="city">
+                        <!-- <select name="city" id="city" onchange="fetchAreas()" required>
                             <option value="">Choose...</option>
-                            <option value="Bangalore">Bangalore</option>
-                        </select>
+                        </select> -->
+                        <input type="text" id="city" name="city" placeholder="Enter Your City Name" required>
                     </div>
+                    
+                    <div class="group">
+                        <label for="zipcode">Zipcode</label>
+                        <input type="text" name="zipcode" required id="zipcode" placeholder="A123456" required>
+                    </div>
+                    
+                    <div class="group" id="showme">
+                        <label for="promocode">Enter Promocode</label>
+                        <input type="text" name="promocode" required id="promocode" placeholder="A123456">
+                    </div>
+                    <button onclick="hideme()" type="button" id="hideone">Do you have a promocode?</button>
+
                 </div>
+                
+                
 
                 <div class="return">
                     <div class="row">
                         <div>Total Quantity</div>
                         <div id="totalQuantity">0</div>
                     </div>
+
+                    <div class="row">
+                        <div>Shipping Charges</div>
+                        <div id="shippingcharge">₹0</div> <!-- This will be updated by JavaScript -->
+                    </div>
+                    
                     <div class="row">
                         <div>Total Price</div>
                         <div id="totalPrice">₹0</div>
                     </div>
                 </div>
+                <div>
+                    <span>In case of any doubt regarding international shipping cost please connect with us here <a
+                        href="https://api.whatsapp.com/send?phone=918296250912&text=Hi%2C%20I%20am%20{{request.user.username}}.%20I'm%20interested%20in%20purchasing%20the%20dress%20added%20to%20my%20cart%2C%20but%20I%20find%20the%20Shipping%20Price%20a%20bit%20high.%20Could%20we%20possibly%20negotiate%20a%20better%20price%3F"
+                        target="_blank"
+                        class="contact-us-button"
+                    >WhatsApp Us</a></span>
+                </div>
+                    
+             
+<!-- Button to Trigger Modal -->
+<center>
+    <button type="button" class="btn btn-primary buttonCheckout" data-toggle="modal" data-target="#exampleModalCenter">
+        Checkout
+    </button>
+</center>
 
-                <center>
-                    <button type="button" class="btn btn-primary buttonCheckout" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                        Checkout
-                    </button>
-                </center>
-
-                <!-- Payment Modal -->
-                <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <!-- ... Modal content remains the same ... -->
-                        </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="color: black;" class="modal-title" id="exampleModalCenterTitle">Payment Options</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="color: black;">
+                <p>Select preferred payment method</p><br>
+                <div style="display: flex; flex-direction: row; gap: 30px;">
+                    <!-- Payment Method: PhonePe -->
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://pbs.twimg.com/profile_images/1615271089705463811/v-emhrqu_400x400.png" width="50px" alt="PhonePe">
+                        <input type="radio" name="paymentMethod" id="phonepe" value="phonepe"  onclick="invokePhonePePayment()">
+                        <label for="phonepe">PhonePe (UPI)</label>
+                    </div>
+                    <!-- Payment Method: PayPal -->
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 20px;">
+                        <img src="https://w7.pngwing.com/pngs/720/939/png-transparent-paypal-computer-icons-logo-paypal-blue-angle-service-thumbnail.png" width="50px" alt="PayPal">
+                        <input type="radio" name="paymentMethod" id="paypal" value="paypal" >
+                        <label for="paypal">PayPal</label>
+                    </div>
+                    <!-- Payment Method: Credit/Debit Card (Disabled) -->
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://img.favpng.com/18/1/20/credit-card-debit-card-bank-sbi-cards-png-favpng-NDk8jXgaFfg0n5ypnDAFHZ9cA.jpg" width="75px" alt="Credit/Debit">
+                        <input type="radio" name="paymentMethod" id="creditDebit" value="creditDebit" disabled>
+                        <label for="creditDebit">Credit/Debit Card disabled</label>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Pay Now</button>
+            </div>
+  
+        </div>
+    </div>
+</div>
+
                 <!-- End of Modal -->
             </form>
         </div>
@@ -105,7 +227,107 @@
 </div>
 
 <!-- JavaScript to Calculate Totals and Toggle Product List with Animation -->
+
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- <script src="/static/js/checkout.js"></script> -->
+
 <script>
+    
+
+const hideone = document.getElementById('hideone') 
+const showme = document.getElementById('showme') 
+function hideme(){
+    hideone.style.display = 'none';
+    showme.style.display = 'block';
+
+}
+
+function fetchStatesAndShippingRate() {
+    var countryId = document.getElementById('country').value;
+    var stateSelect = document.getElementById('state');
+    var shippingChargeElement = document.getElementById('shippingcharge');
+    var totalPriceElement = document.getElementById('totalPrice');
+    var totalPrice = document.getElementById('totalPrice').textContent.replace('₹', '').trim(); // Get total price
+
+    stateSelect.innerHTML = '<option value="">Choose...</option>'; // Clear states list
+
+    if (countryId) {
+        // Fetch states
+        fetch(`/cart/fetch-states/?country_id=${countryId}`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(state => {
+                    var option = document.createElement('option');
+                    option.value = state.id;
+                    option.text = state.name;
+                    stateSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching states:', error));
+
+        // Fetch shipping rate with countryId and totalPrice
+        fetch(`/cart/fetch-shipping-rate/?country_id=${countryId}&total_price=${totalPrice}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the HTML elements with the new values
+                    shippingChargeElement.textContent = '₹' + data.shipping_rate.toFixed(2);
+                    totalPriceElement.textContent = '₹' + data.all_total_price.toFixed(2);
+                } else {
+                    shippingChargeElement.textContent = '₹0';
+                    totalPriceElement.textContent = '₹' + totalPrice;
+                }
+            })
+            .catch(error => console.error('Error fetching shipping rate:', error));
+    }
+}
+
+// Function to display the selected area's zipcode
+function displayZipcode() {
+var areaSelect = document.getElementById('area');
+var selectedOption = areaSelect.options[areaSelect.selectedIndex];
+var zipcode = selectedOption.getAttribute('data-zipcode'); // Retrieve the zipcode from the selected option
+
+document.getElementById('zipcode').value = zipcode; // Display the zipcode in the input field
+}
+
+
+
+
+document.querySelector('.modal-footer .btn-primary').addEventListener('click', function() {
+    document.getElementById('checkoutForm').submit();
+});
+
+
+function invokePhonePePayment() {
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        if (paymentMethod === "phonepe") {
+            const phonePeUrl = "{{ phonepe_url }}";  // Get the URL from the backend
+            if (phonePeUrl) {
+                window.PhonePeCheckout.transact({
+                    tokenUrl: phonePeUrl,
+                    type: "IFRAME",
+                    callback: function (response) {
+                        if (response === 'USER_CANCEL') {
+                            alert('Transaction cancelled by user.');
+                        } else if (response === 'CONCLUDED') {
+                            alert('Transaction completed successfully.');
+                        }
+                    }
+                });
+            }
+        } else {
+            alert('Please select PhonePe to proceed with the payment.');
+        }
+    }
+
+
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
         // Calculate total quantity and price
         function calculateTotal() {
@@ -173,6 +395,8 @@
             }
         }
     });
+
 </script>
+
 
 {% endblock %}

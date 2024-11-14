@@ -9,13 +9,16 @@
 
     <video src="/static/videos/video10.mp4" loop autoplay muted  ></video>
   </div>
-<!-- end video  --><section id="shopnow" >
+<!-- end video  -->
+ <section id="shopnow" >
 <div >
 <h2>Categories</h2></div>
   <!-- for shop categories  -->
 
     <div class="box-container" >
       {% for x in category %}
+      {% if x.name != 'Mom-Daughter Duo' %}
+      
       <div class="box-item">
         <div class="flip-box medium">
           <div class="flip-box-front text-center" style="background-image: url({{ x.image.url}});">
@@ -38,9 +41,20 @@
         
         </div>
       </div>
+      
+      {%else%}
+      {%endif%}
       {% endfor %}
+
+      
     </section>
 
+
+    <!-- <style>.flip-box-front, .flip-box-back {
+      background-size: cover;
+      -webkit-transform: translate3d(0, 0, 0);
+  }
+  </style> -->
 <!-- end shop categories -->
 
 
@@ -68,7 +82,7 @@
       <a href="{% url 'productdetail' 67 %}" class="buy-button">Buy Now</a>
     </div>
     <div class="video-item">
-      <video src="/static/videos/video17.mp4" autoplay loop muted></video>
+      <video src="/static/videos/video17.mp4" autoplay loop ></video>
       <a href="{% url 'productdetail' 121 %}" class="buy-button">Buy Now</a>
     </div>
   </div>
@@ -81,6 +95,11 @@
 
  <!-- end shop videos  -->
   <style>
+
+
+
+
+
     .video-section {
   padding: 5%;
   display: flex;

@@ -1,28 +1,147 @@
 {% extends 'base.html' %}
-{% block title%} About Us page {% endblock %}
+{% block title %} About Us page {% endblock %}
 
-{% block content%}
-    <head>
-    
-        <!-- <title>About Us page</title> -->
-        <link rel="stylesheet" href="/static/css/aboutus.css" />
-       
-    </head>
+{% block content %}
+<head>
+    <!-- Removed the inline `<title>` tag to avoid conflict -->
+    <link rel="stylesheet" href="/static/css/aboutus.css" />
+    <style>/* General Styles */
+        #about-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px;
+            max-width: 1200px;
+            margin: auto;
+            background: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            gap: 30px;
+        }
+        
+        .about-left img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .about-right {
+            max-width: 600px;
+        }
+        
+        .about-right h1 {
+            font-size: 2.5em;
+            color: #d63c7b;
+            margin-bottom: 15px;
+        }
+        
+        .about-right h2 {
+            font-size: 2em;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        
+        .about-content p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        /* Enhanced Phone View */
+        @media (max-width: 480px) {
+            #about-section {
+                flex-direction: column;
+                align-items: center; /* Center-align items for a balanced look */
+                padding: 20px; /* Compact padding for a smaller screen */
+                gap: 20px; /* Reduce gap between elements */
+            }
+        
+            .about-left {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px; /* Add margin to separate image from text */
+            }
+        
+            .about-left img {
+                max-width: 300px; /* Restrict image width to fit better on small screens */
+                height: auto;
+                border-radius: 10px; /* Smaller border radius for a more subtle look */
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Lighter shadow for mobile */
+            }
+        
+            .about-right {
+                text-align: center; /* Center-align text for improved readability */
+                width: 100%;
+            }
+        
+            .about-right h1 {
+                font-size: 2em; /* Reduce font size for better display on mobile */
+            }
+        
+            .about-right h2 {
+                font-size: 1.5em; /* Reduce font size for subtitle */
+                margin-bottom: 15px;
+            }
+        
+            .about-content p {
+                font-size: 1em; /* Make paragraph text slightly smaller for mobile */
+                line-height: 1.6; /* Adjust line height for compact text without losing readability */
+                margin-bottom: 15px;
+            }
+        
+            .about-content p:not(:last-child) {
+                margin-bottom: 20px; /* Add spacing between paragraphs for better separation */
+            }
+        }
+        
+        /* Responsive Styling for Tablets */
+        @media (max-width: 768px) {
+            #about-section {
+                flex-direction: column;
+                padding: 30px; /* Moderate padding for tablets */
+            }
+        
+            .about-left,
+            .about-right {
+                width: 100%;
+            }
+        
+            .about-left img {
+                max-width: 100%;
+                margin-bottom: 25px; /* Add space below the image */
+            }
+        
+            .about-right h1 {
+                font-size: 2.2em; /* Adjust for better visibility on tablets */
+            }
+        
+            .about-right h2 {
+                font-size: 1.8em;
+            }
+        
+            .about-content p {
+                font-size: 1em;
+            }
+        }
+        </style>
+</head>
 
-    <body>
-        <section id="about-section">
-            <!-- about left  -->
-            <div class="about-left">
-                <img src="/static/img/sanjana1.png.jpg" alt="About Img"/>
-            </div>
+<body>
+    <section id="about-section">
+        <!-- about left  -->
+        <div class="about-left">
+            <img src="/static/img/sanjana1.png.jpg" alt="About Img" />
+        </div>
 
-            <!-- about right  -->
-            <div class="about-right">
-                <h1>Sanchvi Studio</h1>
-                <h2>About Us</h2>
-                <br><br>
-                <h4>
-                    <p>Sanchvi was founded in 2019 by Sanjana Jain in Bangalore, India. The brand began as a niche rental service for exclusive maternity wear, driven by Sanjana's passion for experimental silhouettes that blend style with comfort.
+        <!-- about right  -->
+        <div class="about-right">
+            <h1>Sanchvi Studio</h1>
+            <h2>About Us</h2>
+            <div class="about-content">
+                <p>Sanchvi was founded in 2019 by Sanjana Jain in Bangalore, India. The brand began as a niche rental service for exclusive maternity wear, driven by Sanjana's passion for experimental silhouettes that blend style with comfort.
                     <br><br>
                     Sanchvi aimed to offer expecting mothers options that were elegant and unique, breaking away from traditional norms.
                     <br><br>
@@ -37,10 +156,8 @@
                     The brand’s dedication to unique, high-quality designs and its adaptability to changing clientele needs have made it a cherished name in the fashion rental industry.
                     <br><br>
                     Sanchvi has grown from a small idea to a global phenomenon, reflecting the passion and creativity that continue to drive the brand forward.
-                    </p>
-                </h4>
-                
-                
-              
-        </section>
-        {% endblock %}
+                </p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

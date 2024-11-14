@@ -1,86 +1,239 @@
 {% extends 'base.html' %}
-{% block title%} Dashboard Sanchvi {% endblock %}
+{% block title %} Dashboard Sanchvi {% endblock %}
 
-{% block content%}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% block content %}
 <style>
-    body {
-        background-color: #f9f9f9;
-        padding: 20px;
-    }
     .order-container {
         background-color: #fff;
         border-radius: 8px;
         padding: 20px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
     }
     .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 15px;
+        flex-wrap: wrap;
     }
-    .order-items {
-        margin-bottom: 20px;
+    .order-header h4, .order-header p {
+        margin-bottom: 5px;
+    }
+    .order-summary {
+        text-align: right;
+        margin-top: 20px;
+    }
+    .order-details-toggle {
+        cursor: pointer;
+        color: #007bff;
+        font-weight: bold;
+        border: none;
+        background: none;
+        padding: 0;
+    }
+    .order-details-toggle:hover {
+        text-decoration: underline;
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        width: 70%;
+        max-width: 800px;
+        max-height: 90%;
+        overflow-y: auto;
+        position: relative;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 1.5rem;
+        color: #aaa;
+        cursor: pointer;
+    }
+    .modal-close:hover {
+        color: #000;
     }
     .order-item {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         margin-bottom: 10px;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
     }
     .order-item img {
-        max-width: 50px;
+        max-width: 60px;
         margin-right: 15px;
+        border-radius: 5px;
     }
-    .order-summary {
-        text-align: right;
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .order-container {
+            padding: 15px;
+        }
+        .order-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .order-details-toggle {
+            align-self: flex-start;
+            margin-top: 10px;
+        }
+        .order-summary {
+            text-align: left;
+            margin-top: 10px;
+        }
+        .modal-content {
+            width: 95%;
+            padding: 15px;
+        }
+        .order-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .order-item img {
+            max-width: 100%;
+            margin-bottom: 10px;
+        }
+        .text-right {
+            align-self: flex-end;
+            width: 100%;
+            text-align: right;
+        }
     }
 </style>
-</head>
-<body>
-<h1 class="text-center">My Orders</h1>
+
+<h1 class="text-center mb-4">My Orders</h1>
 
 <!-- Loop through the orders -->
 {% if orders %}
     {% for order in orders %}
     <div class="order-container">
         <div class="order-header">
-            <h4>Order ID: {{ order.order_id }}</h4>
-            <p>Order Date: {{ order.created_at }}</p>
-        </div>
-        <div>
-            <h5>Shipping Address:</h5>
-            <p>{{ order.address.name }}<br>
-               {{ order.address.address }}<br>
-               {{ order.address.city }}, {{ order.address.country }}<br>
-               Phone: {{ order.address.phone }}</p>
-        </div>
-        <div class="order-items">
-            {% for item in order.items.all %} <!-- Use .all to iterate over related items -->
-            <div class="order-item">
-                <div>
-                    {% if item.product.img %}
-                        <img src="{{ item.product.img.url }}" alt="{{ item.product.name }}">
-                    {% endif %}
-                    <span>{{ item.product.name }} ({{ item.size }}, {{ item.color }})</span>
-                </div>
-                <div>
-                    <span>Quantity: {{ item.qty }}</span>
-                    <span>Price: ₹{{ item.price }}</span>
-                </div>
+            <div>
+                <h4>Order ID: {{ order.order_id }}</h4>
+                <p>Order Date: {{ order.created_at|date:"F d, Y H:i" }}</p>
             </div>
-            {% endfor %}
+            <button class="order-details-toggle" data-order-id="{{ order.order_id }}">View Order Details</button>
         </div>
+
         <div class="order-summary">
             <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
         </div>
     </div>
+
+    <!-- Modal for Order Details -->
+    <div id="modal-{{ order.order_id }}" class="modal" style="margin-top: 35px;">
+        <div class="modal-content">
+            <span class="modal-close" data-order-id="{{ order.order_id }}">&times;</span>
+            <h4>Order ID: {{ order.order_id }}</h4>
+            <div>
+                <h5>Shipping Address:</h5>
+                <p>{{ order.address.name }}<br>
+                   {{ order.address.address }}<br>
+                   {{ order.address.city }}, {{ order.address.country }}<br>
+                   Phone: {{ order.address.phone }}</p>
+            </div>
+            <div class="order-items">
+                <h5>Items:</h5>
+                {% for item in order.items.all %}
+                <div class="order-item">
+                    <img src="{{ item.product.img.url }}" alt="{{ item.product.name }}">
+                    <div>
+                        <strong>{{ item.product.name }}</strong><br>
+                        <span>Size: {{ item.size }}</span><br>
+                        <span>Color: {{ item.color }}</span><br>
+                        <span>Quantity: {{ item.qty }}</span><br>
+                        <span>Price: ₹{{ item.price }}</span>
+                    </div>
+                    <div class="text-right">
+                        <span>Total: ₹{{ item.price }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="order-summary">
+                <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 {% else %}
-    <p>You have no orders yet.</p>
+    <p class="text-center">You have no orders yet.</p>
 {% endif %}
 
-<div class="text-center">
+<div class="text-center mt-4">
     <a href="{% url 'index' %}" class="btn btn-primary">Continue Shopping</a>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all toggle buttons and modals
+        const toggles = document.querySelectorAll('.order-details-toggle');
+        const modals = document.querySelectorAll('.modal');
+        const closeButtons = document.querySelectorAll('.modal-close');
 
+        // Event listener to open modal
+        toggles.forEach(function(toggle) {
+            toggle.addEventListener('click', function() {
+                const orderId = this.getAttribute('data-order-id');
+                const modal = document.getElementById(`modal-${orderId}`);
+                if (modal) {
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling of the background
+                }
+            });
+        });
+
+        // Event listener to close modal
+        closeButtons.forEach(function(closeButton) {
+            closeButton.addEventListener('click', function() {
+                const orderId = this.getAttribute('data-order-id');
+                const modal = document.getElementById(`modal-${orderId}`);
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Restore scrolling
+                }
+            });
+        });
+
+        // Close modal when clicking outside the modal content
+        modals.forEach(function(modal) {
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Restore scrolling
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

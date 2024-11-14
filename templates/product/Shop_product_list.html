@@ -1,6 +1,94 @@
 {% extends 'base.html' %}
 {% block title %}Product List{% endblock %}
 
+{%block filter%} 
+
+
+
+{% if product and filtered != 0 %}
+<li class="nav-item topbar-icon dropdown hidden-caret">
+    <a class="nav-link dropdown-toggle filter-toggle" href="#" id="messageDropdown" role="button"
+       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-filter"></i> Filter
+    </a>
+
+    <ul class="dropdown-menu filter-dropdown animated fadeIn" aria-labelledby="messageDropdown">
+        <li class="dropdown-title">
+            <span>Sort By</span>
+        </li>
+       
+        <li>
+            <a href="?sort=low_to_high" class="filter-option">Price: Low to High</a>
+        </li>
+        <li>
+            <a href="?sort=high_to_low" class="filter-option">Price: High to Low</a>
+        </li>
+        <li>
+          <a href="?sort=list" class="filter-option">Show as Stacked</a>
+      </li>
+    </ul>
+</li>
+{% endif %}
+
+
+<style>/* Filter Toggle Button */
+  .filter-toggle {
+      color: #333;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.3s ease;
+      margin-right: 20px;
+  }
+  
+  .filter-toggle:hover {
+      color: #d81b60;
+  }
+  
+  /* Dropdown Container */
+  .filter-dropdown {
+      min-width: 180px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Dropdown Title */
+  .dropdown-title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #c2185b;
+      padding: 10px 0;
+      text-align: center;
+      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: 10px;
+  }
+  
+  /* Filter Options */
+  .filter-option {
+      color: #555;
+      display: block;
+      padding: 8px 15px;
+      font-size: 0.95rem;
+      transition: background 0.3s ease, color 0.3s ease;
+      text-decoration: none;
+      border-radius: 5px;
+  }
+  
+  .filter-option:hover {
+      background-color: #f7f7f7;
+      color: #c2185b;
+  }
+  
+  /* Additional Spacing */
+  .filter-dropdown li:not(:last-child) {
+      margin-bottom: 8px;
+  }
+  
+  </style>
+{%endblock%}
 {% block content %}
 <style>
     .containers {
@@ -108,7 +196,7 @@
         position: absolute;
         top: 15px;
         right: 15px;
-        background: #d81b60;
+        background: rgb(238, 176, 242);
         color: #fff;
         padding: 10px;
         border-radius: 50%;
@@ -148,11 +236,13 @@
     }
 </style>
 
+
 <div class="containers">
     <div class="products-container">
-        <div class="products">
+        
+        <div class="products" id="products-list">
             {% for x in product %}
-            <div class="product">
+            <div class="product" >
                 <a href="{% url 'productdetail' x.id %}">
                     <img loading="lazy" src="{{ x.img.url }}" alt="{{ x.name }}">
                     <div class="product-content">
@@ -165,10 +255,64 @@
                 </a>
             </div>
             {% empty %}
-            <div><h2>No Product added</h2></div>
+            <div><h2>No Product Found</h2></div>
             {% endfor %}
         </div>
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const searchBar = document.getElementById("search-bar");
+    const productsList = document.getElementById("products-list");
+
+    searchBar.addEventListener("input", function () {
+        const query = searchBar.value.trim();
+        console.log("Query:", query);  // Log the query to see if it's being captured correctly
+
+        if (query.length > 0) {
+            console.log("Sending request for query:", query);
+
+            fetch(`/in/searchall/?search=${query}`, { method: 'GET' })
+                .then(response => {
+                    console.log("Response status:", response.status);  // Log response status
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Received data:", data);
+                    productsList.innerHTML = "";
+
+                    if (data.products.length > 0) {
+                        data.products.forEach(product => {
+                            const productHTML = `
+                                <div class="product">
+                                    <a href="/in/product/detail/${product.id}">
+                                        <img loading="lazy" src="${product.img_url}" alt="${product.name}">
+                                        <div class="product-content">
+                                            <span class="icon"><i class="fas fa-heart"></i></span>
+                                            <h3>${product.name}</h3>
+                                            ${product.price ? `<div class="price" style="font-size: large">Starting at : ₹${product.price}</div>` : ""}
+                                        </div>
+                                    </a>
+                                </div>
+                            `;
+                            productsList.insertAdjacentHTML("beforeend", productHTML);
+                        });
+                    } else {
+                        productsList.innerHTML = "<div><h2>No Product Found</h2></div>";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching search results:", error);
+                });
+        } else {
+            productsList.innerHTML = "";
+        }
+    });
+});
+
+</script>
 {% endblock %}

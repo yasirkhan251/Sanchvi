@@ -5,9 +5,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Sanchvi {%block title%}  {%endblock%}</title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+  <meta name="description" content="Sanchvi Studio offers a beautiful collection of kids wear for girls and stylish maternity fashion for expecting mothers. Shop trendy and comfortable clothing for both little girls and mothers-to-be." />
+    <meta name="keywords" content="Sanchvi Studio, kids wear, girls fashion, maternity wear, maternity fashion, kids clothing, stylish maternity, comfortable maternity clothes" />
+    <meta name="author" content="Sanchvi Studio" />
+  <!-- <meta http-equiv="refresh" content="0; url=https://sanchvistudio.com"> -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
   <link rel="icon" href="/static/img/logo fevicon.png" type="image/x-icon" />
   
+  
+  
 <style>
+  
   
   
 </style>
@@ -37,7 +46,7 @@
   <link rel="stylesheet" href="/static/admin_assets_gui/css/kaiadmin.min.css" />
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link rel="stylesheet" href="/static/admin_assets_gui/css/demo.css" />
+  <!-- <link rel="stylesheet" href="/static/admin_assets_gui/css/demo.css" /> -->
 </head>
 <header>
   <div class="wrapper">
@@ -84,6 +93,8 @@
             
       
             <!-- Shop with Nested Categories -->
+
+            {%if productedetail != 0%}
             <li class="nav-item">
               <a data-bs-toggle="collapse" href="#shop">
                 <i class="fas fa-shopping-bag"></i>
@@ -91,17 +102,30 @@
                 <span class="caret"></span>
               </a>
               <div class="collapse" id="shop">
-                <ul class="nav nav-collapse">
+                <ul class="nav nav-collapses">
                   {% for x in allcat %}
+                  {%if x.c_id != "Md"%}
+                  <ul style="color: black; margin: 10px;">
                   <li>
                     <a href="{% url 'product' x.c_id x.id %}">
                       <span class="sub-item">{{ x.name }}</span>
                     </a>
                   </li>
+                </ul>
+                {%else%}
+                {%endif%}
                   {% endfor %}
                 </ul>
               </div>
-            </li><script>
+            </li>
+            {%else%}
+
+            {%block catagories%}
+            {%endblock%}
+{%endif%}
+
+            
+            <script>
               document.addEventListener('DOMContentLoaded', function() {
                 // Get the current URL path
                 const currentPath = window.location.pathname;
@@ -175,10 +199,7 @@
         <div class="main-header-logo">
           <!-- Logo Header -->
           <div class="logo-header" style="background: linear-gradient(to top, #f8b7e2, #e8ed93);">
-            <a href="index.html" class="logo">
-              <img src="/static/admin_assets_gui/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
-                height="20" />
-            </a>
+            
             <div class="nav-toggle">
               <button class="btn btn-toggle toggle-sidebar">
                 <i class="gg-menu-right"></i>
@@ -198,25 +219,67 @@
           <div class="container-fluid" >
             <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"></nav>
 
+
+
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-              <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+              {% block filter %} {%endblock%}
+              {%if product%}
+              <li class="nav-item topbar-icon dropdown hidden-caret d-flex ">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                   aria-expanded="false" aria-haspopup="true">
                   <i class="fa fa-search"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-search animated fadeIn">
-                  <form class="navbar-left navbar-form nav-search">
+                  
+                
+                   
                     <div class="input-group">
-                      <input type="text" placeholder="Search ..." class="form-control" />
+                      <input type="text" id="search-bar" style="width: 100%; text-decoration: none; border: none; padding: 10px;" placeholder="Search products..." autocomplete="off">
                     </div>
-                  </form>
+             
+                 
+
                 </ul>
               </li>
+
+
+{%else%}
+<li class="nav-item topbar-icon dropdown hidden-caret d-flex ">
+  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+    aria-expanded="false" aria-haspopup="true">
+    <i class="fa fa-search"></i>
+  </a>
+  <ul class="dropdown-menu dropdown-search animated fadeIn">
+    
+    <form class="navbar-left navbar-form nav-search" method="post" action="{% url 'search' pid='search' cid='result' %}">
+      {%csrf_token%}
+      <div class="input-group">
+        <input type="text" name="search" placeholder="Search ..." class="form-control" />
+      </div>
+    </form>
+  </ul>
+</li>
+{%endif%}
+              {%block search%}
+            
+              {%endblock%}
+
+
+
+
+
+             
+              
+
+              
               <li class="nav-item topbar-icon dropdown hidden-caret">
                 <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fa fa-envelope"></i>
                 </a>
+
+
+                
                 <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
                   <li>
                     <div class="dropdown-title d-flex justify-content-between align-items-center">
@@ -227,7 +290,7 @@
                   <li>
                     <div class="message-notif-scroll scrollbar-outer">
                       <div class="notif-center">
-                        <a href="#">
+                        <!-- <a href="#">
                           <div class="notif-img">
                             <img src="/static/admin_assets_gui/img/jm_denis.jpg" alt="Img Profile" />
                           </div>
@@ -236,39 +299,8 @@
                             <span class="block"> How are you ? </span>
                             <span class="time">5 minutes ago</span>
                           </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-img">
-                            <img src="/static/admin_assets_gui/img/chadengle.jpg" alt="Img Profile" />
-                          </div>
-                          <div class="notif-content">
-                            <span class="subject">Chad</span>
-                            <span class="block"> Ok, Thanks ! </span>
-                            <span class="time">12 minutes ago</span>
-                          </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-img">
-                            <img src="/static/admin_assets_gui/img/mlane.jpg" alt="Img Profile" />
-                          </div>
-                          <div class="notif-content">
-                            <span class="subject">Jhon Doe</span>
-                            <span class="block">
-                              Ready for the meeting today...
-                            </span>
-                            <span class="time">12 minutes ago</span>
-                          </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-img">
-                            <img src="/static/admin_assets_gui/img/talha.jpg" alt="Img Profile" />
-                          </div>
-                          <div class="notif-content">
-                            <span class="subject">Talha</span>
-                            <span class="block"> Hi, Apa Kabar ? </span>
-                            <span class="time">17 minutes ago</span>
-                          </div>
-                        </a>
+                        </a> -->
+
                       </div>
                     </div>
                   </li>
@@ -282,7 +314,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   <i class="fa fa-bell"></i>
-                  <span class="notification">4</span>
+                  <!-- <span class="notification">4</span> -->
                 </a>
                 <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                   <li>
@@ -293,7 +325,7 @@
                   <li>
                     <div class="notif-scroll scrollbar-outer">
                       <div class="notif-center">
-                        <a href="#">
+                        <!-- <a href="#">
                           <div class="notif-icon notif-primary">
                             <i class="fa fa-user-plus"></i>
                           </div>
@@ -301,38 +333,8 @@
                             <span class="block"> New user registered </span>
                             <span class="time">5 minutes ago</span>
                           </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-icon notif-success">
-                            <i class="fa fa-comment"></i>
-                          </div>
-                          <div class="notif-content">
-                            <span class="block">
-                              Rahmad commented on Admin
-                            </span>
-                            <span class="time">12 minutes ago</span>
-                          </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-img">
-                            <img src="/static/admin_assets_gui/img/profile2.jpg" alt="Img Profile" />
-                          </div>
-                          <div class="notif-content">
-                            <span class="block">
-                              Reza send messages to you
-                            </span>
-                            <span class="time">12 minutes ago</span>
-                          </div>
-                        </a>
-                        <a href="#">
-                          <div class="notif-icon notif-danger">
-                            <i class="fa fa-heart"></i>
-                          </div>
-                          <div class="notif-content">
-                            <span class="block"> Farrah liked Admin </span>
-                            <span class="time">17 minutes ago</span>
-                          </div>
-                        </a>
+                        </a> -->
+
                       </div>
                     </div>
                   </li>
@@ -356,30 +358,31 @@
                   <div class="quick-actions-scroll scrollbar-outer">
                     <div class="quick-actions-items">
                       <div class="row m-0">
+                
+                        <a class="col-6 col-md-4 p-0" href="{% url 'addtocart' %}">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item  rounded-circle" style="background-color: #42a710;">
+                              <i class="fas fa-cart-plus"></i>
+
+                            </div>
+                            <span class="text">Add to Cart</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0" href="{% url 'orders' %}">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item  rounded-circle"style="background-color: chocolate;" >
+                              <i class="fas fa-box"></i>
+
+                            </div>
+                            <span class="text">My Orders</span>
+                          </div>
+                        </a>
                         <a class="col-6 col-md-4 p-0" href="/#shopnow">
                           <div class="quick-actions-item">
                             <div class="avatar-item bg-warning rounded-circle">
                               <i class="fas fa-shopping-bag"></i>
                             </div>
                             <span class="text">Shopping</span>
-                          </div>
-                        </a>
-                        <a class="col-6 col-md-4 p-0" href="{% url 'addtocart' %}">
-                          <div class="quick-actions-item">
-                            <div class="avatar-item  rounded-circle" style="background-color: chocolate;">
-                              <i class="fas fa-cart-plus"></i>
-
-                            </div>
-                            <span class="text">My Cart</span>
-                          </div>
-                        </a>
-                        <a class="col-6 col-md-4 p-0" href="{% url 'orders' %}">
-                          <div class="quick-actions-item">
-                            <div class="avatar-item  rounded-circle" style="background-color: #42a710;">
-                              <i class="fas fa-box"></i>
-
-                            </div>
-                            <span class="text">My Orders</span>
                           </div>
                         </a>
                         <a class="col-6 col-md-4 p-0" href="{%url 'sizechart'%}">
@@ -391,7 +394,7 @@
                             <span class="text">Size Chart</span>
                           </div>
                         </a>
-                        <a class="col-6 col-md-4 p-0" href="#">
+                        <a class="col-6 col-md-4 p-0" href="{% url 'contact_page' %}">
                           <div class="quick-actions-item">
                             <div class="avatar-item rounded-circle" style="background-color: #0818cf;">
                               <i class="fas fa-address-book"></i>
@@ -423,6 +426,7 @@
               </li>
 
               <li class="nav-item topbar-user dropdown hidden-caret">
+                {%if request.user.username  %}
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                   <div class="avatar-sm">
                     {% if request.user.profile %}
@@ -437,6 +441,23 @@
                     <span class="fw-bold">{{request.user.username}}</span>
                   </span>
                 </a>
+                {%else%}
+                 <a class="dropdown-toggle profile-pic" href="{%url 'login' %}" >
+                  <div class="avatar-sm">
+                    {% if request.user.profile %}
+                    <img src="{{request.user.profile.url }}" alt="..." class="avatar-img rounded-circle" />
+                    {% else %}
+                    <img src="https://t4.ftcdn.net/jpg/02/27/45/09/360_F_227450952_KQCMShHPOPebUXklULsKsROk5AvN6H1H.jpg"
+                      alt="..." class="avatar-img rounded-circle" />
+                    {% endif %}
+                  </div>
+                  <span class="profile-username">
+                    <span class="op-7">Hi,</span>
+                    <span class="fw-bold">{{request.user.username}}</span>
+                  </span>
+                </a>
+                {%endif%}
+
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
                   <div class="dropdown-user-scroll scrollbar-outer">
                     <li>
@@ -465,6 +486,9 @@
                       
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="{% url 'settings' %}">Account Setting</a>
+                      {%if request.user.is_admin%}
+                      <a class="dropdown-item" href="{% url 'adminpanel' %}">Admin Panel</a>
+                      {%endif%}
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
                     </li>
@@ -492,7 +516,7 @@
               new Date().getFullYear();
           </script>
 
-          <div><a target="_blank" href="https://themewagon.com/"></a>.</div>
+          <div><a target="_blank" href="{%url 'frontendlicense'%}">...</a></div>
         </div>
       </footer>
     </div>
@@ -595,7 +619,7 @@
 
   <!-- Kaiadmin DEMO methods, don't include it in your project! -->
   <script src="/static/admin_assets_gui/js/setting-demo.js"></script>
-  <script src="/static/admin_assets_gui/js/demo.js"></script>
+  <!-- <script src="/static/admin_assets_gui/js/demo.js"></script> -->
   <script>
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
       type: "line",

@@ -7,9 +7,11 @@ urlpatterns =[
     path('product/detail/<int:pid>', product_detail, name='productdetail'),
     path('dashboard/all_products', all_video, name='all_products'),
     path('basehtml', basehtml, name='basehtml'),
+    path('search/<pid>/<cid>', search, name='search'),
+    path('searchall/', searchall, name='searchall'),
     
 
-    path('contact_page', contact_page, name='contact_page'),
+    
     path('contactusup', contactusup, name='contactusup'),
    
     path('size_chart/', sizechart, name='sizechart'),

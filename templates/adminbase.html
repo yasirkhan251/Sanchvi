@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Sanchvi {%block title%}  {%endblock%}</title>
+  <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <link rel="icon" href="/static/img/logo fevicon.png" type="image/x-icon" />
+  
+<style>
+  
+  
+</style>
+  <!-- Fonts and icons -->
+  <script src="/static/admin_assets_gui/js/plugin/webfont/webfont.min.js"></script>
+  <script>
+    WebFont.load({
+      google: { families: ["Public Sans:300,400,500,600,700"] },
+      custom: {
+        families: [
+          "Font Awesome 5 Solid",
+          "Font Awesome 5 Regular",
+          "Font Awesome 5 Brands",
+          "simple-line-icons",
+        ],
+        urls: ["/static/admin_assets_gui/css/fonts.min.css"],
+      },
+      active: function () {
+        sessionStorage.fonts = true;
+      },
+    });
+  </script>
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/static/admin_assets_gui/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/admin_assets_gui/css/plugins.min.css" />
+  <link rel="stylesheet" href="/static/admin_assets_gui/css/kaiadmin.min.css" />
+
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <!-- <link rel="stylesheet" href="/static/admin_assets_gui/css/demo.css" /> -->
+</head>
+<header>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar"   data-background-color="dark" >
+      <div class="sidebar-logo">
+        <!-- Logo Header -->
+        <div class="logo-header" style="color: #333;">
+          <a href="/" class="logo">
+            <img id="tablet" src="/static/img/SANCHVI-name-white.png" alt="Sanchvi" class="navbar-brand" height="70" />
+          </a>
+          <div class="nav-toggle">
+            <button class="btn btn-toggle toggle-sidebar" style="pointer-events: fill;">
+              <i class="gg-menu-right"></i>
+            </button>
+            <button class="btn btn-toggle sidenav-toggler">
+              <i class="gg-menu-left"></i>
+            </button>
+          </div>
+          <button class="topbar-toggler more">
+            <i class="gg-more-vertical-alt"></i>
+          </button>
+        </div>
+        <!-- End Logo Header -->
+      </div>
+      <div class="sidebar-wrapper scrollbar scrollbar-inner">
+        <div class="sidebar-content">
+          <ul class="nav nav-secondary">
+      
+            <!-- Sanchvi Studio Logo -->
+         <style>
+         
+         </style>
+       <li class="nav-section">
+        <span class="sidebar-mini-icon">
+          <i class="fa fa-ellipsis-h"></i>
+        </span>
+        <h4 class="text-section">Admin</h4>
+      </li>
+            <!-- Admin Panel Link -->
+            <li class="nav-item">
+              <a href="{%url 'adminpanel'%}">
+                <i class="fas fa-user-shield"></i>
+
+
+                <p>Admin Panel</p>
+              </a>
+            </li>
+
+
+            <li class="nav-section">
+              <span class="sidebar-mini-icon">
+                <i class="fa fa-ellipsis-h"></i>
+              </span>
+              <h4 class="text-section">Product settings</h4>
+            </li>
+
+
+
+            <li class="nav-item">
+              <a href="{% url 'productcategories'%}">
+                <i class="fas fa-list"></i>
+                <p>Categories</p>
+              </a>
+            </li>       
+            <li class="nav-item">
+              <a href="">
+                <i class="fas fa-box"></i>
+                <p>My Products</p>
+              </a>
+            </li>
+   
+
+<!-- nested loop for Products  -->
+
+            <!-- <li class="nav-item">
+              <a data-bs-toggle="collapse" href="#base">
+                <i class="fas fa-layer-group"></i>
+                <p>Products</p>
+                <span class="caret"></span>
+              </a>
+              <div class="collapse" id="base">
+                <ul class="nav nav-collapse">
+     
+                  <li>
+                    <a href="">
+                      <span class="sub-item">Products</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="">
+                      <span class="sub-item">Categories</span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="">
+                      <span class="sub-item">Products</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li> -->
+            
+
+            <li class="nav-section">
+              <span class="sidebar-mini-icon">
+                <i class="fa fa-ellipsis-h"></i>
+              </span>
+              <h4 class="text-section">User Link</h4>
+            </li>
+
+
+
+
+      
+           
+            <li class="nav-item">
+              <a href="{%url 'userlist'%}">
+                <i class="fas fa-users"></i>
+                <p>Customers</p>
+              </a>
+            </li>
+      
+           
+            <li class="nav-item">
+              <a href="">
+                <i class="fas fa-clipboard-list"></i>
+
+                <p>Orders</p>
+              </a>
+            </li>
+      
+   
+
+
+            
+            <li class="nav-item">
+              <a href="">
+                <i class="fas fa-credit-card"></i>
+
+                <p>Payments</p>
+              </a>
+            </li>
+ 
+            <li class="nav-item">
+              <a href="">
+                <i class="fas fa-cart-plus"></i>
+                <p>Client Cart</p>
+              </a>
+            </li>
+
+            <li class="nav-section">
+              <span class="sidebar-mini-icon">
+                <i class="fa fa-ellipsis-h"></i>
+              </span>
+              <h4 class="text-section">Contact Link</h4>
+            </li>
+
+            <li class="nav-item">
+              <a href="{% url 'feedback' %}">
+                <i class="fas fa-cart-plus"></i>
+                <p>Feedback's</p>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+    <!-- End Sidebar -->
+
+    <div class="main-panel">
+      <div class="main-header">
+        <div class="main-header-logo">
+          <!-- Logo Header -->
+          <div class="logo-header"  data-background-color="dark">
+            
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <!-- Navbar Header -->
+        <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"  data-background-color="white">
+          <div class="container-fluid" >
+            <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"></nav>
+
+            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+              {% block filter %} {%endblock%}
+              {%if product%}
+              <li class="nav-item topbar-icon dropdown hidden-caret d-flex ">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                  aria-expanded="false" aria-haspopup="true">
+                  <i class="fa fa-search"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-search animated fadeIn">
+                  
+                
+                   
+                    <div class="input-group">
+                      <input type="text" id="search-bar" style="width: 100%; text-decoration: none; border: none; padding: 10px;" placeholder="Search products..." autocomplete="off">
+                    </div>
+             
+                 
+
+                </ul>
+              </li>
+
+
+{%else%}
+<li class="nav-item topbar-icon dropdown hidden-caret d-flex ">
+  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+    aria-expanded="false" aria-haspopup="true">
+    <i class="fa fa-search"></i>
+  </a>
+  <ul class="dropdown-menu dropdown-search animated fadeIn">
+    
+    <form class="navbar-left navbar-form nav-search" method="post" action="{% url 'adminsearch' pid='search' cid='result' %}">
+      {%csrf_token%}
+      <div class="input-group">
+        <input type="text" name="search" placeholder="Search ..." class="form-control" />
+      </div>
+    </form>
+  </ul>
+</li>
+{%endif%}
+          
+              <li class="nav-item topbar-icon dropdown hidden-caret">
+                <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
+                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-envelope"></i>
+                  {% if feedcount|length != 0 %}
+                  <span class="notification">{{ feedcount|length }}</span>
+                {% endif %}
+                </a>
+                <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
+                  <li>
+                    <div class="dropdown-title d-flex justify-content-between align-items-center">
+                      Messages
+                      <a href="#" class="small">Mark all as read</a>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="message-notif-scroll scrollbar-outer">
+                      {% for x in feedback %}
+                      <div class="notif-center">
+                        <a href="{% url 'feedback' %}?feedback_id={{ x.id }}">
+                          <div class="notif-img">
+                            <img src="/static/admin_assets_gui/img/jm_denis.jpg" alt="Img Profile" />
+                          </div>
+                          <div class="notif-content">
+                            <span class="subject">{{ x.first_name }} {{ x.last_name }}</span>
+                            <span class="block">{{ x.message|slice:":30" }}{% if x.message|length > 30 %}...{% endif %}</span>
+                            <span class="time">{{ x.created_at }} ago</span>
+                          </div>
+                        </a>
+                      </div>
+                      {% endfor %}
+                      
+                    </div>
+                  </li>
+                  <li>
+                    <a class="see-all" href="{%url 'feedback'%}">See all messages<i class="fa fa-angle-right"></i>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item topbar-icon dropdown hidden-caret">
+                <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  
+                  <i class="fa fa-bell"></i>
+                  {% if feedback|length != 0 %}
+                  <span class="notification">{{ feedback|length }}</span>
+                {% endif %}
+
+                </a>
+                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                  <li>
+                    <div class="dropdown-title">
+                      You have {{feedback.count}} new notification
+                      
+                    </div>
+                    
+                  </li>
+                
+                  <li>
+                    
+                    <div class="notif-scroll scrollbar-outer">
+                      <div class="notif-center"> 
+                        {%for x in feedback%}
+                        <a href="{%url 'feedback'%}">
+                          <div class="notif-icon notif-primary">
+                            <i class="fa fa-user-plus"></i>
+                          </div>
+                          <div class="notif-content">
+                            <span class="block"> {{x.email}} / {{x.mobile}} </span>
+                            <span class="time">{{x.created_at}}</span>
+                          </div>
+                        </a>
+                        {%endfor%}
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <a class="see-all" href="{%url 'feedback'%}">See all Feedback notification<i class="fa fa-angle-right"></i>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item topbar-icon dropdown hidden-caret">
+                <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                  <i class="fas fa-layer-group"></i>
+                </a>
+
+
+                <div class="dropdown-menu quick-actions animated fadeIn" >
+                  <div class="quick-actions-header" style="background: linear-gradient(to bottom, #060077, #f500fd50);">
+                    <span class="title mb-1">Quick Actions</span>
+                    <span class="subtitle op-7">Shortcuts</span>
+                  </div>
+                  <div class="quick-actions-scroll scrollbar-outer">
+                    <div class="quick-actions-items">
+                      <div class="row m-0">
+                
+                        <a class="col-6 col-md-4 p-0" href="{% url 'addtocart' %}">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item  rounded-circle" style="background-color: #42a710;">
+                              <i class="fas fa-cart-plus"></i>
+
+                            </div>
+                            <span class="text">Add to Cart</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0" href="{% url 'orders' %}">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item  rounded-circle"style="background-color: chocolate;" >
+                              <i class="fas fa-box"></i>
+
+                            </div>
+                            <span class="text">My Orders</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0" href="/#shopnow">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item bg-warning rounded-circle">
+                              <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <span class="text">Shopping</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0" href="{%url 'sizechart'%}">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item  rounded-circle" style="background-color: #ee0b48;">
+                              <!-- <i class="fas fa-ruler-combined"></i> -->
+                              <svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 30px;"  fill="white"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M21 2h-7V1h7zm-7 21h7v-1h-7zm4-3.707V4.707l2.646 2.646.707-.707L17.5 2.793l-3.854 3.853.707.707L17 4.707v14.586l-2.646-2.646-.707.707 3.853 3.853 3.854-3.854-.707-.707zM12 3.891V6H9v17H8V6H7v17H6V6H3V3.89A2.894 2.894 0 0 1 5.89 1h3.22A2.894 2.894 0 0 1 12 3.89zm-1 0A1.893 1.893 0 0 0 9.11 2H5.89A1.893 1.893 0 0 0 4 3.89V5h7z"></path><path fill="none" d="M0 0h24v24H0z"></path></g></svg>
+                            </div>
+                            <span class="text">Size Chart</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0" href="#">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item rounded-circle" style="background-color: #0818cf;">
+                              <i class="fas fa-address-book"></i>
+
+
+                            </div>
+                            <span class="text">Contact Us</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0" href="{%url 'profile'%}">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item bg-default rounded-circle">
+                             
+                               {%if request.user.profile %}
+                               <img class="img" src="{{request.user.profile.url}}" alt="{{request.user}}">
+                               {%else%}
+                                <i class="fas fa-user"></i>
+                               {%endif%}
+
+                            </div>
+                            <span class="text">{{request.user}}</span>
+                            
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="nav-item topbar-user dropdown hidden-caret">
+                {%if request.user.username  %}
+                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                  <div class="avatar-sm">
+                    {% if request.user.profile %}
+                    <img src="{{request.user.profile.url }}" alt="..." class="avatar-img rounded-circle" />
+                    {% else %}
+                    <img src="https://t4.ftcdn.net/jpg/02/27/45/09/360_F_227450952_KQCMShHPOPebUXklULsKsROk5AvN6H1H.jpg"
+                      alt="..." class="avatar-img rounded-circle" />
+                    {% endif %}
+                  </div>
+                  <span class="profile-username">
+                    <span class="op-7">Hi,</span>
+                    <span class="fw-bold">{{request.user.username}}</span>
+                  </span>
+                </a>
+                {%else%}
+                 <a class="dropdown-toggle profile-pic" href="{%url 'login' %}" >
+                  <div class="avatar-sm">
+                    {% if request.user.profile %}
+                    <img src="{{request.user.profile.url }}" alt="..." class="avatar-img rounded-circle" />
+                    {% else %}
+                    <img src="https://t4.ftcdn.net/jpg/02/27/45/09/360_F_227450952_KQCMShHPOPebUXklULsKsROk5AvN6H1H.jpg"
+                      alt="..." class="avatar-img rounded-circle" />
+                    {% endif %}
+                  </div>
+                  <span class="profile-username">
+                    <span class="op-7">Hi,</span>
+                    <span class="fw-bold">{{request.user.username}}</span>
+                  </span>
+                </a>
+                {%endif%}
+
+                <ul class="dropdown-menu dropdown-user animated fadeIn">
+                  <div class="dropdown-user-scroll scrollbar-outer">
+                    <li>
+                      <div class="user-box">
+                        <div class="avatar-lg">
+                          {% if request.user.profile %}
+                          <img src="{{request.user.profile.url }}" alt="..." class="avatar-img rounded-circle" />
+                          {% else %}
+                          <img
+                            src="https://t4.ftcdn.net/jpg/02/27/45/09/360_F_227450952_KQCMShHPOPebUXklULsKsROk5AvN6H1H.jpg"
+                            alt="..." class="avatar-img rounded-circle" />
+                          {% endif %}
+                        </div>
+                        <div class="u-text">
+                          <h4>{{request.user.username}}</h4>
+                          <p class="text-muted">{{request.user.email}}</p>
+                          <a href="{% url 'profile' %}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                      <!-- <a class="dropdown-item" href="{%url 'profile'%}">My Profile</a> -->
+                      <!-- <a class="dropdown-item" href="{% url 'addtocart' %}">Add to Cart</a> -->
+                      <!-- <a class="dropdown-item" href="{% url 'orders' %}">My Orders</a> -->
+                      
+                      <div class="dropdown-divider"></div>
+                      <!-- <a class="dropdown-item" href="{% url 'settings' %}">Account Setting</a> -->
+                      <a class="dropdown-item" href="{% url 'serversettings' %}">Server Settings</a>
+                      {%if request.user.is_admin%}
+                      <a class="dropdown-item" target="_blank" href="/admin_dev">Developer</a>
+                      {%endif%}
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
+                    </li>
+                  </div>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <!-- End Navbar -->
+      </div>
+
+      <div class="container">{%block content%} {%endblock%}</div>
+
+      <footer class="footer">
+        <div class="container-fluid d-flex justify-content-between">
+          <nav class="pull-left"></nav>
+          <div class="copyright">
+            © <span id="year"></span> . All rights
+            reserved. Visit <a href="https://www.sanchvistudio.com">sanchvistudio.com</a>
+          </div>
+
+          <script>
+            document.getElementById("year").textContent =
+              new Date().getFullYear();
+          </script>
+
+          <div><a target="_blank" href="https://themewagon.com/"></a>.</div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Custom template | don't include it in your project! -->
+    <!-- <div class="custom-template">
+      <div class="title">Settings</div>
+      <div class="custom-content">
+        <div class="switcher">
+          <div class="switch-block">
+            <h4>Logo Header</h4>
+            <div class="btnSwitch">
+              <button type="button" class="selected changeLogoHeaderColor" data-color="dark"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="blue"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="purple"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="light-blue"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="green"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="orange"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="red"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="white"></button>
+              <br />
+              <button type="button" class="changeLogoHeaderColor" data-color="dark2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="blue2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="purple2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="light-blue2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="green2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="orange2"></button>
+              <button type="button" class="changeLogoHeaderColor" data-color="red2"></button>
+            </div>
+          </div>
+          <div class="switch-block">
+            <h4>Navbar Header</h4>
+            <div class="btnSwitch">
+              <button type="button" class="changeTopBarColor" data-color="dark"></button>
+              <button type="button" class="changeTopBarColor" data-color="blue"></button>
+              <button type="button" class="changeTopBarColor" data-color="purple"></button>
+              <button type="button" class="changeTopBarColor" data-color="light-blue"></button>
+              <button type="button" class="changeTopBarColor" data-color="green"></button>
+              <button type="button" class="changeTopBarColor" data-color="orange"></button>
+              <button type="button" class="changeTopBarColor" data-color="red"></button>
+              <button type="button" class="selected changeTopBarColor" data-color="white"></button>
+              <br />
+              <button type="button" class="changeTopBarColor" data-color="dark2"></button>
+              <button type="button" class="changeTopBarColor" data-color="blue2"></button>
+              <button type="button" class="changeTopBarColor" data-color="purple2"></button>
+              <button type="button" class="changeTopBarColor" data-color="light-blue2"></button>
+              <button type="button" class="changeTopBarColor" data-color="green2"></button>
+              <button type="button" class="changeTopBarColor" data-color="orange2"></button>
+              <button type="button" class="changeTopBarColor" data-color="red2"></button>
+            </div>
+          </div>
+          <div class="switch-block">
+            <h4>Sidebar</h4>
+            <div class="btnSwitch">
+              <button type="button" class="changeSideBarColor" data-color="white"></button>
+              <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
+              <button type="button" class="changeSideBarColor" data-color="dark2"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="custom-toggle">
+        <i class="icon-settings"></i>
+      </div>
+    </div> -->
+    <!-- End Custom template -->
+  </div>
+  <!--   Core JS Files   -->
+  <script src="/static/admin_assets_gui/js/core/jquery-3.7.1.min.js"></script>
+  <script src="/static/admin_assets_gui/js/core/popper.min.js"></script>
+  <script src="/static/admin_assets_gui/js/core/bootstrap.min.js"></script>
+
+  <!-- jQuery Scrollbar -->
+  <script src="/static/admin_assets_gui/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+  <!-- Chart JS -->
+  <script src="/static/admin_assets_gui/js/plugin/chart.js/chart.min.js"></script>
+
+  <!-- jQuery Sparkline -->
+  <script src="/static/admin_assets_gui/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+  <!-- Chart Circle -->
+  <script src="/static/admin_assets_gui/js/plugin/chart-circle/circles.min.js"></script>
+
+  <!-- Datatables -->
+  <script src="/static/admin_assets_gui/js/plugin/datatables/datatables.min.js"></script>
+
+  <!-- Bootstrap Notify -->
+  <script src="/static/admin_assets_gui/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+  <!-- jQuery Vector Maps -->
+  <script src="/static/admin_assets_gui/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+  <script src="/static/admin_assets_gui/js/plugin/jsvectormap/world.js"></script>
+
+  <!-- Sweet Alert -->
+  <script src="/static/admin_assets_gui/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+  <!-- Kaiadmin JS -->
+  <script src="/static/admin_assets_gui/js/kaiadmin.min.js"></script>
+
+  <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+  <script src="/static/admin_assets_gui/js/setting-demo.js"></script>
+  <!-- <script src="/static/admin_assets_gui/js/demo.js"></script> -->
+  <script>
+    $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+      type: "line",
+      height: "70",
+      width: "100%",
+      lineWidth: "2",
+      lineColor: "#177dff",
+      fillColor: "rgba(23, 125, 255, 0.14)",
+    });
+
+    $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+      type: "line",
+      height: "70",
+      width: "100%",
+      lineWidth: "2",
+      lineColor: "#f3545d",
+      fillColor: "rgba(243, 84, 93, .14)",
+    });
+
+    $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+      type: "line",
+      height: "70",
+      width: "100%",
+      lineWidth: "2",
+      lineColor: "#ffa534",
+      fillColor: "rgba(255, 165, 52, .14)",
+    });
+  </script>
+</header>
+<style>.container {
+  /* background: linear-gradient(to bottom, #f8b7e2, #e8ed93); */
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* Ensure the gradient covers the full viewport height */
+}
+.img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+</style>
+</html>

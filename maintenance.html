@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/maintainance.png" type="image/x-icon" />
+
+    <title>Sanchvi Studio - Maintenance</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 1s ease-in-out;
+        }
+
+        .container {
+            max-width: 450px;
+            width: 100%;
+            padding: 30px;
+            background: rgba(10, 0, 0, 0.497);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .logo {
+            width: 120px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+            transition: transform 0.5s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #ff69b4;
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        p {
+            font-size: 16px;
+            color: #aeabab;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1s;
+        }
+
+        .countdown {
+            font-size: 20px;
+            margin: 20px 0;
+            color: #ff69b4;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1.5s;
+        }
+
+        .social-media {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2s;
+        }
+
+        .social-media a {
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-media a.instagram {
+            color: #E4405F;
+        }
+
+        .social-media a.facebook {
+            color: #1877F2;
+        }
+
+        .social-media a.youtube {
+            color: #FF0000;
+        }
+
+        .social-media a:hover {
+            transform: scale(1.2);
+        }
+
+        footer {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #999;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2.5s;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body id="background-slideshow">
+    <div class="container">
+        <!-- Logo -->
+         <a href="/" title="Sanchvi Studio">
+            <img src="/static/img/logo.png" alt="Sanchvi Studio Logo" class="logo">
+        </a>
+        <h1>We Are Coming Back Soon!</h1>
+        <p>We're working hard to improve our website and will be ready shortly.<br>
+            Thank you for your patience!</p>
+
+        <!-- Countdown Timer -->
+        <div class="countdown" id="countdown-timer">00d 00h 00m 00s</div>
+
+        <!-- Social Media Links -->
+        <div class="social-media">
+            <a href="https://instagram.com/sanchvi_kids/" target="_blank" title="Instagram" class="instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://facebook.com/p/sanchvimaternity/" target="_blank" title="Facebook" class="facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://youtube.com/@Sanchvistudio" target="_blank" title="YouTube" class="youtube"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <footer>&copy; 2024 Sanchvi Studio. All rights reserved.</footer>
+    </div>
+
+    <script>
+        // Background Image Slideshow
+        const images = [
+            "/static/Image/category/mom-duaghter_umjAp7z.jpg",
+            "/static/Image/product/products.jpg",
+            "/static/Image/category/Casual.webp",
+            "/static/Image/category/party_wear_CIiKeuq.jpeg",
+            "/static/Images/S8.jpg",
+            "/static/Image/category/Ethnic.jpg",  // Corrected folder path with capital "I"
+            "/static/Image/category/Birthday.webp",
+            "/static/Images/S6.jpg",
+        ];
+
+        function changeBackground() {
+            const randomIndex = Math.floor(Math.random() * images.length);
+            document.getElementById('background-slideshow').style.backgroundImage = `url(${images[randomIndex]})`;
+        }
+
+        setInterval(changeBackground, 10000); // Change image every 10 seconds
+
+        // Set the initial background image
+        changeBackground();
+
+        // Countdown Timer Logic
+        const countdownEndTime = new Date("2024-10-24T23:59:59").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = countdownEndTime - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (distance < 0) {
+                document.getElementById("countdown-timer").innerHTML = "Hold on, great things are on their way!";
+            } else {
+                document.getElementById("countdown-timer").innerHTML =
+                    days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+
+</html>

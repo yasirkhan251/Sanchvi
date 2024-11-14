@@ -95,8 +95,9 @@
             <ul>
                 <li><strong>Name:</strong> {{ shipping_address.name }}</li>
                 <li><strong>Phone:</strong> {{ shipping_address.phone }}</li>
-                <li><strong>Address:</strong> {{ shipping_address.address }}</li>
-                <li><strong>City:</strong> {{ shipping_address.city }}</li>
+                <li><strong>Address:</strong> {{ shipping_address.address1 }} {{ shipping_address.address2 }} </li>
+                <li><strong>State:</strong> {{ shipping_address.state }} </li>
+                <li><strong>City / ZIP Code:</strong> {{ shipping_address.city }} / {{ shipping_address.zipcode }} </li>
                 <li><strong>Country:</strong> {{ shipping_address.country }}</li>
             </ul>
         </div>
@@ -110,6 +111,7 @@
            <center> <h3 id="payment-method">Pay with PayPal</h3></center>
             <!-- PayPal Payment Form -->
             <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+            <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post"> -->
               <center> {{ paypal_form.render }}</center> 
                 <!-- Include CSRF token if necessary -->
                 {% csrf_token %}

@@ -1,0 +1,44 @@
+
+{% extends 'adminbase.html' %}
+{% block title %} Categories {% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/new index.css">
+<section id="shopnow" >
+    <div >
+    <h2>Categories</h2></div>
+      <!-- for shop categories  -->
+    
+        <div class="box-container" >
+          {% for x in category %}
+          {% if x.name != 'Mom-Daughter Duo' %}
+          
+          <div class="box-item">
+            <div class="flip-box medium">
+              <div class="flip-box-front text-center" style="background-image: url({{ x.image.url}});">
+                <div class="inner color-white">
+                  <h3 class="flip-box-header">{{x.name}}</h3>
+                  <p>{{x.detail}}</p>
+                  <!-- <img src="" width="25px" height="25px" alt="" class="flip-box-img"> -->
+                </div>
+              </div>
+              
+              <div class="flip-box-back text-center" style="background-image: url({{ x.image.url}});">
+                <a class="anchor" href="{% url 'productlist'  x.c_id x.id  %}">
+                <div class="inner color-white">
+                  <h3 class="flip-box-header">{{x.name}}</h3>
+                  <p>{{x.detail}}</p>
+                  
+                  <button class="flip-box-button">Shop Now</button>
+                </div></a>
+              </div>
+            
+            </div>
+          </div>
+          
+          {%else%}
+          {%endif%}
+          {% endfor %}
+    
+          
+        </section>
+{% endblock %}

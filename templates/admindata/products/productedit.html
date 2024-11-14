@@ -1,0 +1,14 @@
+{% extends 'adminbase.html' %}
+{% block title %}Product List{% endblock %}
+{%block content%}
+
+
+
+<img id="mainImage" width="200px" src="{{ product.img.url }}" alt="Product Image" class="main-image w-full h-auto rounded-lg shadow-lg transition-transform transform hover:scale-105" />
+                <div class="absolute top-0 left-0 transform -translate-x-1/2 -translate-y-1 flex flex-col space-y-2">
+                    {% for image in product.images.all %}
+                        <img src="{{ image.image.url }}" alt="Image for {{ product.name }}" class="thumbnail w-24 h-24 rounded-lg shadow-lg transition-transform transform hover:scale-105 cursor-pointer">
+                    {% endfor %}
+                </div>
+
+{% endblock %}

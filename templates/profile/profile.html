@@ -6,150 +6,130 @@
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"> -->
 <style>
     .profile-card {
-    display: flex;
-    justify-content: center;
-    margin-top: 5%;
-    width: 99%;
-    height: 50vh;
-    border-radius: 12px;
-    overflow: hidden;
-    /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); */
-    /* background-color: #fff; */
-}
-
-.left-section {border-radius: 12px;
-    background: linear-gradient(to bottom, #eda1e7, #4a1919);
-    /* padding: 30px; */
-    color: #fff;
-    width: 20%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.left-section .profile-images {
-    margin-bottom: 15px;
-}
-
-.left-section .profile-images img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-}
-
-.left-section h2 {
-    margin-bottom: 5px;
-    font-size: 1.5rem;
-}
-
-.left-section p {
-    margin-bottom: 20px;
-    font-size: 1rem;
-}
-
-.left-section .edit-icon {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-.right-section {border-radius: 12px;
-    padding: 30px;
-    width: 20%;
-    background-color: white;
-}
-
-.right-section .info, .right-section .projects {
-    margin-bottom: 20px;
-}
-
-.right-section h3 {
-    font-size: 1rem;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.right-section p {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 8px;
-}
-
-.right-section .social-icons a {
-    margin-right: 10px;
-    color: #555;
-    font-size: 1.2rem;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.right-section .social-icons a:hover {
-    color: #ff7676;
-}
-.modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        padding-top: 100px; /* Location of the box */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0, 0, 0); /* Fallback color */
-        background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
-        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 5% auto;
+        width: 95%;
+        max-width: 1200px;
+        height: auto;
+        border-radius: 12px;
+        overflow: hidden;
+        flex-direction: row; /* Default for larger screens */
     }
 
+    .left-section {
+        border-radius: 12px;
+        background: linear-gradient(to bottom, #eda1e7, #4a1919);
+        color: #fff;
+        width: 25%; /* Adjusted for desktop */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 70px; /* Ensure padding for smaller screens */
+    }
+
+    .left-section .profile-images img {
+        width: 150px; /* Adjusted size for larger screens */
+        height: 150px;
+        border-radius: 50%;
+    }
+
+    .right-section {
+        border-radius: 12px;
+        padding: 30px;
+        width: 75%; /* Adjusted for larger screens */
+        background-color: white;
+        flex-grow: 1; /* Allows flexibility */
+    }
+
+    .right-section .info, .right-section .projects {
+        margin-bottom: 50px;
+    }
+
+    .right-section h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .right-section p {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 8px;
+    }
+
+    /* Modal adjustments */
     .modal-content {
         margin: auto;
-        display: block;
-        /* width: 13%;
-        max-width: 700px; */
-        height: 400px;
-        width: 400px;
-
+        height: 300px;
+        width: 300px;
         border-radius: 50%;
-     
     }
 
     .modal-content img {
-       height: 400px;
-        width: 400px;
+        height: 100%;
+        width: 100%;
         border-radius: 50%;
     }
-    .modal {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
 
-.modal.show {
-    opacity: 1;
-}
+    /* Responsive Design */
+    @media (max-width: 927px) {
+        .profile-card {
+            flex-direction: column; /* Stack sections for tablet view */
+            height: auto;
+        }
 
-    .close {
-        position: absolute;
-        top: 15px;
-        right: 35px;
-        color: #fff;
-        font-size: 40px;
-        font-weight: bold;
-        transition: 0.3s;
+        .left-section, .right-section {
+            width: 100%; /* Full width on tablets */
+        }
+
+        .left-section .profile-images img {
+            width: 120px; /* Smaller profile image */
+            height: 120px;
+        }
+
+        .right-section h3 {
+            font-size: 1rem;
+        }
+
+        .right-section p {
+            font-size: 0.9rem;
+        }
     }
 
-    .close:hover,
-    .close:focus {
-        color: #ed0b0b;
-        text-decoration: none;
-        cursor: pointer;
-    }
+    @media (max-width: 580px) {
+        .profile-card {
+            flex-direction: column; /* Stack for mobile view */
+            height: auto;
+        }
 
+        .left-section {
+            width: 100%; /* Full width for mobile */
+        }
+
+        .right-section {
+            width: 100%; /* Full width for mobile */
+            padding: 20px;
+        }
+
+        .left-section .profile-images img {
+            width: 100px; /* Further reduce image size */
+            height: 100px;
+        }
+
+        .right-section h3 {
+            font-size: 0.9rem; /* Smaller font for mobile */
+        }
+
+        .right-section p {
+            font-size: 0.8rem;
+        }
+    }
 </style>
+
 
 <div class="profile-card">
     <div class="left-section">

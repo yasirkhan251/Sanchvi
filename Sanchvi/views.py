@@ -19,10 +19,9 @@ def index(request):
         'current_year': timezone.now().year,
         'countdown_end_time': countdown_end_time.isoformat(),  # Convert to ISO format for JavaScript
     }
-    if server.servermode == True:
-        return render(request, 'index.html', context)
-    elif server.servermode == False:
-        return render(request, 'serverundermaintainance.html',context)
+    
+    return render(request, 'index.html', context)
+   
 
 
 
@@ -46,6 +45,62 @@ def index(request):
    
 # cat = Category.objects.all()
 # About session
+
+
+def contact_page(req):
+    quaryset = {
+        'allcat': cat,
+    }
+    if req.method== 'POST':
+        first_name = req.POST['first_name']
+        last_name = req.POST['last_name']
+        email = req.POST['email']
+        mobile = req.POST['mobile']
+        message = req.POST['message']
+
+        contact = Feedback.objects.create(
+            first_name = first_name,
+            last_name = last_name,
+            email =email,
+            mobile = mobile,
+            message = message
+        )
+
+        contact.save()
+        return render(req, 'contact/thankyou_for_contact.html')
+    
+    
+    return render(req, 'contact/contact_page.html',quaryset)
+
+def testingpage(req):
+    quaryset = {
+        'allcat': cat,
+    }
+    if req.method== 'POST':
+        first_name = req.POST['first_name']
+        last_name = req.POST['last_name']
+        email = req.POST['email']
+        mobile = req.POST['mobile']
+        message = req.POST['message']
+
+        contact = Feedback.objects.create(
+            first_name = first_name,
+            last_name = last_name,
+            email =email,
+            mobile = mobile,
+            message = message
+        )
+
+        contact.save()
+        return render(req, 'contact/thankyou_for_contact.html')
+    
+    
+    return render(req, 'contact/sweetalert.html',quaryset)
+
+
+
+
+
 def studiospace(req):
     
     return render(req, 'about/Studiospace.html',{'allcat':cat})
@@ -55,7 +110,10 @@ def termsandcondition(req):
     return render(req, 'about/terms&condition.html',{'allcat':cat})
 def privacyandpolicy(req):
     return render(req, 'about/privacyandpolicy.html',{'allcat':cat})
-
+def frontendlicense(req):
+    return render(req, 'admindata/LICENSE')
 
 def custom_404_view(request, exception):
-    return render(request, '404.html', status=404)
+    return render(request, 'assets/404.html', status=404)
+def custom_500_view(request):
+    return render(request, 'assets/500.html', status=500)

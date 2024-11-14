@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="/static/css/Otp.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <div class="container">
+        {%if messages%}
+        {%for x in messages%}
+        {{x}}
+        {%endfor%}
+        {%endif%}
+        <div class="icon">
+            <ion-icon name="shield-checkmark"></ion-icon>
+        </div>
+        <h4>OTP Verification</h4>
+        <h4>{{ user }}</h4>
+        <p>Enter OTP Code sent to <strong> <a href="https://www.gmail.com" target="_blank"> {{ email }}</a></strong></p>
+        <form id="otpForm" action="{% url 'verification' user.id username email%}" method="post">
+            {% csrf_token %}
+            <div class="fields">
+                <input type="text" maxlength="1" id="a1" data-index="0">
+                <input type="text" maxlength="1" id="a2" data-index="1" disabled>
+                <input type="text" maxlength="1" id="a3" data-index="2" disabled>
+                <input type="text" maxlength="1" id="a4" data-index="3" disabled>
+                <input type="text" maxlength="1" id="a5" data-index="4" disabled>
+                <input type="text" maxlength="1" id="a6" data-index="5" disabled>
+                
+                <!-- <input type="text" name="token" id="collection"> -->
+            </div>
+            <input type="hidden" name="token" id="collection">
+            
+            <button type="submit" class="verify-btn" disabled>Verify & Proceed</button>
+        </form>
+    </div>
+    <script> function updateCollection() {
+        const a1 = document.getElementById("a1").value;
+        const a2 = document.getElementById("a2").value;
+        const a3 = document.getElementById("a3").value;
+        const a4 = document.getElementById("a4").value;
+        const a5 = document.getElementById("a5").value;
+        const a6 = document.getElementById("a6").value;
+
+        const token = a1 + a2 + a3 + a4 + a5 + a6;
+
+        document.getElementById('collection').value = token;
+    }
+    
+    
+    document.getElementById("a1").addEventListener("input", updateCollection);
+    document.getElementById("a2").addEventListener("input", updateCollection);
+    document.getElementById("a3").addEventListener("input", updateCollection);
+    document.getElementById("a4").addEventListener("input", updateCollection);
+    document.getElementById("a5").addEventListener("input", updateCollection);
+    document.getElementById("a6").addEventListener("input", updateCollection);
+    </script>
+    <script src="/static/js/Otp.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1c48b9a1;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    padding: 20px;
+    width: 330px;
+    background: white;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-bottom: 30px;
+}
+
+.container .icon {
+    height: 70px;
+    width: 70px;
+    background: #d5cec6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    color: rgb(0, 0, 0);
+    font-size: 40px;
+    margin: auto;
+}
+
+.container h4 {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.container p {
+    font-size: 12px;
+    text-align: center;
+    color: grey;
+    margin-top: 3px;
+}
+
+.container .fields {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.container .fields input {
+    all: unset;
+    height: 40px;
+    width: 35px;
+    border-radius: 5px;
+    float: left;
+    margin-left: 12px;
+    position: relative;
+    left: -7px;
+    background: #1e6a9a46;
+    color: #010101;
+    text-align: center;
+    border: 1px solid grey;
+}
+
+.container .fields input:focus {
+    border: 1px solid #1926ad;
+}
+
+.container button {
+    all: unset;
+    height: 40px;
+    width: 100%;
+    background: #888697;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.container button.active {
+    background: #280ca6;
+}
