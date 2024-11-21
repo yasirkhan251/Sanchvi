@@ -1,0 +1,649 @@
+{% extends 'adminbase.html' %}
+{% block title %} Add New Product {% endblock %}
+{% block content %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f9;
+    }
+
+    .form-container {
+        margin: 20px auto;
+        width: 90%;
+        max-width: 1000px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-header {
+        text-align: center;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    input[type="file"] {
+        margin-top: 10px;
+    }
+
+    .image-preview {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+    .image-preview img {
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+    }
+
+    .add-more-btn {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .add-more-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .submit-btn {
+        display: block;
+        width: 100%;
+        background-color: #28a745;
+        color: white;
+        padding: 15px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+        background-color: #218838;
+    }
+
+    .flex-container {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+    .flex-container input {
+        flex: 1;
+    }
+
+
+    .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.size-card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.size-card h4 {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.size-card input[type="number"],
+.size-card select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+</style>
+
+<div class="form-container">
+    <div class="form-header">Add New Product</div>
+    <form id="product-form">
+        {% csrf_token %}
+        <!-- Product Name -->
+        <select id="category" name="category" required>
+            <option value="14">Select a Category</option>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <div class="form-group">
+            <label for="product-name">Product Name</label>
+            <input type="text" id="product-name" name="name" placeholder="Enter product name" required>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+            <label for="product-description">Description</label>
+            <textarea id="product-description" name="description" rows="4" placeholder="Enter product description"></textarea>
+        </div>
+
+        <!-- Main Image -->
+        <div class="form-group">
+            <label for="main-image">Main Image</label>
+            <div class="image-dropzone" id="main-image-dropzone">
+                <p>Paste or drag and drop the main image here</p>
+                <input type="file" id="main-image" name="main_image" accept="image/*" required>
+                <div class="image-preview" id="main-image-preview"></div>
+            </div>
+        </div>
+        
+        <!-- Additional Images -->
+        <div class="form-group">
+            <label for="additional-images">Additional Images</label>
+            <div class="image-dropzone" id="additional-images-dropzone">
+                <p>Paste or drag and drop additional images here</p>
+                <input type="file" id="additional-images" name="additional_images[]" accept="image/*" multiple>
+                <div class="image-preview" id="additional-images-preview"></div>
+            </div>
+        </div>
+<style>
+    .image-preview {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.image-preview img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+.image-dropzone {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    position: relative;
+}
+
+.image-dropzone:hover {
+    border-color: #007bff;
+}
+
+.image-dropzone p {
+    margin: 0;
+    color: #aaa;
+}
+
+</style> 
+       
+
+        <!-- Color Palette -->
+        <div class="form-group">
+            <label>Color Palette</label>
+            <div class="flex-container" id="color-palette-container">
+                <input type="text" name="colors[]" placeholder="Enter color">
+            </div>
+            <button type="button" class="add-more-btn" id="add-more-colors">Add More Colors</button>
+        </div>
+
+        <!-- Prices -->
+      <!-- Prices Section with Cards -->
+<div class="form-group">
+    <label>Prices</label>
+    <div class="grid-container" id="size-grid">
+        <!-- Card for Each Size -->
+        <div class="grid-container" id="size-grid">
+            <div class="size-card">
+                <h4>0-6 months</h4>
+                <input type="number" name="price[0-6 months]" placeholder="Enter price">
+                <select name="shipping_box[0-6 months]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>6-12 months</h4>
+                <input type="number" name="price[6-12 months]" placeholder="Enter price">
+                <select name="shipping_box[6-12 months]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>1-2 years</h4>
+                <input type="number" name="price[1-2 years]" placeholder="Enter price">
+                <select name="shipping_box[1-2 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>2-3 years</h4>
+                <input type="number" name="price[2-3 years]" placeholder="Enter price">
+                <select name="shipping_box[2-3 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>3-4 years</h4>
+                <input type="number" name="price[3-4 years]" placeholder="Enter price">
+                <select name="shipping_box[3-4 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>4-5 years</h4>
+                <input type="number" name="price[4-5 years]" placeholder="Enter price">
+                <select name="shipping_box[4-5 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>5-6 years</h4>
+                <input type="number" name="price[5-6 years]" placeholder="Enter price">
+                <select name="shipping_box[5-6 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>6-7 years</h4>
+                <input type="number" name="price[6-7 years]" placeholder="Enter price">
+                <select name="shipping_box[6-7 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>7-8 years</h4>
+                <input type="number" name="price[7-8 years]" placeholder="Enter price">
+                <select name="shipping_box[7-8 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>8-9 years</h4>
+                <input type="number" name="price[8-9 years]" placeholder="Enter price">
+                <select name="shipping_box[8-9 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>9-10 years</h4>
+                <input type="number" name="price[9-10 years]" placeholder="Enter price">
+                <select name="shipping_box[9-10 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>10-11 years</h4>
+                <input type="number" name="price[10-11 years]" placeholder="Enter price">
+                <select name="shipping_box[10-11 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>11-12 years</h4>
+                <input type="number" name="price[11-12 years]" placeholder="Enter price">
+                <select name="shipping_box[11-12 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>12-13 years</h4>
+                <input type="number" name="price[12-13 years]" placeholder="Enter price">
+                <select name="shipping_box[12-13 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>13-14 years</h4>
+                <input type="number" name="price[13-14 years]" placeholder="Enter price">
+                <select name="shipping_box[13-14 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>14-15 years</h4>
+                <input type="number" name="price[14-15 years]" placeholder="Enter price">
+                <select name="shipping_box[14-15 years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+            <div class="size-card">
+                <h4>15+ years</h4>
+                <input type="number" name="price[15+ years]" placeholder="Enter price">
+                <select name="shipping_box[15+ years]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">Extra Large</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Repeat for all sizes -->
+
+        <!-- Add similar cards for 1-2 years to 15+ years -->
+    </div>
+</div>
+
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn">Save Product</button>
+    </form>
+</div>
+
+<!-- <script>
+    // Handle Pasting or Drag-and-Drop for Both Main and Additional Images
+    function handleImageInput(dropzone, previewContainer, single = false) {
+        // Paste Event
+        dropzone.addEventListener('paste', (e) => {
+            const items = e.clipboardData.items;
+            for (let item of items) {
+                if (item.type.startsWith('image/')) {
+                    const file = item.getAsFile();
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    if (single) {
+                        previewContainer.innerHTML = ''; // Clear previous preview
+                    }
+                    previewContainer.appendChild(img);
+                }
+            }
+        });
+
+        // Drag-and-Drop Events
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('dragover');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            for (let file of files) {
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    if (single) {
+                        previewContainer.innerHTML = ''; // Clear previous preview
+                    }
+                    previewContainer.appendChild(img);
+                }
+            }
+        });
+    }
+
+    // Main Image Handler
+    const mainImageDropzone = document.getElementById('main-image-dropzone');
+    const mainImagePreview = document.getElementById('main-image-preview');
+    handleImageInput(mainImageDropzone, mainImagePreview, true); // Single image
+
+    // Additional Images Handler
+    const additionalImagesDropzone = document.getElementById('additional-images-dropzone');
+    const additionalImagesPreview = document.getElementById('additional-images-preview');
+    handleImageInput(additionalImagesDropzone, additionalImagesPreview); // Multiple images
+
+    // Add More Colors
+    const colorPaletteContainer = document.getElementById('color-palette-container');
+    document.getElementById('add-more-colors').addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'colors[]';
+        input.placeholder = 'Enter color';
+        colorPaletteContainer.appendChild(input);
+    });
+
+    // Handle Size Cards for Prices
+    const sizeGrid = document.getElementById('size-grid');
+    sizeGrid.addEventListener('input', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+            const card = e.target.closest('.size-card');
+            const inputs = card.querySelectorAll('input, select');
+            const hasValues = Array.from(inputs).some(input => input.value.trim() !== '');
+
+            if (hasValues) {
+                card.classList.add('active'); // Highlight card as active
+            } else {
+                card.classList.remove('active'); // Remove highlight if no values
+            }
+        }
+    });
+
+    // Collect Valid Sizes on Submit
+    document.getElementById('product-form').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    const form = this;
+    const formData = new FormData(form); // Collect all form data
+
+    // Submit form data via Fetch API
+    fetch('/admin/add_product/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value // CSRF token
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Product added successfully!');
+                form.reset(); // Optionally reset the form
+            } else if (data.error) {
+                alert(`Error: ${data.error}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
+</script> -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+// Main Image - Paste Handler
+const mainImageDropzone = document.getElementById('main-image-dropzone');
+const mainImagePreview = document.getElementById('main-image-preview');
+const mainImageInput = document.getElementById('main-image');
+
+mainImageDropzone.addEventListener('paste', (e) => {
+    const items = e.clipboardData.items;
+    for (let item of items) {
+        if (item.type.startsWith('image/')) {
+            const file = item.getAsFile();
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            mainImagePreview.innerHTML = ''; // Clear previous preview
+            mainImagePreview.appendChild(img);
+
+            // Set the pasted image in the file input
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            mainImageInput.files = dataTransfer.files;
+        }
+    }
+});
+
+// Additional Images - Paste Handler
+const additionalImagesDropzone = document.getElementById('additional-images-dropzone');
+const additionalImagesPreview = document.getElementById('additional-images-preview');
+const additionalImagesInput = document.getElementById('additional-images');
+
+additionalImagesDropzone.addEventListener('paste', (e) => {
+    const items = e.clipboardData.items;
+    const dataTransfer = new DataTransfer();
+
+    // Retain existing files in the input
+    for (let file of additionalImagesInput.files) {
+        dataTransfer.items.add(file);
+    }
+
+    // Add pasted images
+    for (let item of items) {
+        if (item.type.startsWith('image/')) {
+            const file = item.getAsFile();
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            additionalImagesPreview.appendChild(img);
+
+            dataTransfer.items.add(file);
+        }
+    }
+
+    additionalImagesInput.files = dataTransfer.files;
+});
+
+    // Add More Colors
+    document.getElementById('add-more-colors').addEventListener('click', () => {
+        const container = document.getElementById('color-palette-container');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'colors[]';
+        input.placeholder = 'Enter color';
+        container.appendChild(input);
+    });
+
+    // Submit Form
+ 
+    document.getElementById('product-form').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent default submission
+
+    const form = this;
+    const formData = new FormData(form);
+
+    fetch('/admin/add_product/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Product added successfully!');
+                window.location.href = '/admin/all_product_lists/'; // Redirect to desired URL
+            } else if (data.error) {
+                alert(`Error: ${data.error}`);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+});
+
+</script>
+{% endblock %}

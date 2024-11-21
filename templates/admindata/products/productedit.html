@@ -1,14 +1,581 @@
 {% extends 'adminbase.html' %}
 {% block title %}Product List{% endblock %}
-{%block content%}
+{% block content %}
+
+<link rel="stylesheet" href="/static/admin/css/productdetails.css">
+
+<div class="main-container d-flex flex-wrap align-items-start">
+    <!-- Image Section -->
+    <div class="image-section me-4" style="flex: 1; max-width: 20%;">
+        
+        <img id="mainImage" src="{{ product.img.url }}" alt="Main product image for {{ product.name }}" class="img-fluid rounded">
+        <div class="thumbnail-container d-flex justify-content-start flex-wrap mt-2">
+            
+            
+            {% for image in product.images.all %}
+                <img src="{{ image.image.url }}" alt="Thumbnail for {{ product.name }}" class="thumbnail img-thumbnail me-1 mb-1" style="width: 60px; height: 60px; object-fit: cover;">
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Details Section -->
+        <div class="details-section" style="flex: 2; max-width: 70%;">  
+            
+
+                <a href="{% url 'deleteproduct' product.id %}" class="delete-link">Delete</a>
+           
+            
+            <script>
+                // Add an event listener to all delete links
+                document.addEventListener("DOMContentLoaded", function () {
+                    const deleteLinks = document.querySelectorAll(".delete-link");
+            
+                    deleteLinks.forEach(link => {
+                        link.addEventListener("click", function (event) {
+                            event.preventDefault(); // Prevent the default link behavior
+            
+                            // Show confirmation dialog
+                            const confirmation = confirm("Are you sure you want to delete this?");
+                            if (confirmation) {
+                                // Redirect to the delete URL if confirmed
+                                window.location.href = this.href;
+                            }
+                        });
+                    });
+                });
+            </script>
+            
+        <div class="form-group mb-3">
+            <label for="product_name" class="form-label"><strong>Product Name:</strong></label>
+            <input id="product_name" type="text" name="product_name" class="form-control" value="{{ product.name }}"  oninput="updateField('name', this.value, {{ product.id }})" placeholder="Enter product name">
+        </div>
+        <div class="form-group mb-3">
+            <label for="product_description" class="form-label"><strong>Description:</strong></label>
+            <textarea id="product_description" name="product_description" rows="3" class="form-control"  oninput="updateField('description', this.value, {{ product.id }})" placeholder="Enter product description">{{ product.description }}</textarea>
+        </div>
+    </div>
+</div>
+<script>
+    // Auto-update function for name and description
+    async function updateField(field, value, productId) {
+        if (!value) {
+            alert(`${field} cannot be empty.`);
+            return;
+        }
+
+        const response = await fetch('/admin/product/details/update/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ field, value, product_id: productId }),
+        });
+
+        if (response.ok) {
+            console.log(`${field} updated successfully.`);
+        } else {
+            alert(`Failed to update ${field}.`);
+        }
+    }
+
+    // CSRF Token Helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
 
 
+<div class="card-body mt-4">
+    <ul class="nav nav-tabs nav-line nav-color-secondary" id="line-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="line-home-tab" data-bs-toggle="pill" href="#line-home" role="tab" aria-controls="line-home" aria-selected="true">Color Palette</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#line-contact" role="tab" aria-controls="line-contact" aria-selected="false">Price</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#line-status" role="tab" aria-controls="line-status" aria-selected="false">Status</a>
+        </li>
+    </ul>
 
-<img id="mainImage" width="200px" src="{{ product.img.url }}" alt="Product Image" class="main-image w-full h-auto rounded-lg shadow-lg transition-transform transform hover:scale-105" />
-                <div class="absolute top-0 left-0 transform -translate-x-1/2 -translate-y-1 flex flex-col space-y-2">
-                    {% for image in product.images.all %}
-                        <img src="{{ image.image.url }}" alt="Image for {{ product.name }}" class="thumbnail w-24 h-24 rounded-lg shadow-lg transition-transform transform hover:scale-105 cursor-pointer">
-                    {% endfor %}
+    <div class="tab-content mt-3 mb-3" id="line-tabContent">
+        <!-- Color Palette Tab -->
+        <div class="tab-pane fade show active" id="line-home" role="tabpanel" aria-labelledby="line-home-tab">
+            <div class="card-body mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>Color Palette</h3>
+                    <button onclick="showAddColorPopup()" class="btn btn-primary">Add Color Palette</button>
                 </div>
+            
+                <!-- Popup Input Form -->
+                <div id="addColorPopup" class="popup-overlay" style="display: none;">
+                    <div class="popup-content">
+                        <input id="newColor" type="text" class="form-control mb-3" placeholder="Enter new color">
+                        <button onclick="addColorPalette({{ product.id }})" class="btn btn-success">Add Color</button>
+                    </div>
+                </div>
+                <style>
+                    .popup-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 1000;
+                    }
+                
+                    .popup-content {
+                        background: #fff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        width: 300px;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                    }
+                
+                    .popup-content input {
+                        width: 100%;
+                    }
+                </style>
+                
+                <table id="colorTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sl. No</th>
+                            <th>Color</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for x in color %}
+                        <tr id="row-{{ x.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <input type="text" id="color-{{ x.id }}" value="{{ x.color }}" class="form-control">
+                            </td>
+                            <td>
+                                <button onclick="editColorPalette({{ x.id }})" class="btn btn-primary">Edit</button>
+                                <button onclick="deleteColorPalette({{ x.id }})" class="btn btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <script>
+
+                
+  // Show Popup
+  function showAddColorPopup() {
+        const popup = document.getElementById('addColorPopup');
+        popup.style.display = 'flex'; // Show popup
+    }
+
+    // Close Popup when Clicking Outside
+    window.addEventListener('click', function (e) {
+        const popup = document.getElementById('addColorPopup');
+        const content = document.querySelector('.popup-content');
+        if (popup.style.display === 'flex' && e.target === popup) {
+            popup.style.display = 'none'; // Hide popup
+        }
+    });
+                // Add Color
+                async function addColorPalette(productId) {
+                    const color = document.getElementById('newColor').value;
+                    if (!color) {
+                        alert("Please enter a color.");
+                        return;
+                    }
+            
+                    const response = await fetch('/admin/product/color/manage/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        },
+                        body: JSON.stringify({ product_id: productId, color: color }),
+                    });
+            
+                    if (response.ok) {
+                        const data = await response.json();
+                        const colorTable = document.querySelector('#colorTable tbody');
+                        const newRow = `<tr id="row-${data.id}">
+                            <td>${data.id}</td>
+                            <td>
+                                <input type="text" id="color-${data.id}" value="${data.color}" class="form-control">
+                            </td>
+                            <td>
+                                <button onclick="editColorPalette(${data.id})" class="btn btn-primary">Edit</button>
+                                <button onclick="deleteColorPalette(${data.id})" class="btn btn-danger">Delete</button>
+                            </td>
+                        </tr>`;
+                        colorTable.innerHTML += newRow;
+                        document.getElementById('newColor').value = '';
+                    } else {
+                        alert('Failed to add color.');
+                    }
+                }
+            
+                // Edit Color
+                async function editColorPalette(colorId) {
+                    const newColor = document.getElementById(`color-${colorId}`).value;
+            
+                    const response = await fetch('/admin/product/color/manage/', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        },
+                        body: JSON.stringify({ id: colorId, color: newColor }),
+                    });
+            
+                    if (response.ok) {
+                        alert('Color updated successfully.');
+                    } else {
+                        alert('Failed to update color.');
+                    }
+                }
+            
+                // Delete Color
+                async function deleteColorPalette(colorId) {
+                    const response = await fetch('/admin/product/color/manage/', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        },
+                        body: JSON.stringify({ id: colorId }),
+                    });
+            
+                    if (response.ok) {
+                        document.querySelector(`#row-${colorId}`).remove();
+                    } else {
+                        alert('Failed to delete color.');
+                    }
+                }
+            
+                // CSRF Token Helper
+                function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            if (cookie.substring(0, name.length + 1) === name + '=') {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+            </script>
+            
+        </div>
+
+        <!-- Price Tab -->
+        <div class="tab-pane fade" id="line-contact" role="tabpanel" aria-labelledby="line-contact-tab">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3>Price Management</h3>
+                <button onclick="showAddPricePopup()" class="btn btn-primary">Add Price</button>
+            </div>
+        
+            <!-- Popup Input Form -->
+            <div id="addPricePopup" class="popup-overlay" style="display: none;">
+                <div class="popup-content">
+                    <input id="newSize" type="text" class="form-control mb-2" placeholder="Enter size">
+                    <input id="newPrice" type="number" class="form-control mb-2" placeholder="Enter price">
+                    <select id="newBoxSize" class="form-select mb-2">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                        <option value="extra_large">Extra Large</option>
+                    </select>
+                    <button onclick="addPrice({{ product.id }})" class="btn btn-success">Add Price</button>
+                </div>
+            </div>
+            <table id="pricesTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sl. No</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Box Size</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in prices %}
+                    <tr id="row-price-{{ x.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <input type="text" id="size-{{ x.id }}" value="{{ x.size }}" class="form-control">
+                        </td>
+                        <td>
+                            <input type="number" id="price-{{ x.id }}" value="{{ x.price }}" class="form-control">
+                        </td>
+                        <td>
+                            <select id="boxSize-{{ x.id }}" class="form-select">
+                                <option value="small" {% if x.shipping_box == 'small' %}selected{% endif %}>Small</option>
+                                <option value="medium" {% if x.shipping_box == 'medium' %}selected{% endif %}>Medium</option>
+                                <option value="large" {% if x.shipping_box == 'large' %}selected{% endif %}>Large</option>
+                                <option value="extra_large" {% if x.shipping_box == 'extra_large' %}selected{% endif %}>Extra Large</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button onclick="editPrice({{ x.id }})" class="btn btn-primary">Edit</button>
+                            <button onclick="deletePrice({{ x.id }})" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+
+        <div class="tab-pane fade show active" id="line-status" role="tabpanel" aria-labelledby="line-status-tab">
+            <div class="card-body mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>Status</h3>
+                    
+                </div>
+                <style>/* Toggle Switch Container */
+                    .toggle-switch {
+                      position: relative;
+                      display: inline-block;
+                      width: 50px;
+                      height: 25px;
+                    }
+                    
+                    /* Hidden Checkbox */
+                    .toggle-switch input {
+                      opacity: 0;
+                      width: 0;
+                      height: 0;
+                    }
+                    
+                    /* Switch Label */
+                    .switch {
+                      position: absolute;
+                      cursor: pointer;
+                      background-color: #ccc;
+                      border-radius: 25px;
+                      width: 100%;
+                      height: 100%;
+                      transition: background-color 0.3s ease-in-out;
+                    }
+                    
+                    .switch::after {
+                      content: "";
+                      position: absolute;
+                      background-color: white;
+                      border-radius: 50%;
+                      height: 20px;
+                      width: 20px;
+                      top: 2.5px;
+                      left: 2.5px;
+                      transition: transform 0.3s ease-in-out;
+                    }
+                    
+                    /* Toggle On */
+                    input:checked + .switch {
+                      background-color: #4caf50;
+                    }
+                    
+                    input:checked + .switch::after {
+                      transform: translateX(25px);
+                    }
+                    </style>        
+              
+              <form method="post">
+                {% csrf_token %}
+                <div class="toggle-switch">
+                  <input
+                    type="checkbox"
+                    id="toggle-{{ product.id }}"
+                    class="toggle"
+                    data-product-id="{{ product.id }}"
+                    {% if product.is_active %}checked{% endif %}
+                  />
+                  <label for="toggle-{{ product.id }}" class="switch"></label>
+                </div>
+              </form>
+              
+<script>
+
+document.querySelectorAll('.toggle').forEach((toggle) => {
+  toggle.addEventListener('change', function () {
+    const productId = this.dataset.productId; // Get product ID from the toggle
+    const isActive = this.checked; // Determine the new state (True/False)
+
+    console.log(`Toggling product ID ${productId} to ${isActive ? 'active' : 'inactive'}`);
+
+    fetch('/admin/toggle-product-active/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value, // CSRF token
+      },
+      body: JSON.stringify({
+        product_id: productId,
+        is_active: isActive,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(`Product updated successfully: ${data.message}`);
+        } else {
+          console.error(`Failed to update product: ${data.message}`);
+          alert('Failed to update product status.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the product status.');
+      });
+  });
+});
+
+</script>
+
+
+            
+        </div>
+
+
+    </div>
+</div>
+<script>
+     // Show Popup
+     function showAddPricePopup() {
+        const popup = document.getElementById('addPricePopup');
+        popup.style.display = 'flex'; // Show popup
+    }
+
+    // Close Popup when Clicking Outside
+    window.addEventListener('click', function (e) {
+        const popup = document.getElementById('addPricePopup');
+        const content = document.querySelector('.popup-content');
+        if (popup.style.display === 'flex' && e.target === popup) {
+            popup.style.display = 'none'; // Hide popup
+        }
+    });
+
+    // Add Price
+    async function addPrice(productId) {
+        const size = document.getElementById('newSize').value;
+        const price = document.getElementById('newPrice').value;
+        const boxSize = document.getElementById('newBoxSize').value;
+
+        if (!size || !price || !boxSize) {
+            alert('All fields are required.');
+            return;
+        }
+
+        const response = await fetch('/admin/product/price/manage/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ product_id: productId, size, price, box_size: boxSize }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const pricesTable = document.querySelector('#pricesTable tbody');
+            const newRow = `<tr id="row-price-${data.id}">
+                <td>${data.id}</td>
+                <td>
+                    <input type="text" id="size-${data.id}" value="${data.size}" class="form-control">
+                </td>
+                <td>
+                    <input type="number" id="price-${data.id}" value="${data.price}" class="form-control">
+                </td>
+                <td>
+                    <select id="boxSize-${data.id}" class="form-select">
+                        <option value="small" ${data.box_size === 'small' ? 'selected' : ''}>Small</option>
+                        <option value="medium" ${data.box_size === 'medium' ? 'selected' : ''}>Medium</option>
+                        <option value="large" ${data.box_size === 'large' ? 'selected' : ''}>Large</option>
+                        <option value="extra_large" ${data.box_size === 'extra_large' ? 'selected' : ''}>Extra Large</option>
+                    </select>
+                </td>
+                <td>
+                    <button onclick="editPrice(${data.id})" class="btn btn-primary">Edit</button>
+                    <button onclick="deletePrice(${data.id})" class="btn btn-danger">Delete</button>
+                </td>
+            </tr>`;
+            pricesTable.innerHTML += newRow;
+
+            document.getElementById('newSize').value = '';
+            document.getElementById('newPrice').value = '';
+            document.getElementById('newBoxSize').value = 'small';
+        } else {
+            alert('Failed to add price.');
+        }
+    }
+
+    // Edit Price
+    async function editPrice(priceId) {
+        const size = document.getElementById(`size-${priceId}`).value;
+        const price = document.getElementById(`price-${priceId}`).value;
+        const boxSize = document.getElementById(`boxSize-${priceId}`).value;
+
+        const response = await fetch('/admin/product/price/manage/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ id: priceId, size, price, box_size: boxSize }),
+        });
+
+        if (response.ok) {
+            alert('Price updated successfully.');
+        } else {
+            alert('Failed to update price.');
+        }
+    }
+
+    // Delete Price
+    async function deletePrice(priceId) {
+        const response = await fetch('/admin/product/price/manage/', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ id: priceId }),
+        });
+
+        if (response.ok) {
+            document.querySelector(`#row-price-${priceId}`).remove();
+        } else {
+            alert('Failed to delete price.');
+        }
+    }
+</script>
 
 {% endblock %}

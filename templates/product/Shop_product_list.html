@@ -5,7 +5,7 @@
 
 
 
-{% if product and filtered != 0 %}
+{% if product and filtered != 0  %}
 <li class="nav-item topbar-icon dropdown hidden-caret">
     <a class="nav-link dropdown-toggle filter-toggle" href="#" id="messageDropdown" role="button"
        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -241,7 +241,9 @@
     <div class="products-container">
         
         <div class="products" id="products-list">
+            
             {% for x in product %}
+            {% if x.is_active == True %}
             <div class="product" >
                 <a href="{% url 'productdetail' x.id %}">
                     <img loading="lazy" src="{{ x.img.url }}" alt="{{ x.name }}">
@@ -254,6 +256,7 @@
                     </div>
                 </a>
             </div>
+            {%endif%}
             {% empty %}
             <div><h2>No Product Found</h2></div>
             {% endfor %}

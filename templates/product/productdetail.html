@@ -166,9 +166,13 @@ document.addEventListener('DOMContentLoaded', updateProductDetails);
                 </div>
                 
                 <!-- <p class="text-muted mt-2">Free shipping on orders over ₹10000</p> -->
+                {%if product.description%} 
                 <button type="button" id="description-toggle" class="custom-button mt-4 px-4 py-2 rounded-lg pointer">
-                    View More
+                      View More 
                 </button>
+                {%else%}
+                <p id="description-toggle" ></p>
+                {%endif%}
                 
                 <pre id="description" class="text-lg text-secondary mb-4" style="width: 150%;">{{ product.description }}</pre>
               

@@ -3,21 +3,36 @@
 {% block title %} Categories {% endblock %}
 {% block content %}
 <link rel="stylesheet" href="/static/css/new index.css">
+<style>
+  #shopnow{
+    background-color: white;
+  }
+</style>
 <section id="shopnow" >
     <div >
-    <h2>Categories</h2></div>
+    <h2>My Categories</h2></div>
       <!-- for shop categories  -->
     
+
+
+      
         <div class="box-container" >
-          {% for x in category %}
-          {% if x.name != 'Mom-Daughter Duo' %}
+
+         
           
+          
+          {% for x in category %}
+          {% if x.is_active == True %}
+         
+          
+
+
           <div class="box-item">
             <div class="flip-box medium">
               <div class="flip-box-front text-center" style="background-image: url({{ x.image.url}});">
                 <div class="inner color-white">
                   <h3 class="flip-box-header">{{x.name}}</h3>
-                  <p>{{x.detail}}</p>
+                  <!-- <p>{{x.detail}}</p> -->
                   <!-- <img src="" width="25px" height="25px" alt="" class="flip-box-img"> -->
                 </div>
               </div>
@@ -25,20 +40,271 @@
               <div class="flip-box-back text-center" style="background-image: url({{ x.image.url}});">
                 <a class="anchor" href="{% url 'productlist'  x.c_id x.id  %}">
                 <div class="inner color-white">
-                  <h3 class="flip-box-header">{{x.name}}</h3>
-                  <p>{{x.detail}}</p>
+                  <!-- <h3 class="flip-box-header">{{x.name}}</h3> -->
+                  <h3 class="flip-box-header">{{x.detail}}</h3>
+                  <!-- <p>{{x.detail}}</p> -->
                   
-                  <button class="flip-box-button">Shop Now</button>
+                  <form action="{%url 'deactivate_category'%}" method="post">
+                    {%csrf_token%}
+                    <input type="text" name="c_id" value="{{x.c_id}}" hidden>
+                  <button type="submit" class="flip-box-button">Disable</button>
+                </form>
                 </div></a>
               </div>
             
             </div>
           </div>
-          
           {%else%}
-          {%endif%}
-          {% endfor %}
-    
           
+          <div class="box-item" >
+            <div class="flip-box medium" >
+              <div  class="flip-box-front justup text-center" style="background-image: url({{ x.image.url}});">
+                <div class="inner color-white">
+                  <h3 class="flip-box-header">{{x.name}}</h3>
+                  <p>{{x.detail}}</p>
+                  <!-- <img src="" width="25px" height="25px" alt="" class="flip-box-img"> -->
+                </div>
+              </div>
+              
+              <div class="flip-box-back justup text-center" style="background-image: url({{ x.image.url}});">
+                <a class="anchor" href="{% url 'productlist'  x.c_id x.id  %}">
+                <div class="inner color-white">
+                  <!-- <h3 class="flip-box-header">{{x.name}}</h3> -->
+                  <h3 class="flip-box-header">(Disabled)</h3>
+                  <!-- <p>{{x.detail}}</p> -->
+                  <form action="{%url 'activate_category'%}" method="post">
+                    {%csrf_token%}
+                    <input type="text" name="c_id" value="{{x.c_id}}" hidden>
+                  <button type="submit" class="flip-box-button">Enable</button>
+                </form>
+                </div></a>
+              </div>
+            
+            </div>
+          </div>
+          {%endif%}
+       
+          {% endfor %}
+          
+        </div>
+          <h2>Add New Categories</h2>
+
+          <div class="box-item">
+            <div class="flip-box medium">
+              <div class="flip-box-front  text-center" style="background-image: url(/static/img/fashion3.webp);">
+                <div class="inner color-white">
+                  <h3 class="flip-box-header">
+                    <img src="/static/img/plus.png" alt="Plus" class="plus-icon">
+                  </h3>
+                </div>
+              </div>
+              <div class="flip-box-back text-center" style="background-image: url(/static/img/fashion4.webp);">
+                <a href="javascript:void(0);" onclick="openPopupForm()" class="anchor">
+                  <div class="inner color-white">
+                    <h3 class="flip-box-header">Create One</h3>
+                    <button class="flip-box-button modern-button">Create</button>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Popup Form -->
+          <div id="popupForm" class="popup-form">
+            <div class="popup-content">
+              <span class="close-button" onclick="closePopupForm()">×</span>
+              <!-- <h3 class="form-title">Create a New Category</h3> -->
+              <form id="categoryForm" method="post" action="" enctype="multipart/form-data">
+                {%csrf_token%}
+                <div class="form-group">
+                  <label for="c_id">Category ID</label>
+                  <input type="text" id="c_id" name="c_id" maxlength="2" required>
+                </div>
+          
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" id="name" name="name" maxlength="50" required>
+                </div>
+          
+                <div class="form-group">
+                  <label for="detail">Detail</label>
+                  <input type="text" id="detail" name="detail" maxlength="100">
+                </div>
+          
+                <div class="form-group">
+                  <label for="image">Image</label>
+                  <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
+                  <img id="imagePreview" src="#" alt="Image Preview">
+                </div>
+          
+                <div class="form">
+                  <label for="is_active">Is Active</label>
+                  <input type="checkbox" id="is_active" name="is_active">
+                </div>
+          
+                <button type="submit" class="modern-button">Save</button>
+              </form>
+            </div>
+          </div>
+
+
+
+<!-- Updated Popup Form -->
+
+
+<style>
+
+.justup::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(72, 72, 72, 0.796); /* Dark overlay with 50% opacity */
+      border-radius: 8px; /* Ensure corners are rounded */
+      z-index: 1; /* Place it below the text but above the background */
+  }
+  body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.flip-box {
+  perspective: 1000px;
+  transition: transform 0.6s;
+}
+
+.plus-icon {
+  width: 100px;
+  margin-top: 20px;
+}
+
+.popup-form {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+.popup-content {
+  background: linear-gradient(135deg, #ffffff, #f0f0f0);
+  margin: auto;
+  padding: 10px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+}
+
+.form-title {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+
+
+.form-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #6c63ff;
+}
+
+#imagePreview {
+  display: none;
+  width: 100px;
+  height: 100px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  object-fit: cover;
+}
+
+.close-button {
+  font-size: 24px;
+  font-weight: bold;
+  color: #666;
+  float: right;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: #ff4c4c;
+}
+
+button.modern-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #6c63ff, #8079f2);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.3s ease;
+}
+
+button.modern-button:hover {
+  background: linear-gradient(135deg, #8079f2, #6c63ff);
+}
+
+</style>  
+
+
+<script>
+  function openPopupForm() {
+  const popup = document.getElementById("popupForm");
+  popup.style.display = "flex";
+}
+
+function closePopupForm() {
+  const popup = document.getElementById("popupForm");
+  popup.style.display = "none";
+}
+
+function previewImage(event) {
+  const imagePreview = document.getElementById('imagePreview');
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      imagePreview.src = e.target.result;
+      imagePreview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  } else {
+    imagePreview.src = "#";
+    imagePreview.style.display = "none";
+  }
+}
+
+</script>
         </section>
 {% endblock %}

@@ -256,7 +256,7 @@ def fetch_shipping_rate(request):
         print(f"Unexpected error: {str(e)}")
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
-@login_required
+ 
 def checkout(req):
     user = req.user
     

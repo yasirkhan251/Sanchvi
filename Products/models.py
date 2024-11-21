@@ -4,19 +4,20 @@ from django.utils import timezone
 import random
 import string
 
-def generate_unique_alphanumeric(length):
+def generate_unique_alphanumeric(length=4):
     """Generate a unique and random alphanumeric string of specified length."""
     characters = string.ascii_letters + string.digits
     return ''.join(random.choice(characters) for _ in range(length))
-
 # Create your models here.
 
 
 class Category(models.Model):
-    c_id = models.CharField(max_length=2, default= generate_unique_alphanumeric(2)) 
+    c_id = models.CharField(max_length=2, default=generate_unique_alphanumeric, unique=True)
     name = models.CharField(max_length=50, unique=True)
     detail = models.CharField(max_length=100, blank=True, null= True) 
     image = models.ImageField(upload_to='media/category/', null=True, blank= True)
+    is_active = models.BooleanField(default=False)
+
     def __str__(self):
         return self.name
   
@@ -25,10 +26,11 @@ class Category(models.Model):
 
 class Product(models.Model):
     img = models.ImageField(upload_to='media/product/', null=True, blank=True)
-    pcode = models.CharField(max_length=10, unique=True, default=generate_unique_alphanumeric(4))
+    pcode = models.CharField(max_length=10, unique=True, default=generate_unique_alphanumeric)
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey('Category', related_name='products', on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name} - {self.category.name}"

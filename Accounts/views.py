@@ -60,11 +60,14 @@ def loginsystem(request):
             if user_instance.is_user:
                 login(request, user)
                 request.session['login_attempts'] = 0
-                return redirect(reverse('index'))  # Redirect to user index
+                messages.success(request, f" Hey <b>{request.user}, </b> Welcome Back to Sanchvi Studio!  ")
+                    
+                return redirect(reverse('bridge'))  # Redirect to user index
             elif user_instance.is_admin:
                 login(request, user)
+                messages.success(request, "Welcome Back Chief")
                 request.session['login_attempts'] = 0
-                return redirect(reverse('adminpanel'))  # Redirect to admin panel
+                return redirect(reverse('bridge'))  # Redirect to admin panel
         else:
             # Handle invalid password attempts
             if 'login_attempts' not in request.session:

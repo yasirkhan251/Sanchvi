@@ -104,7 +104,7 @@
               <div class="collapse" id="shop">
                 <ul class="nav nav-collapses">
                   {% for x in allcat %}
-                  {%if x.c_id != "Md"%}
+                  {%if x.is_active == True%}
                   <ul style="color: black; margin: 10px;">
                   <li>
                     <a href="{% url 'product' x.c_id x.id %}">
@@ -219,7 +219,11 @@
           <div class="container-fluid" >
             <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"></nav>
 
-
+            {%if messages%}
+            {%for m in messages%}
+            <p>{{m|safe}}</p>
+            {%endfor%}
+            {%endif%}
 
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
               {% block filter %} {%endblock%}

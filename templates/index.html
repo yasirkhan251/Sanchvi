@@ -17,7 +17,7 @@
 
     <div class="box-container" >
       {% for x in category %}
-      {% if x.name != 'Mom-Daughter Duo' %}
+      {% if x.is_active == True %}
       
       <div class="box-item">
         <div class="flip-box medium">

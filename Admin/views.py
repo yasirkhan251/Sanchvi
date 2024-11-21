@@ -89,9 +89,100 @@ def feedbacks(req):
 
 from django.db.models import Min, Max
 
+
+
+
+
+
+def activate_category(req):
+    if req.method == "POST":
+        c_id = req.POST['c_id']
+        is_active =  True
+
+        category = get_object_or_404(Category, c_id=c_id)
+        category.is_active = is_active
+        category.save()
+
+        return redirect(reverse('productcategories'))
+    return redirect(reverse('productcategories'))
+
+def deactivate_category(req):
+    if req.method == "POST":
+        c_id = req.POST['c_id']
+        is_active =  False
+
+        category = get_object_or_404(Category, c_id=c_id)
+        category.is_active = is_active
+        category.save()
+
+        return redirect(reverse('productcategories'))
+    return redirect(reverse('productcategories'))
+ 
+
+ 
+
+
 def product_categories(req):
+    if req.method =="POST":
+      try:
+            # Extract form data directly from request.POST
+            c_id = req.POST['c_id']
+            name = req.POST['name']
+            detail = req.POST.get('detail', '')  # Default to an empty string if not provided
+            is_active = 'is_active' in req.POST  # Check if checkbox is checked
+            
+            # Check if an image was uploaded
+            image = req.FILES.get('image', None)  # Returns None if no file is uploaded
+
+            # Create the category object
+            category = Category(
+                c_id=c_id,
+                name=name,
+                detail=detail,
+                is_active=is_active
+            )
+
+            # Only set the image if one was uploaded
+            if image:
+                category.image = image
+            
+            # Save the category
+            category.save()
+
+            # Return a success message
+            return JsonResponse({'success': True, 'message': 'Category created successfully!', 'id': category.id})
+
+      except KeyError as e:
+            # Handle missing fields
+            return JsonResponse({'success': False, 'message': f'Missing field: {e.args[0]}'})
+    
     queryset = {'category':categories}
     return render(req, 'admindata/products/categories.html',queryset)
+
+
+
+
+
+def all_product_list(req):
+    
+    sort = req.GET.get('sort', None)
+    if sort == 'low_to_high':
+        product = Product.objects.all()
+    elif sort == 'high_to_low':
+        product = Product.objects.all()
+    else:
+        product = Product.objects.all()
+    img = ProductImage.objects.all()
+    flag = 1
+    queryset = {
+        'product': product,
+        'imgs': img,
+        'flag' : flag,
+    }
+
+
+
+    return render(req, 'admindata/products/product_list.html',queryset)
 
 def productlist(req, c_id, id):
     category = get_object_or_404(Category, c_id=c_id)
@@ -106,18 +197,88 @@ def productlist(req, c_id, id):
         products = Product.objects.filter(category_id=id).select_related('category').prefetch_related('images')
 
     img = ProductImage.objects.all()
-
+    flag = 0
     queryset = {
         
         'product': products,
         'catogery': category,
         'allcat': category,
         'imgs': img,
+        'flag' : flag,
     }
     return render(req, 'admindata/products/product_list.html',queryset)
 
 
 
+@csrf_exempt
+def add_product(req):
+    if req.method == 'POST':
+        # Fetch product details from the form
+        category_id = req.POST.get('category')
+        name = req.POST.get('name')
+        description = req.POST.get('description', '')
+        main_image = req.FILES.get('main_image')
+        additional_images = req.FILES.getlist('additional_images[]')
+        colors = req.POST.getlist('colors[]')
+
+        print("POST Data:", req.POST)
+        print("FILES Data:", req.FILES)
+
+        # Validate required fields
+        if not category_id:
+            return JsonResponse({'error': 'Category is required.'}, status=400)
+        if not name:
+            return JsonResponse({'error': 'Product name is required.'}, status=400)
+        if not main_image:
+            return JsonResponse({'error': 'Main image is required.'}, status=400)
+
+        # Fetch the category object
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return JsonResponse({'error': 'Invalid category.'}, status=400)
+
+        # Create the product
+        product = Product.objects.create(
+            name=name,
+            description=description,
+            img=main_image,
+            category=category
+        )
+
+        # Add additional images
+        for image in additional_images:
+            product.images.create(image=image)
+
+        # Add color palette
+        for color in colors:
+            if color.strip():  # Ensure color is not empty
+                Productcolorpalet.objects.create(Product=product, color=color.strip())
+
+        # Add sizes and prices
+        sizes = req.POST.dict()  # Get all POST data as a dictionary
+        for key, value in sizes.items():
+            if key.startswith('price['):  # Only process keys for sizes
+                size = key[6:-1]  # Extract size from key, e.g., "0-6 months"
+                price = value.strip()
+                shipping_box = req.POST.get(f'shipping_box[{size}]', '').strip()
+
+                if price:  # Ensure price is not empty
+                    Productprice.objects.create(
+                        product=product,
+                        size=size,
+                        price=price,
+                        shipping_box=shipping_box or None  # Set as None if empty
+                    )
+
+        # Return success response with redirect URL
+        return JsonResponse({'success': True, 'redirect_url': reverse('allproductlist')})
+
+    # Fetch categories for the dropdown
+    categories = Category.objects.all()
+
+    # Render the form for GET request
+    return render(req, 'admindata/products/addproduct.html', {'categories': categories})
 
 def product_detail(req, pid):
     # Try to get the product by ID, if it doesn't exist, show a friendly message
@@ -142,12 +303,14 @@ def product_detail(req, pid):
     # Assuming 'cat' is fetched somewhere; if it's missing, you should add its logic.
     # cat = Category.objects.all() # You might want to include this or modify as needed
     productdetail = 0
+   
     queryset = {
         'product': product,
         'imgs': img,
         'allcat': categories,  # Make sure 'cat' is defined somewhere in your code
         'prices': prices,
         'color':colorpalet,
+        
         'productedetail' : productdetail 
     }
 
@@ -155,6 +318,40 @@ def product_detail(req, pid):
 
 
 
+
+from django.views.decorators.http import require_POST
+@require_POST
+def toggle_product_active(request):
+    try:
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        is_active = data.get('is_active')
+
+        if product_id is None or is_active is None:
+            return JsonResponse({'success': False, 'message': 'Invalid data received.'})
+
+        product = Product.objects.get(id=product_id)
+        product.is_active = is_active
+        product.save()
+
+        return JsonResponse({
+            'success': True,
+            'message': f'Product "{product.name}" updated to {"active" if is_active else "inactive"}.'
+        })
+    except Product.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Product not found.'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+
+def deleteproduct(req,pid):
+    
+    product = get_object_or_404(Product, id=pid)
+    
+    # Delete the product instance
+    product.delete()
+
+    return redirect(reverse('allproductlist'))
 
 
 from django.http import JsonResponse
@@ -210,11 +407,199 @@ def search(req, pid=None, cid=None):
 
     return HttpResponse("Invalid request method")
 
+@csrf_exempt
+def update_field(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            model = data.get("model")
+            field = data.get("field")
+            value = data.get("value")
+            obj_id = data.get("id")  # May be None for new entries
 
+            # Determine the model
+            if model == "product":
+                obj = Product.objects.get(id=obj_id) if obj_id else Product()
+            elif model == "productprice":
+                obj = Productprice.objects.get(id=obj_id) if obj_id else Productprice()
+                # Ensure necessary fields are set for new Productprice
+                if not obj_id:
+                    obj.size = data.get("size", "default_size")
+                    obj.price = data.get("price", 0)
+                    obj.product_id = data.get("product_id")
+            elif model == "colorpalet":
+                obj = Productcolorpalet.objects.get(id=obj_id) if obj_id else Productcolorpalet()
+                # Ensure necessary fields are set for new Colorpalet
+                if not obj_id:
+                    obj.color = value  # Use the passed color value
+                    obj.product_id = data.get("product_id")  # Required FK
+            else:
+                return JsonResponse({"status": "error", "message": "Invalid model"}, status=400)
+
+            # Update or set the specific field dynamically
+            setattr(obj, field, value)
+            obj.save()
+
+            return JsonResponse(
+                {
+                    "status": "success",
+                    "message": f"{field} {'created' if not obj_id else 'updated'} successfully",
+                    "id": obj.id,
+                }
+            )
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+    return JsonResponse({"status": "error", "message": "Invalid request method"}, status=400)
+ 
 
 
 def userlist(req):
     users = MyUser.objects.all()
     quaryset = {'users':users}
     return render(req, 'admindata/userlist.html',quaryset)
+
+
+
+
+
+
+# Colorpalet
+
+@csrf_exempt
+def manage_color_palette(request):
+    """
+    Handle Add, Edit, and Delete operations for color palettes dynamically via JSON.
+    """
+    if request.method == 'POST':  # Add
+        try:
+            data = json.loads(request.body)
+            product_id = data.get('product_id')
+            color = data.get('color')
+
+            product = Product.objects.get(id=product_id)
+            new_color = Productcolorpalet.objects.create(Product=product, color=color)  # Use "Product" with an uppercase P
+            return JsonResponse({'success': True, 'operation': 'add', 'id': new_color.id, 'color': new_color.color})
+        except Product.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Product not found'}, status=404)
+
+    elif request.method == 'PUT':  # Edit
+        try:
+            data = json.loads(request.body)
+            color_id = data.get('id')
+            new_color = data.get('color')
+
+            color_palette = Productcolorpalet.objects.get(id=color_id)
+            color_palette.color = new_color
+            color_palette.save()
+
+            return JsonResponse({'success': True, 'operation': 'edit', 'id': color_palette.id, 'color': color_palette.color})
+        except Productcolorpalet.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Color not found'}, status=404)
+
+    elif request.method == 'DELETE':  # Delete
+        try:
+            data = json.loads(request.body)
+            color_id = data.get('id')
+
+            color_palette = Productcolorpalet.objects.get(id=color_id)
+            color_palette.delete()
+
+            return JsonResponse({'success': True, 'operation': 'delete', 'id': color_id})
+        except Productcolorpalet.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Color not found'}, status=404)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
+
+
+
+# for Price 
+
+
+@csrf_exempt
+def manage_price(request):
+    """
+    Handle Add, Edit, and Delete operations for product prices dynamically via JSON.
+    """
+    if request.method == 'POST':  # Add
+        try:
+            data = json.loads(request.body)
+            product_id = data.get('product_id')
+            size = data.get('size')
+            price = data.get('price')
+            box_size = data.get('box_size')
+
+            product = Product.objects.get(id=product_id)
+            new_price = Productprice.objects.create(product=product, size=size, price=price, shipping_box=box_size)
+            return JsonResponse({
+                'success': True, 
+                'operation': 'add', 
+                'id': new_price.id, 
+                'size': new_price.size, 
+                'price': new_price.price, 
+                'box_size': new_price.shipping_box
+            })
+        except Product.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Product not found'}, status=404)
+
+    elif request.method == 'PUT':  # Edit
+        try:
+            data = json.loads(request.body)
+            price_id = data.get('id')
+            size = data.get('size')
+            price = data.get('price')
+            box_size = data.get('box_size')
+
+            price_entry = Productprice.objects.get(id=price_id)
+            price_entry.size = size
+            price_entry.price = price
+            price_entry.shipping_box = box_size
+            price_entry.save()
+
+            return JsonResponse({'success': True, 'operation': 'edit', 'id': price_entry.id})
+        except Productprice.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Price entry not found'}, status=404)
+
+    elif request.method == 'DELETE':  # Delete
+        try:
+            data = json.loads(request.body)
+            price_id = data.get('id')
+
+            price_entry = Productprice.objects.get(id=price_id)
+            price_entry.delete()
+
+            return JsonResponse({'success': True, 'operation': 'delete', 'id': price_id})
+        except Productprice.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Price entry not found'}, status=404)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
+
+
+
+# update product details
+
+@csrf_exempt
+def update_product_details(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        field = data.get('field')
+        value = data.get('value')
+
+        try:
+            product = Product.objects.get(id=product_id)
+            
+            if field == 'name':
+                product.name = value
+            elif field == 'description':
+                product.description = value
+            else:
+                return JsonResponse({'success': False, 'message': 'Invalid field'}, status=400)
+
+            product.save()
+            return JsonResponse({'success': True, 'field': field, 'value': value})
+        except Product.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Product not found'}, status=404)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
+
 

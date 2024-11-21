@@ -3,11 +3,14 @@ from django.urls import path,include
 from .views import *
 from django.conf.urls.static import static
 from django.conf import settings
+
+
 urlpatterns = [
     path('admin_dev/', admin.site.urls),
     path('admin/', include('Admin.urls')),
     # path('', CategoryList.as_view(), name='index'),
-    path('', index, name='index'),
+    path('',bridge , name='bridge'),
+    path('home/', index, name='index'),
     path('auth/', include('Accounts.urls')),
     path('in/', include('Products.urls')),
     path('StudioSpace', studiospace, name='studiospace' ),

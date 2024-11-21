@@ -241,7 +241,19 @@
     <div class="products-container">
         
         <div class="products" id="products-list">
-            {% for x in product %}
+            <div class="product" >
+                <a href="{%url 'addproduct'%}">
+                    <img loading="lazy" src="/static/img/prodctadd.webp" alt="Add Product">
+                    <div class="product-content">
+                        <span class="icon"><i class="fas fa-heart"></i></span>
+                        <h2>Add Product</h2>
+                        <br>
+                        <h2>+   </h2>
+                        <!-- <div class="price" style="font-size: large"></div> -->
+                    </div>
+                </a>
+            </div>
+            {% for x in product reversed %}
             <div class="product" >
                 <a href="{% url 'adminproductdetail' x.id %}">
                     <img loading="lazy" src="{{ x.img.url }}" alt="{{ x.name }}">
@@ -251,6 +263,9 @@
                         {% if x.prices.all %}
                         <div class="price" style="font-size: large">Starting at : ₹{{ x.prices.all.0.price }}</div>
                         {% endif %}
+                        {%if flag == 1%}
+                        Catagory : <h4>{{x.category.name}}</h4>
+                        {%endif%}
                     </div>
                 </a>
             </div>
@@ -289,7 +304,7 @@
                         data.products.forEach(product => {
                             const productHTML = `
                                 <div class="product">
-                                    <a href="/in/product/detail/${product.id}">
+                                    <a href="/admin/product/detail/${product.id}">
                                         <img loading="lazy" src="${product.img_url}" alt="${product.name}">
                                         <div class="product-content">
                                             <span class="icon"><i class="fas fa-heart"></i></span>

@@ -14,10 +14,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f$er8+uju1e2xm@p7u38^j@r##1(ftkao6#a75+71nr#9awin8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  
-# DEBUG = False
+# DEBUG = True  
+DEBUG = False
 
-ALLOWED_HOSTS = ['192.168.1.35','192.168.1.46','192.168.1.54','192.168.1.70','sanchvi.com', 'www.sanchvi.com', 'sanchvistudio.com', 'www.sanchvistudio.com','82.112.226.224','192.168.29.7','192.168.29.189','49.37.182.144','127.0.0.1','192.168.29.31']
+ALLOWED_HOSTS = ['192.168.1.49','192.168.1.46','192.168.1.54','192.168.1.70','sanchvi.com', 'www.sanchvi.com', 'sanchvistudio.com', 'www.sanchvistudio.com','82.112.226.224','192.168.29.7','192.168.29.189','49.37.182.144','127.0.0.1','192.168.29.31']
 
 
 # Application definition

@@ -1,4 +1,5 @@
 from django.shortcuts import *
+from django.urls import reverse
 from django.views.generic import *
 from Products.models import *
 from Admin.models import *
@@ -8,7 +9,22 @@ from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 cat = Category.objects.all()
 
+
+def bridge(request):
+    user = request.user
+    
+    if not user.is_authenticated:
+        return redirect(reverse('index'))
+    
+    if getattr(user, 'is_admin', False):  # Safely check if the user has the 'is_admin' attribute
+        return redirect(reverse('adminpanel'))
+    
+    return redirect(reverse('index'))
+
+
+
 def index(request):
+    user = request.user
     server = get_object_or_404(Server, id=1)
     products = Product.objects.all()
     countdown_end_time = server.countdowntime
@@ -19,6 +35,7 @@ def index(request):
         'current_year': timezone.now().year,
         'countdown_end_time': countdown_end_time.isoformat(),  # Convert to ISO format for JavaScript
     }
+
     
     return render(request, 'index.html', context)
    

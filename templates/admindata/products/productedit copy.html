@@ -1,0 +1,218 @@
+{% extends 'adminbase.html' %}
+{% block title %}Product List{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="/static/admin/css/productdetails.css">
+<style>
+    /* Same styling as before */
+</style>
+
+<script>
+    // Function to send updates to the backend
+    function updateField(url, data) {
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            console.log("Update successful:", result);
+        })
+        .catch((error) => {
+            console.error("Error updating field:", error);
+        });
+    }
+
+    // Event handler for input changes
+    function handleInputChange(event, field, id, model) {
+        const value = event.target.value;
+        const data = {
+            id: id,
+            field: field,
+            value: value,
+            model: model,
+        };
+        updateField("{% url 'update_field' %}", data);
+    }
+</script>
+
+<div class="main-container">
+    <!-- Image Section -->
+    <div class="image-section">
+        <img id="mainImage" src="{{ product.img.url }}" alt="Product Image" class="main-image">
+        <div class="thumbnail-container">
+            {% for image in product.images.all %}
+                <img src="{{ image.image.url }}" alt="Image for {{ product.name }}" class="thumbnail">
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Details Section -->
+    <div class="details-section">
+        <div>
+            <h2>Product Name:</h2>
+            <input type="text" name="product_name" value="{{ product.name }}" oninput="handleInputChange(event, 'name', '{{ product.id }}', 'product')">
+        </div>
+        <div>
+            <h2>Description:</h2>
+            <textarea name="product_description" rows="5" oninput="handleInputChange(event, 'description', '{{ product.id }}', 'product')">{{ product.description }}</textarea>
+        </div>
+    </div>
+</div>
+
+<div class="table-container">
+    <!-- Color Palette Table -->
+    <table id="colorTable">
+        <thead>
+            <tr>
+                <th>Sl. No</th>
+                <th>Color Palette</th>
+                <th><button type="button" onclick="addNewRow('colorTable')">Add New Color</button></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in color %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <input type="text" name="color_{{ forloop.counter }}" value="{{ x.color }}" oninput="handleInputChange(event, 'color', '{{ x.id }}', 'colorpalet')">
+                </td>
+                <td><a href="">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    
+
+    <table id="pricesTable">
+        <thead>
+            <tr>
+                <th>Sl. No</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Box Size</th>
+                <th><button type="button" onclick="addNewRow('pricesTable')">Add New Price</button></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in prices %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <input type="text" name="size_{{ forloop.counter }}" value="{{ x.size }}" oninput="handleInputChange(event, 'size', '{{ x.id }}', 'productprice')">
+                </td>
+                <td>
+                    <input type="text" name="price_{{ forloop.counter }}" value="{{ x.price }}" oninput="handleInputChange(event, 'price', '{{ x.id }}', 'productprice')">
+                </td>
+                <td>
+                    <select name="box_size_{{ forloop.counter }}" onchange="handleInputChange(event, 'shipping_box', '{{ x.id }}', 'productprice')">
+                        <option value="small" {% if x.shipping_box == 'small' %}selected{% endif %}>Small</option>
+                        <option value="medium" {% if x.shipping_box == 'medium' %}selected{% endif %}>Medium</option>
+                        <option value="large" {% if x.shipping_box == 'large' %}selected{% endif %}>Large</option>
+                        <option value="extra_large" {% if x.shipping_box == 'extra_large' %}selected{% endif %}>Extra Large</option>
+                    </select>
+                </td>
+                <td><a href="">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    
+    
+<script>
+    function addNewRow(section) {
+    const tableBody = document.querySelector(`#${section} tbody`);
+
+    let newRowHTML = "";
+    if (section === "colorTable") {
+        newRowHTML = `
+            <tr>
+                <td>New</td>
+                <td>
+                    <input type="text" name="color_new" onchange="handleInputChange(event, 'color', null, 'colorpalet')" placeholder="Enter color">
+                </td>
+            </tr>`;
+    } else if (section === "pricesTable") {
+        newRowHTML = `
+            <tr>
+                <td>New</td>
+                <td>
+                    <input type="text" name="size_new" onsubmit="handleInputChange(event, 'size', null, 'productprice')" placeholder="Enter size">
+                </td>
+                <td>
+                    <input type="text" name="price_new" onsubmit="handleInputChange(event, 'price', null, 'productprice')" placeholder="Enter price">
+                </td>
+                <td>
+                    <select name="box_size_new" onsubmit="handleInputChange(event, 'shipping_box', null, 'productprice')">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                        <option value="extra_large">Extra Large</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="submit" value = 'submit'/> 
+                </td>
+            </tr>`;
+    }
+
+    tableBody.insertAdjacentHTML("afterbegin", newRowHTML);
+}
+
+function handleInputChange(event, field, id, model) {
+    const value = event.target.value;
+    const data = {
+        id: id,
+        model: model,
+        field: field,
+        value: value,
+    };
+
+    // Include additional fields for new entries
+    if (!id) {
+        data.product_id = "{{ product.id }}"; // Pass the related product ID
+        if (model === "productprice") {
+            data.size = document.querySelector(`[name="size_new"]`).value || "default_size";
+            data.price = document.querySelector(`[name="price_new"]`).value || 0;
+            data.shipping_box = document.querySelector(`[name="box_size_new"]`).value || "small";
+        }
+    }
+
+    updateField("{% url 'update_field' %}", data);
+}
+
+function updateField(url, data) {
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+        body: JSON.stringify(data),
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.status === "success") {
+                console.log("Update successful:", result);
+                if (!data.id) {
+                    // Update the row with the new ID
+                    const newRow = document.querySelector(`[name="${data.field}_new"]`).closest("tr");
+                    newRow.dataset.id = result.id; // Store the new ID for future updates
+                }
+            } else {
+                console.error("Error:", result.message);
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+</script>
+</div>
+
+{% endblock %}
