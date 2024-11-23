@@ -10,12 +10,51 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
+from django.db import connection
 import json
 
 
 categories = Category.objects.all()
 
 # Create your views here.
+
+
+def SQL(req):
+    return render(req, 'admindata/SQL.html')
+
+
+
+
+
+
+@csrf_exempt  # Use csrf_exempt for testing; in production, use CSRF tokens
+def execute_sql_view(request):
+    if request.method == "POST":
+        sql_query = request.POST.get("sql_query", "")
+        try:
+            # Restrict to safe commands
+            allowed_commands = ["SELECT", "UPDATE", "INSERT", "DELETE"]
+            if any(sql_query.strip().upper().startswith(cmd) for cmd in allowed_commands):
+                with connection.cursor() as cursor:
+                    cursor.execute(sql_query)
+
+                    if sql_query.strip().upper().startswith("SELECT"):
+                        # Fetch column names and results for SELECT queries
+                        columns = [col[0] for col in cursor.description]
+                        results = cursor.fetchall()
+                        return JsonResponse({"success": True, "columns": columns, "results": results})
+                    else:
+                        # Return the number of affected rows for non-SELECT queries
+                        return JsonResponse({"success": True, "message": f"Query executed successfully. Rows affected: {cursor.rowcount}"})
+            else:
+                return JsonResponse({"success": False, "message": "Only SELECT, UPDATE, INSERT, and DELETE commands are allowed."})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+    return JsonResponse({"success": False, "message": "Invalid request method."})
+
+
+
+
 
 feedcount = Feedback.objects.all()
 feed = Feedback.objects.all()

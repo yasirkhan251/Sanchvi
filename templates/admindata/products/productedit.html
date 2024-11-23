@@ -44,7 +44,12 @@
                     });
                 });
             </script>
-            
+             <div class="form-group mb-3">
+                {%for cat in allcat%} 
+                {{cat.name}}
+                <br>
+                {%endfor%}   
+            </div>
         <div class="form-group mb-3">
             <label for="product_name" class="form-label"><strong>Product Name:</strong></label>
             <input id="product_name" type="text" name="product_name" class="form-control" value="{{ product.name }}"  oninput="updateField('name', this.value, {{ product.id }})" placeholder="Enter product name">
@@ -107,6 +112,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#line-status" role="tab" aria-controls="line-status" aria-selected="false">Status</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#line-sql" role="tab" aria-controls="line-sql" aria-selected="false">SQL Quarry</a>
         </li>
     </ul>
 
@@ -299,7 +307,26 @@
             <!-- Popup Input Form -->
             <div id="addPricePopup" class="popup-overlay" style="display: none;">
                 <div class="popup-content">
-                    <input id="newSize" type="text" class="form-control mb-2" placeholder="Enter size">
+                    <!-- <input id="newSize" type="text" class="form-control mb-2" placeholder="Enter size"> -->
+                    <select id="newSize" class="form-select mb-2">
+                        <option value="0-6 months">0-6 months</option>
+                        <option value="6-12 months">6-12 months</option>
+                        <option value="1-2 years">1-2 years</option>
+                        <option value="2-3 years">2-3 years</option>
+                        <option value="3-4 years">3-4 years</option>
+                        <option value="4-5 years">4-5 years</option>
+                        <option value="5-6 years">5-6 years</option>
+                        <option value="6-7 years">6-7 years</option>
+                        <option value="7-8 years">7-8 years</option>
+                        <option value="8-9 years">8-9 years</option>
+                        <option value="9-10 years">9-10 years</option>
+                        <option value="10-11 years">10-11 years</option>
+                        <option value="11-12 years">11-12 years</option>
+                        <option value="12-13 years">12-13 years</option>
+                        <option value="13-14 years">13-14 years</option>
+                        <option value="14-15 years">14-15 years</option>
+                        <option value="15+ years">15+ years</option>
+                    </select>
                     <input id="newPrice" type="number" class="form-control mb-2" placeholder="Enter price">
                     <select id="newBoxSize" class="form-select mb-2">
                         <option value="small">Small</option>
@@ -321,12 +348,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for x in prices %}
+                    {% for x in prices reversed %}
                     <tr id="row-price-{{ x.id }}">
-                        <td>{{ forloop.counter }}</td>
+                        <td>{{ forloop.revcounter }}</td>
                         <td>
-                            <input type="text" id="size-{{ x.id }}" value="{{ x.size }}" class="form-control">
+                            <select id="size-{{ x.id }}" class="form-select">
+                                <option value="0-6 months" {% if x.size == '0-6 months' %}selected{% endif %}>0-6 months</option>
+                                <option value="6-12 months" {% if x.size == '6-12 months' %}selected{% endif %}>6-12 months</option>
+                                <option value="1-2 years" {% if x.size == '1-2 years' %}selected{% endif %}>1-2 years</option>
+                                <option value="2-3 years" {% if x.size == '2-3 years' %}selected{% endif %}>2-3 years</option>
+                                <option value="3-4 years" {% if x.size == '3-4 years' %}selected{% endif %}>3-4 years</option>
+                                <option value="4-5 years" {% if x.size == '4-5 years' %}selected{% endif %}>4-5 years</option>
+                                <option value="5-6 years" {% if x.size == '5-6 years' %}selected{% endif %}>5-6 years</option>
+                                <option value="6-7 years" {% if x.size == '6-7 years' %}selected{% endif %}>6-7 years</option>
+                                <option value="7-8 years" {% if x.size == '7-8 years' %}selected{% endif %}>7-8 years</option>
+                                <option value="8-9 years" {% if x.size == '8-9 years' %}selected{% endif %}>8-9 years</option>
+                                <option value="9-10 years" {% if x.size == '9-10 years' %}selected{% endif %}>9-10 years</option>
+                                <option value="10-11 years" {% if x.size == '10-11 years' %}selected{% endif %}>10-11 years</option>
+                                <option value="11-12 years" {% if x.size == '11-12 years' %}selected{% endif %}>11-12 years</option>
+                                <option value="12-13 years" {% if x.size == '12-13 years' %}selected{% endif %}>12-13 years</option>
+                                <option value="13-14 years" {% if x.size == '13-14 years' %}selected{% endif %}>13-14 years</option>
+                                <option value="14-15 years" {% if x.size == '14-15 years' %}selected{% endif %}>14-15 years</option>
+                                <option value="15+ years" {% if x.size == '15+ years' %}selected{% endif %}>15+ years</option>
+                            </select>
                         </td>
+                        
                         <td>
                             <input type="number" id="price-{{ x.id }}" value="{{ x.price }}" class="form-control">
                         </td>
@@ -347,9 +393,10 @@
                 </tbody>
             </table>
         </div>
+    
         
-
-        <div class="tab-pane fade show active" id="line-status" role="tabpanel" aria-labelledby="line-status-tab">
+<!-- Status Tab  -->
+        <div class="tab-pane fade " id="line-status" role="tabpanel" aria-labelledby="line-status-tab">
             <div class="card-body mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3>Status</h3>
@@ -466,6 +513,93 @@ document.querySelectorAll('.toggle').forEach((toggle) => {
 
 
     </div>
+
+
+    <!-- SQL Tab  -->
+    <div class="tab-pane fade" id="line-sql" role="tabpanel" aria-labelledby="line-sql-tab">
+        <div class="card-body mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3>SQL Quarry</h3>
+                
+            </div>
+     
+            <form id="sqlForm" method="POST">
+                {% csrf_token %}
+                <textarea name="sql_query" rows="5" cols="50" placeholder="Enter your SQL command here"></textarea>
+                <button type="submit">Execute</button>
+            </form>
+            
+            <div id="output">
+                <h3>Output:</h3>
+                <pre id="outputContent">No query executed yet.</pre>
+            </div>
+            
+
+
+        <script>
+            document.getElementById("sqlForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const sqlQuery = document.querySelector("textarea[name='sql_query']").value;
+
+    fetch("/admin/execute-sql/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+        },
+        body: new URLSearchParams({ sql_query: sqlQuery })
+    })
+        .then(response => response.json())
+        .then(data => {
+            const outputContent = document.getElementById("outputContent");
+
+            if (data.success) {
+                if (data.results) {
+                    // Format SELECT query results as a table
+                    const columns = data.columns;
+                    const rows = data.results;
+
+                    let table = "<table border='1'><tr>";
+                    columns.forEach(col => {
+                        table += `<th>${col}</th>`;
+                    });
+                    table += "</tr>";
+
+                    rows.forEach(row => {
+                        table += "<tr>";
+                        row.forEach(cell => {
+                            table += `<td>${cell}</td>`;
+                        });
+                        table += "</tr>";
+                    });
+                    table += "</table>";
+
+                    outputContent.innerHTML = table;
+                } else {
+                    // Display message for non-SELECT queries
+                    outputContent.textContent = data.message;
+                }
+            } else {
+                // Display error message
+                outputContent.textContent = data.error || data.message;
+            }
+        })
+        .catch(error => {
+            document.getElementById("outputContent").textContent = `Error: ${error.message}`;
+        });
+});
+
+        </script>
+    </div>
+
+
+</div>
+
+
+
+
+    
 </div>
 <script>
      // Show Popup
@@ -485,31 +619,51 @@ document.querySelectorAll('.toggle').forEach((toggle) => {
 
     // Add Price
     async function addPrice(productId) {
-        const size = document.getElementById('newSize').value;
-        const price = document.getElementById('newPrice').value;
-        const boxSize = document.getElementById('newBoxSize').value;
+    const size = document.getElementById('newSize').value;
+    const price = document.getElementById('newPrice').value;
+    const boxSize = document.getElementById('newBoxSize').value;
 
-        if (!size || !price || !boxSize) {
-            alert('All fields are required.');
-            return;
-        }
+    if (!size || !price || !boxSize) {
+        alert('All fields are required.');
+        return;
+    }
 
-        const response = await fetch('/admin/product/price/manage/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
-            },
-            body: JSON.stringify({ product_id: productId, size, price, box_size: boxSize }),
-        });
+    const response = await fetch('/admin/product/price/manage/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({ product_id: productId, size, price, box_size: boxSize }),
+    });
 
-        if (response.ok) {
-            const data = await response.json();
-            const pricesTable = document.querySelector('#pricesTable tbody');
-            const newRow = `<tr id="row-price-${data.id}">
+    if (response.ok) {
+        const data = await response.json();
+        const pricesTable = document.querySelector('#pricesTable tbody');
+        
+        const newRow = `
+            <tr id="row-price-${data.id}">
                 <td>${data.id}</td>
                 <td>
-                    <input type="text" id="size-${data.id}" value="${data.size}" class="form-control">
+                    <select id="size-${data.id}" class="form-select">
+                        <option value="0-6 months" ${size === '0-6 months' ? 'selected' : ''}>0-6 months</option>
+                        <option value="6-12 months" ${size === '6-12 months' ? 'selected' : ''}>6-12 months</option>
+                        <option value="1-2 years" ${size === '1-2 years' ? 'selected' : ''}>1-2 years</option>
+                        <option value="2-3 years" ${size === '2-3 years' ? 'selected' : ''}>2-3 years</option>
+                        <option value="3-4 years" ${size === '3-4 years' ? 'selected' : ''}>3-4 years</option>
+                        <option value="4-5 years" ${size === '4-5 years' ? 'selected' : ''}>4-5 years</option>
+                        <option value="5-6 years" ${size === '5-6 years' ? 'selected' : ''}>5-6 years</option>
+                        <option value="6-7 years" ${size === '6-7 years' ? 'selected' : ''}>6-7 years</option>
+                        <option value="7-8 years" ${size === '7-8 years' ? 'selected' : ''}>7-8 years</option>
+                        <option value="8-9 years" ${size === '8-9 years' ? 'selected' : ''}>8-9 years</option>
+                        <option value="9-10 years" ${size === '9-10 years' ? 'selected' : ''}>9-10 years</option>
+                        <option value="10-11 years" ${size === '10-11 years' ? 'selected' : ''}>10-11 years</option>
+                        <option value="11-12 years" ${size === '11-12 years' ? 'selected' : ''}>11-12 years</option>
+                        <option value="12-13 years" ${size === '12-13 years' ? 'selected' : ''}>12-13 years</option>
+                        <option value="13-14 years" ${size === '13-14 years' ? 'selected' : ''}>13-14 years</option>
+                        <option value="14-15 years" ${size === '14-15 years' ? 'selected' : ''}>14-15 years</option>
+                        <option value="15+ years" ${size === '15+ years' ? 'selected' : ''}>15+ years</option>
+                    </select>
                 </td>
                 <td>
                     <input type="number" id="price-${data.id}" value="${data.price}" class="form-control">
@@ -527,15 +681,19 @@ document.querySelectorAll('.toggle').forEach((toggle) => {
                     <button onclick="deletePrice(${data.id})" class="btn btn-danger">Delete</button>
                 </td>
             </tr>`;
-            pricesTable.innerHTML += newRow;
 
-            document.getElementById('newSize').value = '';
-            document.getElementById('newPrice').value = '';
-            document.getElementById('newBoxSize').value = 'small';
-        } else {
-            alert('Failed to add price.');
-        }
+        // Prepend the new row to the top of the table
+        pricesTable.insertAdjacentHTML('afterbegin', newRow);
+
+        // Clear the input fields
+        document.getElementById('newSize').value = '0-6 months';
+        document.getElementById('newPrice').value = '';
+        document.getElementById('newBoxSize').value = 'small';
+    } else {
+        alert('Failed to add price.');
     }
+}
+
 
     // Edit Price
     async function editPrice(priceId) {
