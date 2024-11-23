@@ -150,7 +150,7 @@
         {% csrf_token %}
         <!-- Product Name -->
         <select id="category" name="category" required>
-            <option value="14">Select a Category</option>
+            <option value="16">Select a Category</option>
             {% for category in categories %}
             <option value="{{ category.id }}">{{ category.name }}</option>
             {% endfor %}

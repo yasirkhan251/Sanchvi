@@ -327,20 +327,10 @@ def product_detail(req, pid):
         # Option 1: Render a custom 'not found' template
         return render(req, 'product/product_not_found.html', {'message': 'Product is Unavailable at a moment'})
 
-        # Option 2: Redirect to the product list page
-        # return redirect('product_list') # Uncomment this if you have a product list page
-
-        # Option 3: Return a plain HTTP response with an error message
-        # return HttpResponse("Product not found", status=404)
-
-    # If the product exists, proceed with rendering the detail page
-
-
     img = product.images.all()
     prices = Productprice.objects.filter(product=product)
     colorpalet =  Productcolorpalet.objects.filter(Product=product)
-    # Assuming 'cat' is fetched somewhere; if it's missing, you should add its logic.
-    # cat = Category.objects.all() # You might want to include this or modify as needed
+  
     productdetail = 0
    
     queryset = {
