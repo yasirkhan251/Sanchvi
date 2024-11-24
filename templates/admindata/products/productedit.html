@@ -46,14 +46,12 @@
             </script>
              <div class="form-group mb-3">
                 
-                <select name="">
-                    {%for cat in allcat%}
-                    {%if  cat == product.category %}
-                    <option value="{{cat.name}}">{{cat.name}}</option>
-                    {%endif%}
-                    {%endfor%}
-                    
+                <select name="category" id="categorySelect" data-product-id="{{ product.id }}">
+                    {% for cat in allcat %}
+                        <option value="{{ cat.id }}" {% if cat == product.category %}selected{% endif %}>{{ cat.name }}</option>
+                    {% endfor %}
                 </select>
+                
               
             
             </div>
@@ -514,7 +512,51 @@ document.querySelectorAll('.toggle').forEach((toggle) => {
 
 </script>
 
-
+<script>
+    // Add an event listener to the select element for detecting changes
+    document.getElementById('categorySelect').addEventListener('change', async function() {
+        const selectedCategoryId = this.value;
+        const productId = this.getAttribute('data-product-id');
+    
+        // Make an AJAX call to update the product's category
+        try {
+            const response = await fetch('/admin/product/update-category/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ product_id: productId, category_id: selectedCategoryId })
+            });
+    
+            if (response.ok) {
+                console.log('Product category updated successfully.');
+            } else {
+                alert('Failed to update product category.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while updating the product category.');
+        }
+    });
+    
+    // CSRF Token Helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    </script>
+    
             
         </div>
 

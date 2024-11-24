@@ -22,6 +22,30 @@ categories = Category.objects.all()
 def SQL(req):
     return render(req, 'admindata/SQL.html')
 
+@csrf_exempt
+def update_product_category(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            product_id = data.get('product_id')
+            category_id = data.get('category_id')
+
+            product = Product.objects.get(id=product_id)
+            category = Category.objects.get(id=category_id)
+
+            product.category = category
+            product.save()
+
+            return JsonResponse({'success': True, 'message': 'Product category updated successfully.'})
+
+        except Product.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Product not found.'})
+        except Category.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Category not found.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request.'})
 
 
 

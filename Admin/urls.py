@@ -24,6 +24,7 @@ path('product/price/manage/', manage_price, name='manage_price'),
  path('add_product/', add_product, name='addproduct'),
  path('delete_product/<int:pid>', deleteproduct, name='deleteproduct'),
  path('toggle-product-active/', toggle_product_active, name='toggle_product_active'),
+ path('product/update-category/', update_product_category, name='update_product_category'),
  path("execute-sql/", execute_sql_view, name="execute_sql"),
  path("SQL/",SQL , name="SQL"),
 
