@@ -186,7 +186,7 @@ from django.http import JsonResponse
 def searchall(request):
     print("searchall view accessed")
     query = request.GET.get('search', '').lower()
-    products = Product.objects.filter(name__icontains=query).prefetch_related('prices')
+    products = Product.objects.filter(name__icontains=query, is_active = True).prefetch_related('prices')
     print("Search query:", query)
     
     matching_products = []
