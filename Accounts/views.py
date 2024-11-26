@@ -13,6 +13,7 @@ from .utils import send_mail_to_client
 from django.utils.crypto import get_random_string
 from datetime import timedelta
 from django.utils import timezone
+
 import secrets
 
 def create_verification_token(user_id):
@@ -181,37 +182,73 @@ def forgot_password(request):
     return render(request, 'auth/forgotpassword/forgotpassword.html')
 
 
-def verification(request,user,username,email):
+# def verification(request,user,username,email):
 
-    token = Forgotpassword.objects.get(user = user)
-    user = MyUser.objects.get(username = username)
-    context = {
-        'username':username,
-        'user':user,
-        'email': email
-        }
-    if request.method == "POST":
-        verification_token = request.POST['token']
-        print('verification token :' ,verification_token)
-        print(token.token)
-        print(token)
+#     token = Forgotpassword.objects.get(user = user)
+#     user = MyUser.objects.get(username = username)
+#     context = {
+#         'username':username,
+#         'user':user,
+#         'email': email
+#         }
+#     if request.method == "POST":
+#         verification_token = request.POST['token']
+#         print('verification token :' ,verification_token)
+#         print(token.token)
+#         print(token)
         
-        if verification_token == token.token:
-            messages.success(request, "Verification Completed Successfully")
-            return redirect(reverse('change_password', args=[username]))
+        
+#         if verification_token == token.token:
+#             if token.expires_at <= time.now
+#             messages.success(request, "Verification Completed Successfully")
+#             return redirect(reverse('change_password', args=[username]))
         
             
-        else :
-            messages.error(request, "Your Verification Code does not match")
+#         else :
+#             messages.error(request, "Your Verification Code does not match")
             
 
 
 
     
+#     return render(request, 'auth/forgotpassword/verification.html', context)
+
+
+
+def verification(request, user, username, email):
+    try:
+        # Retrieve the token object for the user
+        token = Forgotpassword.objects.get(user=user)
+    except Forgotpassword.DoesNotExist:
+        messages.error(request, "Invalid verification request.")
+        return redirect('forgot_password')  # Replace with your 'forgot password' URL name
+
+    try:
+        # Retrieve the user object by username
+        user = MyUser.objects.get(username=username)
+    except MyUser.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect('forgot_password')  # Replace with appropriate redirect
+
+    context = {
+        'username': username,
+        'user': user,
+        'email': email
+    }
+
+    if request.method == "POST":
+        verification_token = request.POST.get('token', '').strip()  # Safely get token input
+        if verification_token == token.token:
+            # Verify if the token is expired
+            if token.expires_at >= timezone.now():
+                messages.success(request, "Verification Completed Successfully")
+                return redirect(reverse('change_password', args=[username]))
+            else:
+                messages.error(request, "Verification token has expired. Request a new one.")
+        else:
+            messages.error(request, "Your Verification Code does not match.")
+
     return render(request, 'auth/forgotpassword/verification.html', context)
-
-
-
 
 
 def change_password(request,user):

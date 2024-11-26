@@ -24,6 +24,8 @@ class MyUser(AbstractUser):
 
 def default_expiry_time():
     return timezone.now() + timedelta(minutes=5)
+
+
 class Forgotpassword(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
     token = models.CharField(max_length=6, unique=True)

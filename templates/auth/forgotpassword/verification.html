@@ -13,6 +13,18 @@
         {%if messages%}
         {%for x in messages%}
         {{x}}
+
+        <form id="register-form" action="{%url 'forgotpassword'%}" class="form" method="post">
+            {%csrf_token%}
+            <!-- <div class="form-group"> -->
+              <!-- <div class="input-group"> -->
+                <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-envelope  color-blue"></i> <i class="glyphicon glyphicon-user  color-blue"></i></span> -->
+                <input id="field" name="field" placeholder="email address or username" class="form-control" value="{{email}}" hidden type="text">
+             
+           <button style="background-color: red;" type="submit">Re-send OTP</button>
+            
+            <input type="hidden" class="hide" name="token" id="token" value=""> 
+          </form>
         {%endfor%}
         {%endif%}
         <div class="icon">
