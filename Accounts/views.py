@@ -7,14 +7,8 @@ import string
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse
-
 from django.contrib.auth.models import * 
-from .utils import send_mail_to_client
-from django.utils.crypto import get_random_string
-from datetime import timedelta
-from django.utils import timezone
 
-import secrets
 
 
 def generate_server_id():
