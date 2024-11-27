@@ -16,6 +16,7 @@ urlpatterns = [
     path('StudioSpace', studiospace, name='studiospace' ),
     path('payment/', include('Payments.urls')),
     path('cart/', include('Cart.urls')),
+    path('MSG/', include('Message.urls')),
     path('Terms&Condition/', termsandcondition, name='Terms&Condition'),
     path('About_Us/', aboutus, name='aboutus'),
     path('Privacy&Policy/' , privacyandpolicy, name='privacyandpolicy'),

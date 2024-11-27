@@ -38,6 +38,7 @@ EXT = [
     'Cart',
     'paypal.standard.ipn',
     'Admin',
+    'Message',
     
 
 ]

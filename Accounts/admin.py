@@ -3,6 +3,6 @@ from .models import *
 
 
 admin.site.register(MyUser)
-admin.site.register(Forgotpassword)
+# admin.site.register(Forgotpassword)
 admin.site.register(UserVisit)
 # Register your models here.
