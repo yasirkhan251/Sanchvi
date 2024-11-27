@@ -8,7 +8,7 @@ def send_mail_to_client(username, email, token):
     recipient_list = [email]
 
     # Absolute URL to the static image (update with your actual domain)
-    logo_url = "https://sanchvistudio.com/static/img/logo.png"
+    logo_url = "https://sanchvistudio.com/static/img/logo_copy.png"
 
     # HTML Content with inline CSS and image URL
     html_content = f'''
