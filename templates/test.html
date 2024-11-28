@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Form</title>
+</head>
+<body>
+    <h2>Email Sender</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        <!-- Sender Email -->
+        <!-- <label for="sender">Sender:</label>
+        <input type="email" name="sender" id="sender" placeholder="sender@email.com" required> -->
+        <br><br>
+
+        <!-- Recipient Email -->
+        <label for="recipient">Recipient:</label>
+        <input type="email" name="recipient" id="recipient" placeholder="recipient@email.com" required>
+        <br><br>
+
+        <!-- Email Subject -->
+        <label for="subject">Subject:</label>
+        <input type="text" name="subject" id="subject" placeholder="Enter subject" required>
+        <br><br>
+
+        <!-- Message Body -->
+        <label for="message">Message:</label><br>
+        <textarea name="message" id="message" rows="6" cols="40" placeholder="Type your message here..." required></textarea>
+        <br><br>
+
+        <!-- Attachment -->
+        <label for="attachment">Attachment:</label>
+        <input type="file" name="attachment" id="attachment" multiple>
+        <br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Send Email</button>
+    </form>
+</body>
+</html>

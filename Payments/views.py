@@ -6,6 +6,7 @@ from Cart.models import *
 import uuid
 from paypal.standard.forms import PayPalPaymentsForm
 from Sanchvi.utils import *
+from Message.views import send_order_confirmation_email
 
 paypal_email = settings.PAYPAL_RECEIVER_EMAIL
 
@@ -94,7 +95,7 @@ def handle_payment_success_PayPal(req, address_id):
 
     # Clear the cart after placing the order
     cart.delete()
-  
+    send_order_confirmation_email(order)
     # Redirect to order confirmation page or another page
     return redirect('order_confirmation', order_id=order.id)
 
@@ -102,43 +103,6 @@ def handle_payment_success_PayPal(req, address_id):
 
 def payment_fail(req):
     return render(req, 'cart/payment_failed.html')
-
-
-
-
-
-
-# def handle_payment_success_PhonePe(req, address_id):
-#     user = req.user
-#     cart = Cart.objects.filter(user=user)
-#     shipping_address = get_object_or_404(Shipping_address, id=address_id)
-
-#     # Calculate total amount
-#     total_amount = sum(float(item.price) * item.qty for item in cart)
-
-#     # Create the order
-#     order = Order.objects.create(
-#         user=user,
-#         address=shipping_address,
-#         total_amount=total_amount
-#     )
-
-#     # Add items to the order
-#     for item in cart:
-#         OrderItem.objects.create(
-#             order=order,
-#             product=item.product,
-#             size=item.size,
-#             color=item.color,
-#             qty=item.qty,
-#             price=item.price
-#         )
-
-#     # Clear the cart after placing the order
-#     cart.delete()
-  
-#     # Redirect to order confirmation page or another page
-#     return redirect('order_confirmation', order_id=order.id)
 
 
 def handle_payment_success_PhonePe(req, address_id):
@@ -191,7 +155,7 @@ def handle_payment_success_PhonePe(req, address_id):
 
                 # Clear the cart after placing the order
                 cart.delete()
-
+                send_order_confirmation_email(order)
                 # Redirect to order confirmation page or another page
                 return redirect('order_confirmation', order_id=order.id)
             else:

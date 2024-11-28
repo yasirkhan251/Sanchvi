@@ -145,14 +145,13 @@ USE_I18N = True
 
 
 
-# forgot password email
+#  email
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sanchvi.sanjana19@gmail.com'
-EMAIL_HOST_PASSWORD = 'febiytwrkxllzeqy'
 EMAIL_HOST_PASSWORD = 'wdaeskemmdmwhkya'
 
 

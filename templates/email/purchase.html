@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .header h2 {
+            margin: 0;
+        }
+        .shipping-details, .order-details, .summary {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .product {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .product img {
+            max-width: 80px;
+            height: auto;
+            margin-right: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .product-details {
+            flex: 1;
+        }
+        .product-details strong {
+            display: block;
+        }
+        .summary {
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Thank You for Your Purchase, {{ user.username }}!</h2>
+        </div>
+        <p>Your order has been successfully placed. Below are the details:</p>
+
+        <div class="shipping-details">
+            <h3>Shipping Address</h3>
+            <p>
+                {{ shipping_address.name }}<br>
+                {{ shipping_address.address1 }} {{ shipping_address.address2 }}<br>
+                {{ shipping_address.city }}, {{ shipping_address.state }}, {{ shipping_address.zipcode }}<br>
+                {{ shipping_address.country }}<br>
+                Phone: {{ shipping_address.phone }}
+            </p>
+        </div>
+
+        <div class="order-details">
+            <h3>Order Details</h3>
+            {% for product in product_details %}
+            <div class="product">
+                <img src="{{ product.image }}" alt="{{ product.name }}">
+                <div class="product-details">
+                    <strong>Product Name:</strong> {{ product.name }}
+                    <strong>Price:</strong> ${{ product.price }}
+                    <strong>Size:</strong> {{ product.size }}
+                    <strong>Color:</strong> {{ product.color }}
+                    <strong>Quantity:</strong> {{ product.quantity }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="summary">
+            <p>Total Amount: ${{ total_amount }}</p>
+        </div>
+
+        <p>Thank you for shopping with us! We hope you enjoy your purchase.</p>
+    </div>
+</body>
+</html>
