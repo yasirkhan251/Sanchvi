@@ -29,8 +29,8 @@
             text-align: center;
         }
         .logo img {
-            max-width: 120px;
-            opacity: 0.8;
+            max-width: 100px;
+            opacity: 0.2;
         }
         .logo-text {
             font-size: 18px;
@@ -89,7 +89,7 @@
             border: 1px solid #e9ecef;
             text-align: left;
             font-size: 14px;
-            word-wrap: break-word; /* Prevents text overflow */
+            word-wrap: break-word;
         }
         th {
             background: linear-gradient(to top, #f8b7e2, #e8ed93);
@@ -136,8 +136,11 @@
                 flex: 1 1 100%; /* Full width for each card */
             }
             table th, table td {
-                font-size: 12px; /* Smaller font for better readability */
-                padding: 10px; /* Adjust padding for small screens */
+                font-size: 12px;
+                padding: 10px;
+            }
+            .logo img {
+                max-width: 80px;
             }
         }
         /* Tablet View */
@@ -152,6 +155,9 @@
                 font-size: 14px;
                 padding: 12px;
             }
+            .logo img {
+                max-width: 90px;
+            }
         }
         /* Print Styles */
         @media print {
@@ -159,14 +165,15 @@
                 display: none; /* Hide print button */
             }
             .details-section {
-                display: flex; /* Side-by-side layout for addresses */
+                display: flex; /* Enforce side-by-side layout for printing */
                 flex-wrap: nowrap;
                 gap: 20px;
             }
             .details-card {
-                flex: 1;
+                flex: 1; /* Equal width for both cards */
             }
         }
+        th{color: #333;}
     </style>
 </head>
 <body>
