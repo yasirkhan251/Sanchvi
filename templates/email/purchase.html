@@ -32,12 +32,13 @@
             margin-bottom: 15px;
         }
         .product img {
-            max-width: 80px;
-            height: auto;
-            margin-right: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+        max-width: 200px; /* Adjust as per your requirement */
+        height: auto; /* Automatically adjusts the height based on the width */
+        display: block;
+        margin-right: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
         .product-details {
             flex: 1;
         }
@@ -57,35 +58,44 @@
         </div>
         <p>Your order has been successfully placed. Below are the details:</p>
 
+        <!-- Shipping Details -->
         <div class="shipping-details">
             <h3>Shipping Address</h3>
             <p>
-                {{ shipping_address.name }}<br>
+                <strong>Name:</strong> {{ shipping_address.name }}<br>
+                <strong>Address:</strong> 
                 {{ shipping_address.address1 }} {{ shipping_address.address2 }}<br>
                 {{ shipping_address.city }}, {{ shipping_address.state }}, {{ shipping_address.zipcode }}<br>
-                {{ shipping_address.country }}<br>
-                Phone: {{ shipping_address.phone }}
+                <strong>Country:</strong> {{ shipping_address.country }}<br>
+                <strong>Phone:</strong> {{ shipping_address.phone }}
             </p>
         </div>
 
+        <!-- Order Details -->
         <div class="order-details">
             <h3>Order Details</h3>
             {% for product in product_details %}
             <div class="product">
+                {% if product.image %}
                 <img src="{{ product.image }}" alt="{{ product.name }}">
+                {% endif %}
+                <!-- <img src="https://ci3.googleusercontent.com/meips/ADKq_NYnh75Pse5vsSUknau8W_P-3xekKWwbLxqUNP2-w6kmB5x2-vKCOgYtiwK56KNf9WO2ijf07K98QBqiQbcFr4XHdg71pJVDXLQ4cgBS6grg-7KcxPJBjg=s0-d-e1-ft#https://sanchvistudio.com//media/media/product/image_50433281.JPG" alt="{{ product.name }}"> -->
+
                 <div class="product-details">
-                    <strong>Product Name:</strong> {{ product.name }}
-                    <strong>Price:</strong> ${{ product.price }}
-                    <strong>Size:</strong> {{ product.size }}
-                    <strong>Color:</strong> {{ product.color }}
+                    <strong>Product Name:</strong> {{ product.name }}<br>
+                    <strong>Price:</strong> ${{ product.price }}<br>
+                    <strong>Size:</strong> {{ product.size }}<br>
+                    <strong>Color:</strong> {{ product.color }}<br>
                     <strong>Quantity:</strong> {{ product.quantity }}
                 </div>
             </div>
             {% endfor %}
         </div>
 
+        <!-- Summary -->
         <div class="summary">
-            <p>Total Amount: ${{ total_amount }}</p>
+            <p> <strong>Shipping Rate:</strong> ₹{{ shipping }}</p>
+            <p><strong>Total Amount:</strong> ₹{{ total_amount }}</p>
         </div>
 
         <p>Thank you for shopping with us! We hope you enjoy your purchase.</p>

@@ -59,8 +59,11 @@ class Order(models.Model):
     address = models.ForeignKey(Shipping_address, on_delete=models.CASCADE)
     order_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     invoice = models.CharField(max_length=100,null=True,blank=True,unique=True)
+    shipping_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    GST = models.DecimalField(max_digits=10, decimal_places=2)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, null=True, blank=True)
+    delivery_status = models.CharField(max_length=20)
     payment_mode = models.CharField(max_length=50, blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

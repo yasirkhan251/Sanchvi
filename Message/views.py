@@ -4,7 +4,6 @@ from django.urls import *
 from .models import Forgotpassword
 from django.contrib.auth.models import * 
 from .utils import send_mail_to_client
-from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.contrib import messages
 from django.core.mail import EmailMessage,EmailMultiAlternatives
@@ -13,6 +12,8 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 from Cart.models import *
+from django.utils.html import strip_tags
+
 
 
 # Create your views here.
@@ -113,54 +114,145 @@ def change_password(request,user):
 # end forgot password 
 
 
-def send_order_confirmation_email(order):
-    """
-    Sends an email with order confirmation details to the user for a specific order.
 
-    Args:
-        order: The Order object containing the purchase details.
-    """
+
+def send_order_confirmation_email(order, request):
     try:
-        # Fetch order items and shipping address
+        # Fetch related items and shipping address
         order_items = order.items.all()
         shipping_address = order.address
 
         # Prepare product details for the email
-        product_details = []
-        for item in order_items:
-            product_details.append({
+        product_details = [
+            {
                 'name': item.product.name,
-                'image': item.product.img.url if item.product.img else '',  # Replace with correct image field
+                'image': f"https://sanchvistudio.com/{item.product.img.url}" if item.product.img else '',
                 'price': item.price,
                 'size': item.size,
                 'color': item.color,
                 'quantity': item.qty,
-            })
+            }
+            for item in order_items
+        ]
 
-        # Render email content using an HTML template
-        email_content = render_to_string('email/purchase.html', {
+        # Render HTML content
+        email_html_content = render_to_string('email/purchase.html', {
             'user': order.user,
             'shipping_address': shipping_address,
             'product_details': product_details,
+            'shipping': order.shipping_amount,
             'total_amount': order.total_amount,
         })
 
-        # Set up the email
-        email_subject = f"Order Confirmation - Order #{order.order_id}"
-        email = EmailMessage(
-            subject=email_subject,
-            body=email_content,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[order.user.email],  # Send to the user's email
-        )
-        email.content_subtype = "html"  # Specify HTML content
+        # Strip tags for plain text version (optional)
+        email_plain_content = strip_tags(email_html_content)
 
-        # Send the email
+        # Send email
+        email_subject = f"Order Confirmation - Order #{order.invoice}"
+        email = EmailMultiAlternatives (
+            subject=email_subject,
+            body=email_plain_content,  # Use plain text as fallback
+            from_email='your_email@example.com',
+            to=[order.user.email],
+        )
+        email.attach_alternative(email_html_content, "text/html")  # Attach the HTML version
         email.send()
+        print('Success Email Send to ' , request.user)
 
     except Exception as e:
-        # Handle exceptions
         print(f"Error sending order confirmation email: {e}")
+# def send_order_confirmation_email(order):
+#     try:
+#         order_items = order.items.all()
+#         shipping_address = order.address
+
+#         # Prepare product details for the email
+#         product_details = [
+#             {
+#                 'name': item.product.name,
+#                 'image': item.product.img.url if item.product.img else '',  # Get the image URL
+#                 'price': item.price,
+#                 'size': item.size,
+#                 'color': item.color,
+#                 'quantity': item.qty,
+#             }
+#             for item in order_items
+#         ]
+
+#         # Render email content
+#         queryset = {
+#             'user': order.user,
+#             'shipping_address': shipping_address,
+#             'product_details': product_details,
+#             'total_amount': order.total_amount,
+#         }
+#         email_content = render_to_string('email/purchase.html', queryset)
+
+#         # Send email
+#         email_subject = f"Order Confirmation - Order #{order.order_id}"
+#         email = EmailMultiAlternatives(
+#             subject=email_subject,
+#             body=email_content,
+#             from_email='your_email@example.com',
+#             to=[order.user.email],
+#         )
+#         email.content_subtype = "html"  # Specify HTML content
+#         email.send()
+#         # return render(order,'email/purchase.html',queryset)
+
+#     except Exception as e:
+#         print(f"Error sending order confirmation email: {e}")
+
+
+
+# def send_order_confirmation_email(order):
+#     """
+#     Sends an email with order confirmation details to the user for a specific order.
+
+#     Args:
+#         order: The Order object containing the purchase details.
+#     """
+#     try:
+#         # Fetch order items and shipping address
+#         order_items = order.items.all()
+#         shipping_address = order.address
+
+#         # Prepare product details for the email
+#         product_details = []
+#         for item in order_items:
+#             product_details.append({
+#                 'name': item.product.name,
+#                 'image': item.product.img.url if item.product.img else '',  # Replace with correct image field
+#                 'price': item.price,
+#                 'size': item.size,
+#                 'color': item.color,
+#                 'quantity': item.qty,
+#             })
+
+#         # Render email content using an HTML template
+#         email_content = render_to_string('email/purchase.html', {
+#             'user': order.user,
+#             'shipping_address': shipping_address,
+#             'product_details': product_details,
+#             'total_amount': order.total_amount,
+#         })
+
+#         # Set up the email
+#         email_subject = f"Order Confirmation - Order #{order.order_id}"
+#         email = EmailMessage(
+#             subject=email_subject,
+#             body=email_content,
+#             from_email=settings.DEFAULT_FROM_EMAIL,
+#             to=[order.user.email],  # Send to the user's email
+#         )
+#         email.content_subtype = "html"  # Specify HTML content
+
+#         # Send the email
+#         email.send()
+
+#     except Exception as e:
+#         # Handle exceptions
+#         print(f"Error sending order confirmation email: {e}")
 
 
 

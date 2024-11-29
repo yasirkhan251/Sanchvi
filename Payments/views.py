@@ -1,6 +1,7 @@
+from decimal import Decimal
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from Cart.models import *
 import uuid
@@ -69,13 +70,19 @@ def handle_payment_success_PayPal(req, address_id):
 
     # Calculate total amount
     total_amount = sum(float(item.price) * item.qty for item in cart)
+    shipping_rate = req.session.get('shippingrate', 0.0)
+    all_total_price = req.session.get('all_total_price', 0.0)
+    
 
     # Create the order
     order = Order.objects.create(
         user=user,
         address=shipping_address,
-        total_amount=total_amount,
+        total_amount=all_total_price,
+        shipping_amount = shipping_rate,
+        GST = 0,
         status = 'Paid',
+        delivery_status = 'Placed',
         payment_mode = 'PayPal',
         invoice = generate_invoice_number(),
 
@@ -95,7 +102,7 @@ def handle_payment_success_PayPal(req, address_id):
 
     # Clear the cart after placing the order
     cart.delete()
-    send_order_confirmation_email(order)
+    send_order_confirmation_email(order,req)
     # Redirect to order confirmation page or another page
     return redirect('order_confirmation', order_id=order.id)
 
@@ -131,13 +138,19 @@ def handle_payment_success_PhonePe(req, address_id):
 
                 # Calculate total amount
                 total_amount = sum(float(item.price) * item.qty for item in cart)
+                shipping_rate = req.session.get('shippingrate', 0.0)
+                all_total_price = req.session.get('all_total_price', 0.0)
+
 
                 # Create the order
                 order = Order.objects.create(
                     user=user,
                     address=shipping_address,
-                    total_amount=total_amount,
+                    total_amount=all_total_price,
                     status = 'Paid',
+                    GST = 0,
+                    shipping_amount = shipping_rate,
+                    delivery_status = 'Placed',
                     payment_mode = 'PhonePe UPI',
                     invoice = generate_invoice_number(),
                 )
@@ -174,5 +187,7 @@ def handle_payment_success_PhonePe(req, address_id):
 def order_confirmation(req, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(req, 'orders/confirmation.html', {'order': order})
+
+
 
 

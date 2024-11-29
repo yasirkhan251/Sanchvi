@@ -13,6 +13,8 @@ import hashlib
 import base64
 from django.contrib import messages
 from Sanchvi.utils import *
+from django.http import JsonResponse
+from decimal import Decimal
 # paypal settings 
 import uuid
 from django.conf import settings
@@ -60,6 +62,7 @@ def capture_shipping_details(req):
     state_id = req.POST.get('state')
     city = req.POST.get('city')
     zipcode = req.POST.get('zipcode')
+    
 
     # Check if all required fields are provided
     if not (name and phone and address1 and address2 and country_id and state_id and city and zipcode):
@@ -133,7 +136,7 @@ def process_paypal_payment(req, user, total_amount_usd, shipping_address):
 
 def process_phonepe_payment(req, user, total_amount_inr, shipping_address):
     orderID = "pp-" + str(uuid.uuid4())
-    merchantTransactionID = "MT" + str(uuid.uuid4())
+    merchantTransactionID = "MT" + str(uuid.uuid4()) 
 
     payload = {
         "merchantId": settings.PHONEPE_MERCHANT_ID,
@@ -186,16 +189,6 @@ def fetch_states(request):
 
 
 
-
-from django.http import JsonResponse
-from decimal import Decimal
-
-
-def totalpricefunction(all_total_price,total_shipping_rate,total_price):
-    return all_total_price,total_shipping_rate,total_price
-
-
-
 def fetch_shipping_rate(request):
     country_id = request.GET.get('country_id')
     total_price = request.GET.get('total_price')
@@ -243,8 +236,8 @@ def fetch_shipping_rate(request):
 
         all_total_price = total_shipping_rate + total_price
         request.session['all_total_price'] = float(all_total_price)
+        request.session['shippingrate'] = float(total_shipping_rate)
 
-        totalpricefunction(all_total_price,total_shipping_rate,total_price)
         print(f"Final total (product + shipping): {all_total_price}")
 
         return JsonResponse({'success': True, 'shipping_rate': float(total_shipping_rate), 'all_total_price': float(all_total_price)})
@@ -259,9 +252,6 @@ def fetch_shipping_rate(request):
  
 def checkout(req):
     user = req.user
-    
-    country = 7
-    shippingrates = ShippingRate.objects.get(country=country)
     cart = Cart.objects.filter(user=user)
     for x in cart :
         
@@ -291,6 +281,7 @@ def checkout(req):
         state_id = req.POST.get('state')
         city = req.POST.get('city')
         zipcode = req.POST.get('zipcode')
+        # shipping_rate = req.POST.get('shipping_rate_country')
 
     # Check if all required fields are provided
         if not (name and phone and address1 and address2 and country_id and state_id and city and zipcode):
