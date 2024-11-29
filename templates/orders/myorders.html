@@ -139,12 +139,33 @@
     <div class="order-container">
         <div class="order-header">
             <div>
-                <h4>Order ID: {{ order.order_id }}</h4>
+                <h4>Order ID: {{ order.invoice }}</h4>
                 <p>Order Date: {{ order.created_at|date:"F d, Y H:i" }}</p>
             </div>
             <button class="order-details-toggle" data-order-id="{{ order.order_id }}">View Order Details</button>
         </div>
-
+ <!-- Order Status Tracking -->
+ <div class="status-nodes">
+    <div class="node {% if order.delivery_status == 'placed' or order.delivery_status_percentage > 0 %}active{% endif %}">
+        <span>Order Placed</span>
+    </div>
+    <div class="node {% if order.delivery_status in ['packed', 'shipped', 'received_city', 'out_for_delivery', 'delivered'] %}active{% endif %}">
+        <span>Order Packed</span>
+    </div>
+    <div class="node {% if order.delivery_status in ['shipped', 'received_city', 'out_for_delivery', 'delivered'] %}active{% endif %}">
+        <span>Order Shipped</span>
+    </div>
+    <div class="node {% if order.delivery_status in ['received_city', 'out_for_delivery', 'delivered'] %}active{% endif %}">
+        <span>Received in City</span>
+    </div>
+    <div class="node {% if order.delivery_status in ['out_for_delivery', 'delivered'] %}active{% endif %}">
+        <span>Out for Delivery</span>
+    </div>
+    <div class="node {% if order.delivery_status == 'delivered' %}active{% endif %}">
+        <span>Delivered</span>
+    </div>
+</div>
+  
         <div class="order-summary">
             <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
         </div>
@@ -154,11 +175,11 @@
     <div id="modal-{{ order.order_id }}" class="modal" style="margin-top: 35px;">
         <div class="modal-content">
             <span class="modal-close" data-order-id="{{ order.order_id }}">&times;</span>
-            <h4>Order ID: {{ order.order_id }}</h4>
+            <h4>Order ID: {{ order.invoice }}</h4>
             <div>
                 <h5>Shipping Address:</h5>
-                <p>{{ order.address.name }}<br>
-                   {{ order.address.address }}<br>
+                <p>{{ order.address.name }},<br>
+                   {{ order.address.address1 }} <br>  {{ order.address.address2 }}<br>
                    {{ order.address.city }}, {{ order.address.country }}<br>
                    Phone: {{ order.address.phone }}</p>
             </div>

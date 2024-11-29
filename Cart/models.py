@@ -55,6 +55,20 @@ class Billing_address(models.Model):
         return f"{self.name}, {self.city}, {self.country}"
 
 class Order(models.Model):
+    DELIVERY_STATUSES = [
+    ('placed', 'Order Placed'),
+    ('packed', 'Order Packed'),
+    ('shipped', 'Order Shipped'),
+    ('received_city', 'Received in City'),
+    ('out_for_delivery', 'Out for Delivery'),
+    ('delivered', 'Delivered'),
+]
+    ORDER_STATUSES = [
+    ('pending', 'Pending'),
+    ('paid', 'Paid'),
+    ('failed', 'Failed'),
+    ('cancelled', 'Cancelled'),
+    ]
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     address = models.ForeignKey(Shipping_address, on_delete=models.CASCADE)
     order_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
@@ -62,13 +76,16 @@ class Order(models.Model):
     shipping_amount = models.DecimalField(max_digits=10, decimal_places=2)
     GST = models.DecimalField(max_digits=10, decimal_places=2)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=20, null=True, blank=True)
-    delivery_status = models.CharField(max_length=20)
+    status = models.CharField(max_length=20, choices=ORDER_STATUSES, default='pending')
+    delivery_status = models.CharField(max_length=20, choices=DELIVERY_STATUSES, default='placed')
     payment_mode = models.CharField(max_length=50, blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Order {self.invoice} by {self.user.username} Status: {self.status}, PaymentMode: {self.payment_mode}, Amount: {self.total_amount}"
+
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
