@@ -44,7 +44,7 @@
         }
         .header h1 {
             font-size: 32px;
-            color: #6a0dad; /* Purple color for Order Confirmation */
+            color: #6a0dad;
             font-weight: bold;
             margin-bottom: 8px;
         }
@@ -89,6 +89,7 @@
             border: 1px solid #e9ecef;
             text-align: left;
             font-size: 14px;
+            word-wrap: break-word; /* Prevents text overflow */
         }
         th {
             background: linear-gradient(to top, #f8b7e2, #e8ed93);
@@ -115,7 +116,7 @@
             margin-top: 20px;
         }
         .btn-print button {
-            background-color: #6a0dad; /* Casual button style */
+            background-color: #6a0dad;
             color: #ffffff;
             padding: 10px 20px;
             border: none;
@@ -126,26 +127,44 @@
         .btn-print button:hover {
             background-color: #540b9e;
         }
-        /* Hide Print Button When Printing */
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .details-section {
+                flex-direction: column; /* Stack addresses vertically */
+            }
+            .details-card {
+                flex: 1 1 100%; /* Full width for each card */
+            }
+            table th, table td {
+                font-size: 12px; /* Smaller font for better readability */
+                padding: 10px; /* Adjust padding for small screens */
+            }
+        }
+        /* Tablet View */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .details-section {
+                flex-direction: row;
+            }
+            .details-card {
+                flex: 1 1 calc(50% - 10px);
+            }
+            table th, table td {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
+        /* Print Styles */
         @media print {
             .btn-print {
-                display: none;
+                display: none; /* Hide print button */
             }
             .details-section {
-                display: flex; /* Ensure left-right layout */
-                flex-wrap: nowrap; /* Prevent wrapping */
+                display: flex; /* Side-by-side layout for addresses */
+                flex-wrap: nowrap;
                 gap: 20px;
             }
             .details-card {
-                flex: 1; /* Equal width for both cards */
-            }
-        }
-        @media (max-width: 768px) {
-            .details-card {
-                flex: 1 1 100%;
-            }
-            .header h1 {
-                font-size: 28px;
+                flex: 1;
             }
         }
     </style>
@@ -198,8 +217,7 @@
                 {% for item in order.items.all %}
                 <tr>
                     <td>
-                        <a href="{{ item.product.img.url }}">
-                        <img src="{{ item.product.img.url }}" alt="{{ item.product.name }}"></a>
+                        <img src="{{ item.product.img.url }}" alt="{{ item.product.name }}">
                         {{ item.product.name }}
                     </td>
                     <td>{{ item.size }}, {{ item.color }}</td>
