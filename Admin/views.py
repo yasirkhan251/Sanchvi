@@ -12,13 +12,13 @@ from django.utils.dateparse import parse_datetime
 from django.utils import timezone
 from django.db import connection
 import json
-
+from Accounts.utils import adminlogin_required
 
 categories = Category.objects.all()
 
 # Create your views here.
 
-
+@adminlogin_required
 def SQL(req):
     return render(req, 'admindata/SQL.html')
 
@@ -130,12 +130,12 @@ def get_server_mode(request):
         'servermode': server.servermode,
         'countdowntime': server.countdowntime  # Send the current countdown time
     })
-
+@adminlogin_required
 def admin_panel(req):
 
     return render(req, 'admindata/index.html',globalset)
 
-
+@adminlogin_required
 def admin_serversettings(req):
     return render(req,'admindata/settings.html',globalset)
 
@@ -144,7 +144,7 @@ def admin(req):
     
     return redirect(reverse('login'))
 
-
+@adminlogin_required
 def feedbacks(req):
     
     return render(req, 'admindata/feedback.html',globalset)
@@ -156,7 +156,7 @@ from django.db.models import Min, Max
 
 
 
-
+@adminlogin_required
 def activate_category(req):
     if req.method == "POST":
         c_id = req.POST['c_id']
@@ -168,7 +168,7 @@ def activate_category(req):
 
         return redirect(reverse('productcategories'))
     return redirect(reverse('productcategories'))
-
+@adminlogin_required
 def deactivate_category(req):
     if req.method == "POST":
         c_id = req.POST['c_id']
@@ -184,7 +184,7 @@ def deactivate_category(req):
 
  
 
-
+@adminlogin_required
 def product_categories(req):
     if req.method =="POST":
       try:
@@ -225,7 +225,7 @@ def product_categories(req):
 
 
 
-
+@adminlogin_required
 def all_product_list(req):
     
     sort = req.GET.get('sort', None)
@@ -246,7 +246,7 @@ def all_product_list(req):
 
 
     return render(req, 'admindata/products/product_list.html',queryset)
-
+@adminlogin_required
 def productlist(req, c_id, id):
     category = get_object_or_404(Category, c_id=c_id)
     sort = req.GET.get('sort', None)
@@ -271,7 +271,7 @@ def productlist(req, c_id, id):
     }
     return render(req, 'admindata/products/product_list.html',queryset)
 
-
+@adminlogin_required
 
 @csrf_exempt
 def add_product(req):
@@ -342,7 +342,7 @@ def add_product(req):
 
     # Render the form for GET request
     return render(req, 'admindata/products/addproduct.html', {'categories': categories})
-
+@adminlogin_required
 def product_detail(req, pid):
     # Try to get the product by ID, if it doesn't exist, show a friendly message
     try:
@@ -373,6 +373,7 @@ def product_detail(req, pid):
 
 
 from django.views.decorators.http import require_POST
+@adminlogin_required
 @require_POST
 def toggle_product_active(request):
     try:
@@ -396,7 +397,7 @@ def toggle_product_active(request):
     except Exception as e:
         return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
 
-
+@adminlogin_required
 def deleteproduct(req,pid):
     
     product = get_object_or_404(Product, id=pid)
@@ -567,7 +568,7 @@ def manage_color_palette(request):
 
 # for Price 
 
-
+@adminlogin_required
 @csrf_exempt
 def manage_price(request):
     """
@@ -629,7 +630,7 @@ def manage_price(request):
 
 
 # update product details
-
+@adminlogin_required
 @csrf_exempt
 def update_product_details(request):
     if request.method == 'POST':

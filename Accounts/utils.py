@@ -1,6 +1,8 @@
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.shortcuts import redirect
 from django.utils.html import strip_tags
+from functools import wraps
 
 def send_mail_to_client(username, email, token):
     subject = f"Verification Code for {username}"
@@ -42,3 +44,13 @@ def send_mail_to_client(username, email, token):
         return "Email sent successfully with styled content."
     except Exception as e:
         return f"Failed to send email: {e}"
+    
+
+
+def adminlogin_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_admin:
+            return view_func(request, *args, **kwargs)
+        return redirect('login')  # Redirect to login if not authenticated as admin
+    return _wrapped_view
