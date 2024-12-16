@@ -83,7 +83,8 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Order {self.invoice} by {self.user.username} Status: {self.status}, PaymentMode: {self.payment_mode}, Amount: {self.total_amount}"
+        # return f"Order {self.invoice} by {self.user.username} Status: {self.status}, PaymentMode: {self.payment_mode}, Amount: {self.total_amount}"
+        return f"Order by {self.user.username}"
 
 
 class OrderItem(models.Model):

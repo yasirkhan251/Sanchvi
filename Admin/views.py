@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth import *
 from Accounts.models import *
 from Admin.models import *
+from Cart.models import *
 from Products.models import *
 from .models import *
 from django.contrib import messages
@@ -132,7 +133,18 @@ def get_server_mode(request):
     })
 @adminlogin_required
 def admin_panel(req):
+    
+    orders = Order.objects.count()
+    users = MyUser.objects.filter(is_admin=False).count()
+    recent_user = MyUser.objects.latest('id')  # Fetch the user with the highest ID
+    recent_order = Order.objects.latest('id')  # Fetch the order with the highest ID
 
+    globalset.update({
+        'orders': orders,
+        'users': users,
+        'recent_user':recent_user,
+        'recent_order':recent_order,
+    })
     return render(req, 'admindata/index.html',globalset)
 
 @adminlogin_required
@@ -656,4 +668,9 @@ def update_product_details(request):
 
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
 
+
+
+
+def req_orders(req):
+    return render(req, 'admindata/orders/orders.html')
 

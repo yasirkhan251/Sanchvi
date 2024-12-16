@@ -1,0 +1,113 @@
+
+{% extends 'adminbase.html' %}
+{% block title %} Orders {% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Orders Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            padding: 20px;
+            background: #007bff;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+        }
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .order-table th, .order-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .order-table th {
+            background: #f8f9fa;
+        }
+        .order-table tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .order-table tbody tr:hover {
+            background: #f1f1f1;
+        }
+        .details-button {
+            padding: 8px 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .details-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Admin Orders</div>
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Client Name</th>
+                    <th>Order Date</th>
+                    <th>Status</th>
+                    <th>Total Amount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1001</td>
+                    <td>John Doe</td>
+                    <td>2024-12-15</td>
+                    <td>Pending</td>
+                    <td>$250.00</td>
+                    <td><button class="details-button" onclick="viewDetails(1001)">View Details</button></td>
+                </tr>
+                <tr>
+                    <td>1002</td>
+                    <td>Jane Smith</td>
+                    <td>2024-12-16</td>
+                    <td>Shipped</td>
+                    <td>$180.00</td>
+                    <td><button class="details-button" onclick="viewDetails(1002)">View Details</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function viewDetails(orderId) {
+            alert(`Viewing details for Order ID: ${orderId}`);
+            // Replace this alert with logic to display order details (e.g., modal or new page).
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+{% endblock %}
