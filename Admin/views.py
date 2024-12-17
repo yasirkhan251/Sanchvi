@@ -131,19 +131,77 @@ def get_server_mode(request):
         'servermode': server.servermode,
         'countdowntime': server.countdowntime  # Send the current countdown time
     })
+
+import requests
+from collections import Counter
+from django.db.models import Count, Q
 @adminlogin_required
 def admin_panel(req):
-    
+    bot_keywords = ['bot', 'google', 'chatgpt', 'crawler', 'spider']
+    filter_query = Q()
     orders = Order.objects.count()
     users = MyUser.objects.filter(is_admin=False).count()
+
+
     recent_user = MyUser.objects.latest('id')  # Fetch the user with the highest ID
     recent_order = Order.objects.latest('id')  # Fetch the order with the highest ID
+    recent_visit = UserVisit.objects.latest('id')  # Fetch the order with the highest ID
+    for keyword in bot_keywords:
+        filter_query |= Q(user_agent__icontains=keyword)    
+
+
+    top_links = (
+        UserVisit.objects.values('path')
+        .annotate(visitors=Count('path'))
+        .order_by('-visitors')[:7]
+    )
+    
+
+    real_users = UserVisit.objects.exclude(filter_query).count()
+
+
+    # feedback = Feedback.objects.count()
+    recent_visits = UserVisit.objects.all().order_by('-timestamp')[:10]
+
+    visits = UserVisit.objects.values_list('ip_address', flat=True)
+
+    # Get the countries associated with the IPs
+    countries = []
+    for ip in visits:
+        response = requests.get(f'https://ipinfo.io/{ip}/json')
+        ip_info = response.json()
+        country = ip_info.get('country', 'Unknown')
+        countries.append(country)
+
+    # Count visits per country
+    country_visits = Counter(countries)
+
+    # Prepare data for the template
+    data = []
+    for country, count in country_visits.items():
+        flag_url = f"/static/admin_assets_gui/img/flags/{country.lower()}.png"  # Assuming flags are named as ISO country codes
+        percentage = (count / len(visits)) * 100
+        data.append({
+            'country': country,
+            'count': count,
+            'percentage': percentage,
+            'flag_url': flag_url
+        })
+
+
+
 
     globalset.update({
         'orders': orders,
         'users': users,
         'recent_user':recent_user,
         'recent_order':recent_order,
+        'visit':real_users,
+        'top_links':top_links,
+        'lastvisit':recent_visit,
+        'recent_visits': recent_visits,
+        'data': data,
+        # 'feedback':feedback,
     })
     return render(req, 'admindata/index.html',globalset)
 

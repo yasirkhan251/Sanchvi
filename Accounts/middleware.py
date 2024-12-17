@@ -11,7 +11,7 @@ class LogUserVisitMiddleware:
         static_file_extensions = re.compile(r'.*\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$')
 
         # Check if the request is for the admin panel or static files, and ignore those
-        if request.path.startswith('/admin_dev/')  or static_file_extensions.match(request.path):
+        if request.path.startswith('/admin_dev/')  or static_file_extensions.match(request.path) or  request.path.startswith('/admin/') :
             return self.get_response(request)
 
         # Only log visits for HTML requests (ignore non-HTML requests)
