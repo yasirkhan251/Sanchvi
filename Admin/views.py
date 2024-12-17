@@ -170,7 +170,7 @@ def admin_panel(req):
     for ip in visits:
         response = requests.get(f'https://ipinfo.io/{ip}/json')
         ip_info = response.json()
-        country = ip_info.get('country', 'Unknown')
+        country = ip_info.get('country', 'Local_IP')
         countries.append(country)
 
     # Count visits per country
@@ -179,7 +179,11 @@ def admin_panel(req):
     # Prepare data for the template
     data = []
     for country, count in country_visits.items():
-        flag_url = f"/static/admin_assets_gui/img/flags/{country.lower()}.png"  # Assuming flags are named as ISO country codes
+        if country == 'Local_IP':
+            flag_url = "/static/admin_assets_gui/img/flags/Local_IP.jpg"  # Placeholder image for unknown countries
+        else:
+            flag_url = f"/static/admin_assets_gui/img/flags/{country.lower()}.png"
+
         percentage = (count / len(visits)) * 100
         data.append({
             'country': country,
