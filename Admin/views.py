@@ -163,35 +163,46 @@ def admin_panel(req):
     # feedback = Feedback.objects.count()
     recent_visits = UserVisit.objects.all().order_by('-timestamp')[:10]
 
-    visits = UserVisit.objects.values_list('ip_address', flat=True)
+    visits = UserVisit.objects.exclude(
+        user_agent__icontains="bot"
+    ).exclude(
+        user_agent__icontains="google"
+    ).exclude(
+        user_agent__icontains="chatgpt"
+    )
+
+    # Fetch IPs for filtered visits
+    ip_list = visits.values_list('ip_address', flat=True)
 
     # Get the countries associated with the IPs
     countries = []
-    for ip in visits:
-        response = requests.get(f'https://ipinfo.io/{ip}/json')
-        ip_info = response.json()
-        country = ip_info.get('country', 'Local_IP')
-        countries.append(country)
-
+    for ip in ip_list:
+        try:
+            response = requests.get(f'https://ipinfo.io/{ip}/json')
+            ip_info = response.json()
+            country = ip_info.get('country', 'Local_IP')
+            countries.append(country)
+        except:
+            countries.append('Local_IP')
     # Count visits per country
     country_visits = Counter(countries)
 
     # Prepare data for the template
     data = []
-    for country, count in country_visits.items():
-        if country == 'Local_IP':
-            flag_url = "/static/admin_assets_gui/img/flags/Local_IP.jpg"  # Placeholder image for unknown countries
-        else:
-            flag_url = f"/static/admin_assets_gui/img/flags/{country.lower()}.png"
 
-        percentage = (count / len(visits)) * 100
+    for country, count in country_visits.items():
+        flag_url = (
+            f"/static/admin_assets_gui/img/flags/{country.lower()}.png"
+            if country != 'Unknown'
+            else "/static/admin_assets_gui/img/flags/Local_IP.jpg"
+        )
+        percentage = (count / len(ip_list)) * 100 if ip_list else 0
         data.append({
             'country': country,
             'count': count,
             'percentage': percentage,
-            'flag_url': flag_url
+            'flag_url': flag_url,
         })
-
 
 
 
