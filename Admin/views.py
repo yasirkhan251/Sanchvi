@@ -134,7 +134,8 @@ def get_server_mode(request):
 
 import requests
 from collections import Counter
-from django.db.models import Count, Q
+from django.db.models import Case, When, Value, BooleanField,Count, Q
+# from django.db.models import Lower
 @adminlogin_required
 def admin_panel(req):
     bot_keywords = ['bot', 'google', 'chatgpt', 'crawler', 'spider']
@@ -161,8 +162,19 @@ def admin_panel(req):
 
 
     # feedback = Feedback.objects.count()
-    recent_visits = UserVisit.objects.all().order_by('-timestamp')[:10]
-
+    recent_visits = (
+        UserVisit.objects.annotate(
+            is_bot=Value(False),  # Default to non-bot
+        )
+        .annotate(
+            is_bot=Case(
+                When(user_agent__iregex=r'(' + '|'.join(bot_keywords) + r')', then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField(),
+            )
+        )
+        .order_by('-timestamp')[:10]
+    )
     # visits = UserVisit.objects.exclude(
     #     user_agent__icontains="bot"
     # ).exclude(

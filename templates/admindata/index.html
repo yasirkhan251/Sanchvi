@@ -399,30 +399,40 @@
   
   <div class="card">
     <div class="card-header">
-        <div class="card-title">Recent Page Visits</div>
+        <h4 class="card-title">Recent Visitors</h4>
     </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <!-- Recent Page Visits Table -->
-            <table class="table align-items-center mb-0">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Page Name</th>
-                        <th scope="col">Timestamp</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for visit in recent_visits %}
-                    <tr>
-                        <td> <a href="{{ visit.path }}">{{ visit.path }}</a>  </td>
-                        <td>{{ visit.timestamp|date:"Y-m-d H:i:s" }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>IP Address</th>
+                    <th>Path</th>
+                    <th>Timestamp</th>
+                    <th>User Agent</th>
+                    <th>Bot Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visit in recent_visits %}
+                <tr>
+                    <td>{{ visit.ip_address }}</td>
+                    <td>{{ visit.path }}</td>
+                    <td>{{ visit.timestamp }}</td>
+                    <td>{{ visit.user_agent }}</td>
+                    <td>
+                        {% if visit.is_bot %}
+                            <span class="text-danger">Bot</span>
+                        {% else %}
+                            <span class="text-success">Non-Bot</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
+
 
   
   
