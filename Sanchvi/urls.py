@@ -30,6 +30,12 @@ urlpatterns = [
 
 
 ]
+<<<<<<< HEAD
+=======
+
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+>>>>>>> 38f147327691c0f0602b1114f21fd49b599dc5e0
 if not settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
