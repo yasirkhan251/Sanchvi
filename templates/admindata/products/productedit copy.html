@@ -114,7 +114,8 @@
                         <option value="small" {% if x.shipping_box == 'small' %}selected{% endif %}>Small</option>
                         <option value="medium" {% if x.shipping_box == 'medium' %}selected{% endif %}>Medium</option>
                         <option value="large" {% if x.shipping_box == 'large' %}selected{% endif %}>Large</option>
-                        <option value="extra_large" {% if x.shipping_box == 'extra_large' %}selected{% endif %}>Extra Large</option>
+                        <option value="extra_large" {% if x.shipping_box == 'extra_large' %}selected{% endif %}>XL</option>
+                        <option value="extra_large" {% if x.shipping_box == 'XXL' %}selected{% endif %}>XXL</option>
                     </select>
                 </td>
                 <td><a href="">Delete</a></td>
@@ -154,6 +155,7 @@
                         <option value="medium">Medium</option>
                         <option value="large">Large</option>
                         <option value="extra_large">Extra Large</option>
+                        <option value="XXL">XXL</option>
                     </select>
                 </td>
                 <td>

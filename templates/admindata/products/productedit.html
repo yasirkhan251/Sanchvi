@@ -314,6 +314,12 @@
                 <div class="popup-content">
                     <!-- <input id="newSize" type="text" class="form-control mb-2" placeholder="Enter size"> -->
                     <select id="newSize" class="form-select mb-2">
+                        <!-- <option value="0-6 months">Small</option> -->
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
                         <option value="0-6 months">0-6 months</option>
                         <option value="6-12 months">6-12 months</option>
                         <option value="1-2 years">1-2 years</option>
@@ -337,7 +343,8 @@
                         <option value="small">Small</option>
                         <option value="medium">Medium</option>
                         <option value="large">Large</option>
-                        <option value="extra_large">Extra Large</option>
+                        <option value="extra_large">XL</option>
+                        <option value="XXL">XXL</option>
                     </select>
                     <button onclick="addPrice({{ product.id }})" class="btn btn-success">Add Price</button>
                 </div>
@@ -358,6 +365,11 @@
                         <td>{{ forloop.revcounter }}</td>
                         <td>
                             <select id="size-{{ x.id }}" class="form-select">
+                                <option value="Small" {% if x.size == 'Small' %}selected{% endif %}>Small</option>
+                                <option value="Medium" {% if x.size == 'Medium' %}selected{% endif %}>Medium</option>
+                                <option value="Large" {% if x.size == 'Large' %}selected{% endif %}>Large</option>
+                                <option value="XL" {% if x.size == 'XL' %}selected{% endif %}>XL</option>
+                                <option value="XXL" {% if x.size == 'XXL' %}selected{% endif %}>XXL</option>
                                 <option value="0-6 months" {% if x.size == '0-6 months' %}selected{% endif %}>0-6 months</option>
                                 <option value="6-12 months" {% if x.size == '6-12 months' %}selected{% endif %}>6-12 months</option>
                                 <option value="1-2 years" {% if x.size == '1-2 years' %}selected{% endif %}>1-2 years</option>
@@ -386,7 +398,8 @@
                                 <option value="small" {% if x.shipping_box == 'small' %}selected{% endif %}>Small</option>
                                 <option value="medium" {% if x.shipping_box == 'medium' %}selected{% endif %}>Medium</option>
                                 <option value="large" {% if x.shipping_box == 'large' %}selected{% endif %}>Large</option>
-                                <option value="extra_large" {% if x.shipping_box == 'extra_large' %}selected{% endif %}>Extra Large</option>
+                                <option value="extra_large" {% if x.shipping_box == 'extra_large' %}selected{% endif %}>XL</option>
+                                <option value="XXL" {% if x.shipping_box == 'XXL' %}selected{% endif %}>XXL</option>
                             </select>
                         </td>
                         <td>
@@ -695,6 +708,11 @@ document.querySelectorAll('.toggle').forEach((toggle) => {
                 <td>${data.id}</td>
                 <td>
                     <select id="size-${data.id}" class="form-select">
+                        <option value="Small" ${size === 'Small' ? 'selected' : ''}>Small</option>
+                        <option value="Medium" ${size === 'Medium' ? 'selected' : ''}>Medium</option>
+                        <option value="Large" ${size === 'Large' ? 'selected' : ''}>Large</option>
+                        <option value="XL" ${size === 'XL' ? 'selected' : ''}>XL</option>
+                        <option value="XXL" ${size === 'XXL' ? 'selected' : ''}>XXL</option>
                         <option value="0-6 months" ${size === '0-6 months' ? 'selected' : ''}>0-6 months</option>
                         <option value="6-12 months" ${size === '6-12 months' ? 'selected' : ''}>6-12 months</option>
                         <option value="1-2 years" ${size === '1-2 years' ? 'selected' : ''}>1-2 years</option>
@@ -722,7 +740,8 @@ document.querySelectorAll('.toggle').forEach((toggle) => {
                         <option value="small" ${data.box_size === 'small' ? 'selected' : ''}>Small</option>
                         <option value="medium" ${data.box_size === 'medium' ? 'selected' : ''}>Medium</option>
                         <option value="large" ${data.box_size === 'large' ? 'selected' : ''}>Large</option>
-                        <option value="extra_large" ${data.box_size === 'extra_large' ? 'selected' : ''}>Extra Large</option>
+                        <option value="extra_large" ${data.box_size === 'extra_large' ? 'selected' : ''}>XL</option>
+                        <option value="XXL" ${data.box_size === 'XXL' ? 'selected' : ''}>XXL</option>
                     </select>
                 </td>
                 <td>
@@ -735,7 +754,7 @@ document.querySelectorAll('.toggle').forEach((toggle) => {
         pricesTable.insertAdjacentHTML('afterbegin', newRow);
 
         // Clear the input fields
-        document.getElementById('newSize').value = '0-6 months';
+        document.getElementById('newSize').value = 'Small';
         document.getElementById('newPrice').value = '';
         document.getElementById('newBoxSize').value = 'small';
     } else {
