@@ -1,0 +1,267 @@
+/* General Styles */
+a {
+    text-decoration: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 15px;
+}
+
+.checkoutLayout {
+    display: flex;
+    flex-direction: column; /* Changed to column for all devices */
+    gap: 20px;
+}
+
+.returnCart, .right {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.keep-shopping {
+    font-size: 1rem;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.change-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.change-button:hover {
+    background-color: #218838;
+}
+
+.list {
+    margin-top: 20px;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.item img.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.info {
+    flex-grow: 1;
+}
+
+.name {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.price {
+    color: #555;
+}
+
+.quantity {
+    font-size: 0.9rem;
+}
+
+.returnPrice {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.checkout-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.group {
+    flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.group input, .group select {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.return {
+    margin-top: 20px;
+}
+
+.return .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.buttonCheckout {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.buttonCheckout:hover {
+    background-color: #0056b3;
+}
+
+.payment-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.payment-method {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.payment-method label {
+    margin-top: 5px;
+}
+
+.shop-now a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.modal-body p {
+    margin-bottom: 10px;
+}
+
+/* Toggle Button for Small Devices */
+.toggle-cart-items {
+    display: block; /* Show on all devices except large desktops */
+    background-color: #17a2b8;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.toggle-cart-items:hover {
+    background-color: #138496;
+}
+
+/* Product List for Small Devices without transition */
+.product-list {
+    overflow: hidden;
+    /* Transition is set dynamically in JavaScript */
+}
+
+/* Media Queries for Larger Devices */
+@media (min-width: 1024px) {
+    .checkoutLayout {
+        flex-direction: row; /* Side-by-side layout on desktops */
+    }
+
+    .returnCart, .right {
+        width: 48%;
+    }
+
+    .group {
+        flex: 1 1 45%;
+    }
+
+    .buttonCheckout {
+        width: auto;
+    }
+
+    /* Hide toggle button and show product list by default */
+    .toggle-cart-items {
+        display: none;
+    }
+
+    .product-list {
+        max-height: none;
+        overflow: visible;
+    }
+
+    .item {
+        display: grid;
+        grid-template-columns: 100px 1fr 50px 80px;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .item img.product-image {
+        width: 100%;
+        height: 100px;
+    }
+}
+
+/* Additional Styles */
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header, .modal-footer {
+    border: none;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.modal-body .payment-method img {
+    max-width: 100%;
+    height: auto;
+}
+
+.payment-method input {
+    margin-top: 10px;
+}
+
+.payment-method label {
+    font-weight: normal;
+}
+
+.total-price {
+    color: #000;
+}
+
+
