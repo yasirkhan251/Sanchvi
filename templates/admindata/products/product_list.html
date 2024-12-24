@@ -256,7 +256,9 @@
             {% for x in product reversed %}
             <div class="product" >
                 <a href="{% url 'adminproductdetail' x.id %}">
+                    {%if x.img %}
                     <img loading="lazy" src="{{ x.img.url }}" alt="{{ x.name }}">
+                    {%endif%}
                     <div class="product-content">
                         <span class="icon"><i class="fas fa-heart"></i></span>
                         <h3>{{ x.name}}</h3>

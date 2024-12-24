@@ -27,7 +27,8 @@ path('product/price/manage/', manage_price, name='manage_price'),
  path('product/update-category/', update_product_category, name='update_product_category'),
  path("execute-sql/", execute_sql_view, name="execute_sql"),
  path("SQL/",SQL , name="SQL"),
- path('orders/', req_orders, name='reqorders')
+ path('orders/', req_orders, name='reqorders'),
+path('duplicate_product/<int:product_id>/', duplicate_product_view, name='duplicate_product'),
 
 
 

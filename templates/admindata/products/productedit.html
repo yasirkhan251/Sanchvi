@@ -7,14 +7,16 @@
 <div class="main-container d-flex flex-wrap align-items-start">
     <!-- Image Section -->
     <div class="image-section me-4" style="flex: 1; max-width: 20%;">
-        
+        {%if product.img%}
         <img id="mainImage" src="{{ product.img.url }}" alt="Main product image for {{ product.name }}" class="img-fluid rounded">
+        {% endif %}
         <div class="thumbnail-container d-flex justify-content-start flex-wrap mt-2">
             
-            
+            {%if product.images%}
             {% for image in product.images.all %}
                 <img src="{{ image.image.url }}" alt="Thumbnail for {{ product.name }}" class="thumbnail img-thumbnail me-1 mb-1" style="width: 60px; height: 60px; object-fit: cover;">
             {% endfor %}
+            {% endif %}
         </div>
     </div>
 
@@ -23,6 +25,11 @@
             
 
                 <a href="{% url 'deleteproduct' product.id %}" class="delete-link">Delete</a>
+                <form method="post" action="{% url 'duplicate_product' product.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Duplicate Product</button>
+                </form>
+                
            
             
             <script>

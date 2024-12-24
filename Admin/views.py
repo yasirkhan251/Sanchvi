@@ -14,6 +14,7 @@ from django.utils import timezone
 from django.db import connection
 import json
 from Accounts.utils import adminlogin_required
+from .tasks import duplicate_product
 
 categories = Category.objects.all()
 
@@ -386,6 +387,7 @@ def add_product(req):
 
         # Validate required fields
         if not category_id:
+            
             return JsonResponse({'error': 'Category is required.'}, status=400)
         if not name:
             return JsonResponse({'error': 'Product name is required.'}, status=400)
@@ -758,4 +760,18 @@ def update_product_details(request):
 
 def req_orders(req):
     return render(req, 'admindata/orders/orders.html')
+
+
+
+
+
+def duplicate_product_view(request, product_id):
+    if request.method == 'POST':
+        # Call the duplication function
+        new_product = duplicate_product(product_id)
+
+        # Redirect to the new product's detail page
+        return redirect('/admin/product/tm/14/')
+    
+    return HttpResponse('Invalid request method', status=400)
 

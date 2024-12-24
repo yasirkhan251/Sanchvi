@@ -1,36 +1,46 @@
-# import logging
-# from celery import shared_task
-# from django.utils import timezone
-# from .models import Server
+from django.shortcuts import get_object_or_404
+from Products.models import Product, Productprice, Productcolorpalet, ProductImage,Category
 
-# logger = logging.getLogger(__name__)
+def duplicate_product(product_id):
+    # Fetch the original product instance
+    original_product = get_object_or_404(Product, id=product_id)
+    temp = Category.objects.get(name='Temp')
+    # print(temp[7])
 
-# @shared_task
-# def check_and_update_server_mode():
-#     try:
-#         server = Server.objects.get(id=1)
-        
-#         # Get the current time in the local timezone (Asia/Kolkata)
-#         now = timezone.localtime()
+    # Duplicate the product itself
+    print(temp)
+    new_product = Product(
+        name=original_product.name,
+        description=original_product.description,
+        category=temp,   # Copy the category (ForeignKey)
+        is_active=original_product.is_active,  # Copy the active status
+        img=original_product.img,  # Copy the active status
+        # We can omit img as it’s an optional field and you might want to upload a new image
+    )
+    
+    new_product.save()  # Save the new product
 
-#         # Ensure countdowntime is also in the local timezone
-#         if server.countdowntime:
-#             countdowntime = timezone.localtime(server.countdowntime)
+    # Duplicate all related Productprice entries for the new product
+    for price in original_product.prices.all():
+        Productprice.objects.create(
+            product=new_product,
+            size=price.size,
+            price=price.price,
+            shipping_box=price.shipping_box
+        )
 
-#             # Log the current state for debugging
-#             logger.info(f"[Celery Task] Current time: {now} (timezone: {now.tzinfo}), "
-#                         f"Countdown time: {countdowntime} (timezone: {countdowntime.tzinfo}), "
-#                         f"Server mode: {server.servermode}")
+    # Duplicate all related Productcolorpalet entries for the new product
+    for color in original_product.productcolorpalet_set.all():
+        Productcolorpalet.objects.create(
+            Product=new_product,
+            color=color.color
+        )
 
-#             # Check if the countdown time has passed and server mode is False
-#             if countdowntime <= now and not server.servermode:
-#                 server.servermode = True
-#                 server.save()
-#                 logger.info("[Celery Task] Countdown reached. Server mode set to True.")
-#             else:
-#                 logger.info("[Celery Task] No change needed. Either countdown time has not passed or server mode is already True.")
-#         else:
-#             logger.info("[Celery Task] Countdown time is not set.")
+    # Duplicate all related ProductImage entries for the new product
+    for image in original_product.images.all():
+        ProductImage.objects.create(
+            product=new_product,
+            image=image.image  # Note: You may want to handle image uploads differently
+        )
 
-#     except Server.DoesNotExist:
-#         logger.error("[Celery Task] Server instance not found.")
+    return new_product
