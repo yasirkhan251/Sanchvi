@@ -315,6 +315,7 @@
                     <!-- <input id="newSize" type="text" class="form-control mb-2" placeholder="Enter size"> -->
                     <select id="newSize" class="form-select mb-2">
                         <!-- <option value="0-6 months">Small</option> -->
+                        <option value="Regular">Regular</option>
                         <option value="Small">Small</option>
                         <option value="Medium">Medium</option>
                         <option value="Large">Large</option>
@@ -340,6 +341,7 @@
                     </select>
                     <input id="newPrice" type="number" class="form-control mb-2" placeholder="Enter price">
                     <select id="newBoxSize" class="form-select mb-2">
+                        <option value="regular">Regular</option>
                         <option value="small">Small</option>
                         <option value="medium">Medium</option>
                         <option value="large">Large</option>
@@ -365,6 +367,7 @@
                         <td>{{ forloop.revcounter }}</td>
                         <td>
                             <select id="size-{{ x.id }}" class="form-select">
+                                <option value="Regular" {% if x.size == 'Regular' %}selected{% endif %}>Regular</option>
                                 <option value="Small" {% if x.size == 'Small' %}selected{% endif %}>Small</option>
                                 <option value="Medium" {% if x.size == 'Medium' %}selected{% endif %}>Medium</option>
                                 <option value="Large" {% if x.size == 'Large' %}selected{% endif %}>Large</option>
@@ -395,6 +398,7 @@
                         </td>
                         <td>
                             <select id="boxSize-{{ x.id }}" class="form-select">
+                                <option value="regular" {% if x.shipping_box == 'regular' %}selected{% endif %}>Regular</option>
                                 <option value="small" {% if x.shipping_box == 'small' %}selected{% endif %}>Small</option>
                                 <option value="medium" {% if x.shipping_box == 'medium' %}selected{% endif %}>Medium</option>
                                 <option value="large" {% if x.shipping_box == 'large' %}selected{% endif %}>Large</option>
@@ -708,6 +712,7 @@ document.querySelectorAll('.toggle').forEach((toggle) => {
                 <td>${data.id}</td>
                 <td>
                     <select id="size-${data.id}" class="form-select">
+                        <option value="Regular" ${size === 'Regular' ? 'selected' : ''}>Regular</option>
                         <option value="Small" ${size === 'Small' ? 'selected' : ''}>Small</option>
                         <option value="Medium" ${size === 'Medium' ? 'selected' : ''}>Medium</option>
                         <option value="Large" ${size === 'Large' ? 'selected' : ''}>Large</option>
@@ -737,6 +742,7 @@ document.querySelectorAll('.toggle').forEach((toggle) => {
                 </td>
                 <td>
                     <select id="boxSize-${data.id}" class="form-select">
+                        <option value="regular" ${data.box_size === 'regular' ? 'selected' : ''}>Regular</option>
                         <option value="small" ${data.box_size === 'small' ? 'selected' : ''}>Small</option>
                         <option value="medium" ${data.box_size === 'medium' ? 'selected' : ''}>Medium</option>
                         <option value="large" ${data.box_size === 'large' ? 'selected' : ''}>Large</option>
