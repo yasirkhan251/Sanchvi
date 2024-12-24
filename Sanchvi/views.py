@@ -4,6 +4,7 @@ from django.views.generic import *
 from Products.models import *
 from Admin.models import *
 from django.utils import timezone
+from django.template.loader import render_to_string
 
 
 from django.shortcuts import render, get_object_or_404
@@ -134,3 +135,11 @@ def custom_404_view(request, exception):
     return render(request, 'assets/404.html', status=404)
 def custom_500_view(request):
     return render(request, 'assets/500.html', status=500)
+
+
+
+
+
+def robots_txt(request):
+    content = render_to_string('robots.txt')
+    return HttpResponse(content, content_type='text/plain')
