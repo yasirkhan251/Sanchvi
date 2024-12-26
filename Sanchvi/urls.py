@@ -23,6 +23,7 @@ urlpatterns = [
     path('License/' , frontendlicense, name='frontendlicense'),
     path('contact_page', contact_page, name='contact_page'),
     path('test/', testingpage, name='test'),
+    path('robots.txt', robots_txt, name='robots_txt'),
     
     
 

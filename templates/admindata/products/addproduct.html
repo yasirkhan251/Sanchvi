@@ -150,7 +150,7 @@
         {% csrf_token %}
         <!-- Product Name -->
         <select id="category" name="category" required>
-            <option value="16">Select a Category</option>
+            <option value="18">Select a Category</option>
             {% for category in categories %}
             <option value="{{ category.id }}">{{ category.name }}</option>
             {% endfor %}
@@ -159,6 +159,19 @@
             <label for="product-name">Product Name</label>
             <input type="text" id="product-name" name="name" placeholder="Enter product name" required>
         </div>
+        
+        <script>
+            document.getElementById('product-name').addEventListener('input', function(e) {
+                let value = e.target.value;
+                
+                // Capitalize the first letter of each word and make the rest lowercase
+                value = value.split(' ').map(function(word) {
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                }).join(' ');
+                
+                e.target.value = value;
+            });
+        </script>
 
         <!-- Description -->
         <div class="form-group">
@@ -239,6 +252,89 @@
     <div class="grid-container" id="size-grid">
         <!-- Card for Each Size -->
         <div class="grid-container" id="size-grid">
+
+            <div class="size-card">
+                <h4>Small</h4>
+                <input type="number" name="price[Small]" placeholder="Enter price">
+                <select name="shipping_box[Small]">
+                    <option value="">Select Box Size</option>
+                    <option selected value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+            </div>
+            
+            <div class="size-card">
+                <h4>Medium</h4>
+                <input type="number" name="price[Medium]" placeholder="Enter price">
+                <select name="shipping_box[Medium]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option selected value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+            </div>
+            
+            <div class="size-card">
+                <h4>Large</h4>
+                <input type="number" name="price[Large]" placeholder="Enter price">
+                <select name="shipping_box[Large]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option selected value="large">Large</option>
+                    <option value="extra_large">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+            </div>
+            
+            <div class="size-card">
+                <h4>XL</h4>
+                <input type="number" name="price[extra_large]" placeholder="Enter price">
+                <select name="shipping_box[extra_large]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option selected value="extra_large">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+            </div>
+            
+            <div class="size-card">
+                <h4>XXL</h4>
+                <input type="number" name="price[XXL]" placeholder="Enter price">
+                <select name="shipping_box[XXL]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">XL</option>
+                    <option selected value="XXL">XXL</option>
+                </select>
+            </div>
+            
+            <div class="size-card">
+                <h4>Regular</h4>
+                <input type="number" name="price[Regular]" placeholder="Enter price">
+                <select name="shipping_box[Regular]">
+                    <option value="">Select Box Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="extra_large">XL</option>
+                    <option  value="XXL">XXL</option>
+                    <option selected value="regular">Regular</option>
+                </select>
+            </div>
+            
+
+
+
             <div class="size-card">
                 <h4>0-6 months</h4>
                 <input type="number" name="price[0-6 months]" placeholder="Enter price">
