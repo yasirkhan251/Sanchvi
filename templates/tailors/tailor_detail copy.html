@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailor Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        select, button, input {
+            padding: 8px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="time"] {
+  width: 100px;
+}
+
+    
+
+        button:hover {
+            background-color: #218838;
+        }
+        .form-container {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .flex{
+            display: flex;
+        }
+        @media (max-width: 600px) {
+            .form-container {
+                flex-direction: column;
+            }
+            table, th, td {
+                font-size: 12px;
+                padding: 5px;
+            }
+            input[type="time"] {
+                width: 80px;
+            }
+            .flex {
+                flex-direction: column;
+                align-items: center;
+            }
+            select, button, input {
+                width: 90%;
+            }
+        }   
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tailor Salary Calculator</h1>
+        
+        <div class="form-container">
+          
+
+            
+        
+        <form method="post">
+        <h1>Tailor Details - 
+            {% csrf_token %}
+           
+            <select style="width: 100px; font-size: large; font-weight: 700;" name="tailor_id" id="tailor_id" onchange="this.form.submit()">
+                {% for t in tailors %}
+                    <option value="{{ t.id }}" {% if tailor.id == t.id %}selected{% endif %}>
+                        {{ t.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </h1>
+        
+        <div class="form-container">
+            <form method="get">
+            
+            
+                <!-- <label for="week_id">Select Week:</label> -->
+                 <div style="display: flex;">
+                <h2>Week from-to </h2>  <select style="font-weight: 600;"  name="week_id" id="week_id" onchange="this.form.submit()">
+                    {% for week in weeks %}
+                        <option  value="{{ week.id }}" {% if selected_week and selected_week.id == week.id %}selected{% elif not selected_week and current_week and current_week.id == week.id %}selected{% endif %}>
+                            Week {{ week.week_number }} ({{ week.start_date }} - {{ week.end_date }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            </form>
+        </div>
+    </div  >
+        <h3>Time Entries</h3>
+       
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Lunch Start</th>
+                <th>Lunch End</th>
+                <th>Difference</th>
+            </tr>
+            {% for entry in timetables %}
+            <tr>
+                <form method="post" action="{% url 'edit_time_entry' entry.id %}">
+                    {% csrf_token %}
+                    <td>{{ entry.date }}</td>
+                    <td>{{ entry.day }}</td>
+                    <td >
+                    <div class="flex">    
+                        <input type="time" name="start_time" value="{{ entry.start_time|time:'H:i' }}"  onchange="updateTime(this, '{{ entry.id }}')">
+                        <button type="button" onclick="setCurrentTime(this, 'start_time', '{{ entry.id }}')">⏱</button>
+                    </div>
+                    </td>
+
+
+                    <td ><div class="flex">  <input type="time" name="end_time" value="{{ entry.end_time|time:'H:i' }}" onchange="updateTime(this, '{{ entry.id }}')">
+                        <button type="button" onclick="setCurrentTime(this, 'end_time', '{{ entry.id }}')">⏱</button>
+                    </div>
+                    </td>
+
+                    <td>
+                        <div class="flex">  <input type="time" name="lunch_start" value="{{ entry.lunch_start|time:'H:i' }}" onchange="updateTime(this, '{{ entry.id }}')">
+                        <button type="button" onclick="setCurrentTime(this, 'lunch_start', '{{ entry.id }}')">⏱</button>
+                        </div></td>
+
+                    <td>
+                        <div class="flex">  <input type="time" name="lunch_end" value="{{ entry.lunch_end|time:'H:i' }}" onchange="updateTime(this, '{{ entry.id }}')">
+                        <button type="button" onclick="setCurrentTime(this, 'lunch_end', '{{ entry.id }}')">⏱</button>
+                        </div>  </td>
+
+                </form>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No entries found for this tailor.</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <!-- ✅ Move this form OUTSIDE the table -->
+        <form method="post" action="{% url 'add_time_entry' tailor.id %}">
+            {% csrf_token %}
+            <button type="submit">Add New Entry</button>
+        </form>
+        
+
+        
+        <a href="{% url 'manager_dashboard' %}" class="back-link">Back to Dashboard</a>
+    </div>
+    <script>
+        function updateTime(input, entryId) {
+            fetch(`/edit-entry/${entryId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: encodeURI(`${input.name}=${input.value}`)
+            }).then(response => {
+                if (!response.ok) {
+                    alert('Failed to update time');
+                }
+            });
+        }
+        function setCurrentTime(button, fieldName, entryId) {
+            let inputField = button.previousElementSibling;
+            let nowDate = new Date();
+            let hours = nowDate.getHours().toString().padStart(2, '0');
+            let minutes = nowDate.getMinutes().toString().padStart(2, '0');
+            inputField.value = `${hours}:${minutes}`;
+            
+            fetch(`/edit-entry/${entryId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: encodeURI(`${fieldName}=${inputField.value}`)
+            }).then(response => {
+                if (!response.ok) {
+                    alert('Failed to update time');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

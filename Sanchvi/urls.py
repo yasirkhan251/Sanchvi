@@ -24,6 +24,7 @@ urlpatterns = [
     path('contact_page', contact_page, name='contact_page'),
     path('test/', testingpage, name='test'),
     path('robots.txt', robots_txt, name='robots_txt'),
+    path('time/', include('Salary_Calculator.urls'))
     
     
 

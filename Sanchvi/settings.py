@@ -41,6 +41,7 @@ EXT = [
     'paypal.standard.ipn',
     'Admin',
     'Message',
+    'Salary_Calculator',
     
 
 ]

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+</head>
+<body>
+    <h1>Manager Dashboard</h1>
+    <h2>Total Tailors: {{ total_tailors }}</h2>
+    
+    <h3>Tailor List</h3>
+    <ul>
+        {% for tailor in tailors %}
+            <li>
+                <a href="{% url 'tailor_detail' tailor.id %}">{{ tailor.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

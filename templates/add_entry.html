@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Entry</title>
+</head>
+<body>
+    <h1>Add Entry for {{ tailor.name }}</h1>
+    <h2>Date: {{ entry.date }} ({{ entry.day }})</h2>
+
+    <form action="{% url 'update_time_entry' entry.id %}" method="post">
+        {% csrf_token %}
+        <label>Start Time:</label>
+        <input type="time" name="start_time"><br>
+
+        <label>Lunch Start:</label>
+        <input type="time" name="lunch_start"><br>
+
+        <label>Lunch End:</label>
+        <input type="time" name="lunch_end"><br>
+
+        <label>End Time:</label>
+        <input type="time" name="end_time"><br>
+
+        <button type="submit">Save</button>
+    </form>
+
+    <a href="{% url 'manager_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>
